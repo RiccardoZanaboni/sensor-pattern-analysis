@@ -1,0 +1,1 @@
+Progetto per l'analisi di dati da sensori ambientali in applicazioni domotiche.
