@@ -1,1 +1,2 @@
-Progetto per l'analisi di dati da sensori ambientali in applicazioni domotiche.
+This project aims at the analysis of environmental sensors for domotic applications.
+
