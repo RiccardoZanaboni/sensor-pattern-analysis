@@ -10,7 +10,9 @@ MAX_MISSED_SAMPLES = 3
 MAX_EQUAL_SAMPLES = 5
 index = 0
 
+
 fsm_states = pd.DataFrame(columns=['Timestamp', 'State'])
+
 hlt_sensor = hlt_state.HltState()
 
 
