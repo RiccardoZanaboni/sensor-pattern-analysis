@@ -4,20 +4,20 @@ import datetime as dt
 import numpy
 import hlt_state
 
-
+file_name = "hlt_4.csv"
 SAMPLE_TIME = 10
-MAX_MISSED_SAMPLES = 3
 MAX_EQUAL_SAMPLES = 5
 index = 0
 
 
 fsm_states = pd.DataFrame(columns=['Timestamp', 'State'])
 
-hlt_sensor = hlt_state.HltState()
+hlt_sensor = hlt_state.HltState(file_name)
+MAX_TIMER = 3 * hlt_sensor.st_mean
 
 
 def read_samples():
-    return pd.read_csv("hlt_4.csv", ",")
+    return pd.read_csv(file_name, ",")
 
 
 def compare_samples(df):
@@ -47,7 +47,7 @@ def check_dataframe(current_ts, df):
 #    state = READING
     timestamp_sample = dt.datetime.strptime(df.iat[index, 0], "%Y-%m-%d %H:%M:%S")  # taking the data of the sample
     if current_ts == timestamp_sample:      # equal to "missing_sample = false"
-        hlt_sensor.n_missing = 0
+        hlt_sensor.timer = 0
         tmp = compare_samples(df)
         if tmp and hlt_sensor.n_of_equals < MAX_EQUAL_SAMPLES:                              # equal to "last_sample == sample"
             hlt_sensor.state = hlt_sensor.WARNING_EQUAL_MEASURES
@@ -61,8 +61,7 @@ def check_dataframe(current_ts, df):
 
         index += 1
     else:                               # equal to "missing sample = true"
-        hlt_sensor.n_missing += 1
-        if hlt_sensor.n_missing <= MAX_MISSED_SAMPLES:
+        if hlt_sensor.timer <= MAX_TIMER:
             hlt_sensor.state = hlt_sensor.WARNING_NOT_SAMPLE
             update_fsm_states()
         else:
@@ -90,8 +89,9 @@ if __name__ == '__main__':
 
     while current_ts <= last_date:
         current_ts = st.increase_time(current_ts)  # adding one minute
+        hlt_sensor.update_timer()
         if current_ts - previous_time == delta:      # checking every sample_time
             previous_time = current_ts
             check_dataframe(current_ts, df)
 
-    fsm_states.to_csv("fsm_hlt_4_beta.csv", index=False)
+    fsm_states.to_csv("fsm_hlt_4_gamma.csv", index=False)
