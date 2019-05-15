@@ -1,0 +1,21 @@
+{
+  "room" : {
+    "kitchen" : ["atrium"],
+    "atrium" : ["kitchen", "livingroom1", "toilet", "bedroom"],
+    "toilet" : ["atrium"],
+    "livingroom" : ["atrium"],
+    "bedroom" : ["atrium"]
+  },
+  "other" : {
+    "START_TIME" : 0,
+    "STOP_TIME" : 10000,
+    "mu" : 120,
+    "std" : 30,
+    "seed": 3,
+    "time_sample" : 180
+  }
+}
+
+
+
+

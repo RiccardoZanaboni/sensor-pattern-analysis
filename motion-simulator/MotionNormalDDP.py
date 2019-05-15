@@ -2,26 +2,16 @@
 # @param seed is used to set numpy.random.seed
 # @param mean and @param seed are the mean and standard deviation of the normal distribution respectively
 
-import pandas as pd
 import numpy as np
-path = '/home/mattia/Documents/Tesi/data2/MovementState/'
-file_name = 'mean_permanence.csv'
 
 
 class MotionNormalDDP:
 
-    def __init__(self, mu=0, std=0, seed=3):
-        df = pd.read_csv(path + file_name, ',')
+    def __init__(self, mu, std, seed):
 
+        self.mu = mu
+        self.std = std
         self.seed = seed
-        if mu != 0:
-            self.mu = mu
-        else:
-            self.mu = float(df[df['Stat'] == 'mean']['Value'])
-        if std != 0:
-            self.std = std
-        else:
-            self.std = float(df[df['Stat'] == 'std']['Value'])
 
     @property
     def seed(self):
