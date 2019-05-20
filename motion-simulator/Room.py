@@ -1,6 +1,36 @@
 class Room:
+    """A class used to represent a room
+        ...
+
+        Attributes
+        ------------------------
+        name : str
+            the name of the Room
+
+        adjacencies : list of Room
+            the Rooms near this one
+
+        sensor : Sensor
+            the Room's sensor
+
+        Methods
+        -----------------------
+
+        alert_sensor(self, current_time, human)
+            simulate the sensor's behaviour
+
+        """
 
     def __init__(self, name, adjacencies, sensor):
+        """
+
+        :param name: str
+            the name of the Room
+        :param adjacencies: list of Room
+            the Rooms near this one
+        :param sensor: Sensor
+            the Room's sensor
+        """
         self.name = name
         self.adjacencies = adjacencies
         self.sensor = sensor
@@ -31,15 +61,25 @@ class Room:
         self.__sensor = sensor
 
     def alert_sensor(self, current_time, human):
+        """
+        simulate the sensor's behaviour
+
+        :param current_time: int
+            current timer of the system
+        :param human: Human
+            person who lives in  the house
+        :return:
+
+        """
 
         if self.name == human.current_room.name:
             if self.sensor.state == 0:
                 self.sensor.state = 1
-                self.sensor.time_next_sample = self.sensor.max_timer + current_time
+                self.sensor.update_time_next_sample(current_time)
                 self.sensor.update(current_time)
             else:
                 if current_time == self.sensor.time_next_sample:
-                    self.sensor.time_next_sample = self.sensor.max_timer + current_time
+                    self.sensor.update_time_next_sample(current_time)
         else:
             if self.sensor.state == 1 and self.sensor.time_next_sample <= current_time:
                 self.sensor.state = 0

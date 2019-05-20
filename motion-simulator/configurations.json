@@ -9,10 +9,12 @@
   "other" : {
     "START_TIME" : 0,
     "STOP_TIME" : 10000,
-    "mu" : 120,
-    "std" : 30,
-    "seed": 3,
-    "time_sample" : 180
+    "mu_waiting_time" : 120,
+    "std_waiting_time" : 30,
+    "seed_waiting_time": 3,
+    "mu_sample_time" : 180,
+    "std_sample_time": 15,
+    "seed_sample_time":2
   }
 }
 
