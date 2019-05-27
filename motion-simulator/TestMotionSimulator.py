@@ -5,6 +5,7 @@ import Simulate_Time as st
 import NormalDDP as model
 import config
 
+
 def sensor_sample(apartment, current_time, mat):
     """
     make the sensor sample
@@ -49,7 +50,6 @@ if __name__ == "__main__":
     sensor_sample(apartment, current_time, mat)
     movement_tracker = movement_tracker.append({'Time': current_time, 'Room': mat.current_room.name}, ignore_index=True)
     current_time = st.increase_time(current_time)
-    mat.time_next_move = current_time               # synchronisation of human's timer to the system clock
 
     ret = simulate(movement_tracker, current_time, mat)
 

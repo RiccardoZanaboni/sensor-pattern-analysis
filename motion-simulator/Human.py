@@ -86,7 +86,7 @@ class Human:
             """
             nonlocal current_time
             tmp = self.model_movement.generate_random_time()
-            print("h" + str(tmp))
+
             return current_time + tmp
 
         self.time_next_move = stay()
@@ -98,5 +98,6 @@ class Human:
 
         """
         self.current_room = random.choice(self.apartment)
+        self.time_next_move = self.model_movement.generate_random_time()
 
 

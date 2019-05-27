@@ -78,7 +78,6 @@ class Sensor:
         tmp = self.sample_time_error.generate_random_time()
         self.time_next_sample = current_time + tmp
 
-
     def update(self, current_time):
         """
         simulate the sending of data to the gateway (writing in csv)
