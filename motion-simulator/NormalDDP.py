@@ -18,7 +18,7 @@ class NormalDDP:
             Methods
             -----------------------
 
-            generate_waiting_time(self)
+            generate_random_time(self)
                 generate randomly the time of permanence in the room
 
     """
@@ -62,8 +62,9 @@ class NormalDDP:
         :return: int
             the randomly generated waiting time
         """
-        #  np.random.seed(self.seed)                                # test mode only!
-        rnd_number = int(np.random.normal(self.mu, self.std))
+        # np.random.seed(self.seed)                                # test mode only!
+        rnd_number = np.random.normal(self.mu, self.std)
+        rnd_number = round(rnd_number, 1)
 
         return rnd_number
 

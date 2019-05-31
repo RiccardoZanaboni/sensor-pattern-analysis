@@ -1,3 +1,7 @@
+import Time as t
+import numpy as np
+
+
 class Room:
     """A class used to represent a room
         ...
@@ -23,7 +27,6 @@ class Room:
 
     def __init__(self, name, adjacencies, sensor):
         """
-
         :param name: str
             the name of the Room
         :param adjacencies: list of Room
@@ -74,11 +77,14 @@ class Room:
 
         if self.name == human.current_room.name:
             if self.sensor.state == 0:
-                self.sensor.state = 1
-                self.sensor.update_time_next_sample(current_time)
-                self.sensor.update(current_time)
+                if np.random.uniform(0, 1) > self.sensor.prob_error:
+                    self.sensor.state = 1
+                    self.sensor.update_time_next_sample(current_time)
+                    self.sensor.update(current_time)
+                else:
+                    print(current_time)
             else:
-                if current_time == self.sensor.time_next_sample:
+                if t.Time.check_time_delta(current_time,self.sensor.time_next_sample):
                     self.sensor.update_time_next_sample(current_time)
         else:
             if self.sensor.state == 1 and self.sensor.time_next_sample <= current_time:

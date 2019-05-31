@@ -1,4 +1,3 @@
-
 import random
 
 
@@ -99,5 +98,3 @@ class Human:
         """
         self.current_room = random.choice(self.apartment)
         self.time_next_move = self.model_movement.generate_random_time()
-
-
