@@ -5,7 +5,7 @@ import NormalDDP as model
 import config
 
 
-def sensor_sample(apartment, current_time, mat):
+def sensor_sample(apartment, current_time, mat, gateway):
     """
     make the sensor sample
 
@@ -15,13 +15,18 @@ def sensor_sample(apartment, current_time, mat):
         the timer of the system
     :param mat: Human
         the person in the house
+    :param gateway: gateway
+        system to store the data
     :return:
     """
+    states = []
     for i in apartment:
         i.alert_sensor(current_time, mat)
+        states.append(i.sensor.state)
+    gateway.update_df_HF(current_time, states)
 
 
-def simulate(movement_tracker, time, mat, sensor_sample_time):
+def simulate(movement_tracker, time, mat, sensor_sample_time, gateway):
     """
     simulate the movement of the person
 
@@ -46,8 +51,9 @@ def simulate(movement_tracker, time, mat, sensor_sample_time):
                                                        ignore_index=True)
 
         if time.check_time_delta(time.current_time, time_next_sample):
-            sensor_sample(apartment, time.current_time, mat)
+            sensor_sample(apartment, time.current_time, mat, gateway)
             time_next_sample = time.current_time + sensor_sample_time
+
 
         time.increase_time()
 
@@ -61,19 +67,19 @@ if __name__ == "__main__":
                    configurator.init_system_time_delta())
 
     sensor_sample_time = configurator.init_sensor_sample_time()
-    apartment = configurator.create_apartment()
+    apartment, gateway = configurator.create_apartment()
     movement_tracker = pd.DataFrame(columns=['Time', 'Room'])
     normal_model = model.NormalDDP(configurator.init_mean(), configurator.init_std(), configurator.init_seed())
     mat = human.Human(apartment, normal_model)
     mat.chose_start_room()
-    sensor_sample(apartment, time.current_time, mat)
+    sensor_sample(apartment, time.current_time, mat, gateway)
     movement_tracker = movement_tracker.append({'Time': time.current_time, 'Room': mat.current_room.name},
                                                ignore_index=True)
     time.increase_time()
 
-    ret = simulate(movement_tracker, time, mat, sensor_sample_time)
+    ret = simulate(movement_tracker, time, mat, sensor_sample_time, gateway)
 
     ret[0].to_csv("out.csv", index=False)
     ret[1].current_room.sensor.gateway.dataframe.to_csv("out_sensors.csv", index=False)
-
+    gateway.df_HF.to_csv("HF_input.csv", index=False)
 

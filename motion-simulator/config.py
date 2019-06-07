@@ -69,8 +69,10 @@ class SystemConfig:
     def create_apartment(self):
 
         apartment = []
+        col = ["Time"]
+        col = col + (list(self.data_config["room"].keys()))
 
-        g = Gateway.Gateway(pd.DataFrame(columns=['Time', 'Room', 'State']))
+        g = Gateway.Gateway(pd.DataFrame(columns=['Time', 'Room', 'State']), pd.DataFrame(columns=col), col[1:])
 
         for i in self.data_config["room"]:
             tmp = Room.Room(i, 0, Sensor.Sensor(i, g, self.data_config["time"]["sensor_sleep_time"],
@@ -84,7 +86,7 @@ class SystemConfig:
                     if room_name == j.name:
                         i.adjacencies.append(j)
 
-        return apartment
+        return apartment, g
 
     def init_start_time(self):
         return self.data_config["time"]["START_TIME"]
