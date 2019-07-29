@@ -13,7 +13,7 @@ def open_json(config_file_name):
 
 def system_set_up():
     data_config = open_json("config.json")
-    rf = ReadFile.ReadFile(data_config["info"]["file_name"])
+    rf = ReadFile.ReadFile(data_config["info"]["input_file_name"])
     bel = data_config["probability"]["bel_t0"]
     pos = data_config["info"]["state_domain"]
     prob_state = []
@@ -37,9 +37,8 @@ def check_measure(new_measure, previous_measure ):
 
 
 def crate_file_output(df1: pd.DataFrame, df2):
-    # TODO use the json file_name configuration
     data_config = open_json("config.json")
-    df3 = ReadFile.ReadFile("out.csv").df
+    df3 = ReadFile.ReadFile(data_config["info"]["ground_truth_file_name"]).df
     df1["Room"] = ""
 
     for i, row in df1.copy().iterrows():

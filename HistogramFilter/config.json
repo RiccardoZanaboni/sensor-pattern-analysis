@@ -2,7 +2,7 @@
   "info" : {
     
     "input_file_name" :"HF_input.csv",
-    "gran_truth_file_name": "out.csv",
+    "ground_truth_file_name": "out.csv",
     "output_file_name": "HF_out.csv",
     "state_domain": ["A","K","L","T","B"],
     "room_name" : ["atrium","kitchen","livingroom","toilet", "bedroom"],
