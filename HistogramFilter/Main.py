@@ -48,7 +48,7 @@ def crate_file_output(df1: pd.DataFrame, df2):
         df1.loc[i, 'Room'] = r
 
     df = pd.merge(df1, df2, how='inner')
-    df.to_csv("HF_out.csv", index=False)
+    df.to_csv(data_config["info"]["output_file_name"], index=False)
 
 
 if __name__ == "__main__":
