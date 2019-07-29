@@ -125,7 +125,6 @@ class Human:
                     tmp = self.long_time_model_movement.generate_random_time()
                 else:
                     tmp = self.short_time_model_movement.generate_random_time()
-                    print(str(tmp) + "d")
 
             return current_time + tmp
 
