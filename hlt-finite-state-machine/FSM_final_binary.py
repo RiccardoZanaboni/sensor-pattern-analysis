@@ -1,6 +1,7 @@
 import pandas as pd
 
 def binary_conversion(df):
+    """convert output of final state machine in binary format(1--> working and warning 0-->not working)"""
     for i in range(0, df.shape[0]):
         if df.iat[i, 1] != 0:
             df.iat[i, 1] = 1

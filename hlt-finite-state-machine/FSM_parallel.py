@@ -2,7 +2,9 @@ import pandas as pd
 import hlt_state
 
 def create_df_fsm_differentation(fsm_states):
+    """Create a DataFrame so that tsl can show parallel plots"""
     def state_conversion(element):
+        """Create a dictionary: key the state value, value the matching sequence output for the state"""
         switch = {hlt_state.HltState.WORKING :[1,0,0,0], hlt_state.HltState.WARNING_NOT_SAMPLE : [0,1,0,0],
                   hlt_state.HltState.WARNING_EQUAL_MEASURES : [0,0,1,0], hlt_state.HltState.NOT_WORKING : [0,0,0,1]}
         return switch[element.iat[0,1]]
