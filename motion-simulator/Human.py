@@ -1,8 +1,9 @@
 import random
+import numpy as np
 
 
 class Human:
-    """A class used to represent a person who lives in the apartment
+    """Person who lives in the apartment
             ...
 
             Attributes
@@ -16,8 +17,19 @@ class Human:
             time_next_move : int
                 the time when the person will choose his next move
 
-            model_movement : MotionDDP
-                it's the ddp model from which the amount of waiting time in a room it's extracted
+            short_time_model_movement : UniformDDP
+                it's the ddp model from which the amount of short waiting time in a room it's extracted
+
+            long_time_model_movement : UniformDDP
+                it's the ddp model from which the amount of long waiting time in a room it's extracted
+
+
+
+            p_of_staying : float
+                probability of staying in the room
+
+            p_type_behaviour : float
+                probability on which is selected the model for the time permanence in the room
 
             Methods
             -----------------------
@@ -31,7 +43,19 @@ class Human:
         self.current_room = 0
         self.apartment = apartment
         self.time_next_move = 0                 # has to be synchronised to the system clock
-        self.model_movement = model_movement
+        self.long_time_model_movement = model_movement[0]
+        self.p_of_staying = 0
+        self.p_type_behaviour = 0
+        self.short_time_model_movement = model_movement[1]
+
+
+    @property
+    def p_of_staying(self):
+        return self.__p_of_staying
+
+    @p_of_staying.setter
+    def p_of_staying(self, p_of_staying):
+        self.__p_of_staying = p_of_staying
 
     @property
     def current_room(self):
@@ -58,12 +82,19 @@ class Human:
         self.__time_next_move = time_next_move
 
     @property
-    def model_movement(self):
-        return self.__model_movement
+    def long_time_model_movement(self):
+        return self.__long_time_model_movement
 
-    @model_movement.setter
-    def model_movement(self, model_movement):
-        self.__model_movement = model_movement
+    @long_time_model_movement.setter
+    def long_time_model_movement(self, model_movement):
+        self.__long_time_model_movement = model_movement
+    @property
+    def short_time_model_movement(self):
+        return self.__short_time_model_movement
+
+    @short_time_model_movement.setter
+    def short_time_model_movement(self, model_movement):
+        self.__short_time_model_movement = model_movement
 
     def move(self, current_time):
         """
@@ -77,24 +108,36 @@ class Human:
         """
         self.current_room = random.choice(self.current_room.adjacencies)
 
-        def stay():
+        def stay(p_of_staying, p_type_behaviour):
             """
             simulate for how long the person stay in the current room
             :return: int
                 the time at which the person will choose his next move
             """
             nonlocal current_time
-            tmp = self.model_movement.generate_random_time()
+            if np.random.uniform(0, 1) > p_of_staying:
+                tmp = 1
+            else:
+                # tmp = random.choice([self.long_time_model_movement, self
+                #                      .short_time_model_movement])
+                # tmp = tmp.generate_random_time()
+                if np.random.uniform(0, 1) > p_type_behaviour:
+                    tmp = self.long_time_model_movement.generate_random_time()
+                else:
+                    tmp = self.short_time_model_movement.generate_random_time()
+                    print(str(tmp) + "d")
 
             return current_time + tmp
 
-        self.time_next_move = stay()
+        self.time_next_move = stay(self.p_of_staying, self.p_type_behaviour)
 
-    def chose_start_room(self):
+    def chose_start_room(self, p_of_staying, p_type_behaviour):
         """
-        initialize the room where the person starts the simulation
+        initialize the room where the person starts the simulation and set the probability of staying
         :return:
 
         """
         self.current_room = random.choice(self.apartment)
-        self.time_next_move = self.model_movement.generate_random_time()
+        self.time_next_move = self.short_time_model_movement.generate_random_time()
+        self.p_of_staying = p_of_staying
+        self.p_type_behaviour = p_type_behaviour

@@ -51,6 +51,12 @@ class SystemConfig:
         init_sensor_prob_error(self) : float
             set the probability of sensor to fail(not to reveal movement)
 
+        init_p_of_staying(self): float
+            set the probability of staying in the room
+
+        init_p_type_behaviour(self): float
+            set the probability of deciding for a short time moving behaviour
+
     """
 
     def __init__(self):
@@ -76,7 +82,7 @@ class SystemConfig:
 
         for i in self.data_config["room"]:
             tmp = Room.Room(i, 0, Sensor.Sensor(i, g, self.data_config["time"]["sensor_sleep_time"],
-                                                self.data_config["other"]["sensor_prob_error"]))
+                                                self.data_config["probability"]["sensor_prob_error"]))
             apartment.append(tmp)
 
         for i in apartment:
@@ -88,20 +94,32 @@ class SystemConfig:
 
         return apartment, g
 
+    def init_p_of_staying(self):
+        return self.data_config["probability"]["probability_of_staying"]
+
     def init_start_time(self):
         return self.data_config["time"]["START_TIME"]
 
     def init_stop_time(self):
         return self.data_config["time"]["STOP_TIME"]
 
-    def init_mean(self):
-        return self.data_config["time"]["mu_waiting_time"]
+    def init_long_model_mean(self):
+        return self.data_config["time"]["mu_long_waiting_time"]
 
-    def init_std(self):
-        return self.data_config["time"]["std_waiting_time"]
+    def init_long_model_std(self):
+        return self.data_config["time"]["std_long_waiting_time"]
 
-    def init_seed(self):
-        return self.data_config["time"]["seed_waiting_time"]
+    def init_long_model_seed(self):
+        return self.data_config["time"]["seed_long_waiting_time"]
+
+    def init_short_model_mean(self):
+        return self.data_config["time"]["mean_short_waiting_time"]
+
+    def init_short_model_std(self):
+        return self.data_config["time"]["std_short_waiting_time"]
+
+    def init_short_model_seed(self):
+        return self.data_config["time"]["seed_short_waiting_time"]
 
     def init_system_time_delta(self):
         return self.data_config["time"]["system_time_delta"]
@@ -113,5 +131,19 @@ class SystemConfig:
         return self.data_config["time"]["epsilon"]
 
     def init_sensor_prob_error(self):
-        return self.data_config["other"]["sensor_prob_error"]
+        return self.data_config["probability"]["sensor_prob_error"]
 
+    def init_p_type_behaviour(self):
+        return self.data_config["probability"]["probability_of_short_moving_behaviour"]
+
+    def init_long_model_lower(self):
+        return self.data_config["time"]["lower_long_waiting_time"]
+
+    def init_long_model_upper(self):
+        return self.data_config["time"]["upper_long_waiting_time"]
+
+    def init_short_model_lower(self):
+        return self.data_config["time"]["lower_short_waiting_time"]
+
+    def init_short_model_upper(self):
+        return self.data_config["time"]["upper_short_waiting_time"]

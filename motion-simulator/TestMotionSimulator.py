@@ -1,7 +1,7 @@
 import Human as human
 import pandas as pd
 import Time as t
-import NormalDDP as model
+import UniformDDP as ddp
 import config
 
 
@@ -64,14 +64,15 @@ if __name__ == "__main__":
 
     configurator = config.SystemConfig()
     time = t.Time(configurator.init_start_time(), configurator.init_stop_time(), configurator.init_time_epsilon(),
-                   configurator.init_system_time_delta())
+                  configurator.init_system_time_delta())
 
     sensor_sample_time = configurator.init_sensor_sample_time()
     apartment, gateway = configurator.create_apartment()
     movement_tracker = pd.DataFrame(columns=['Time', 'Room'])
-    normal_model = model.NormalDDP(configurator.init_mean(), configurator.init_std(), configurator.init_seed())
-    mat = human.Human(apartment, normal_model)
-    mat.chose_start_room()
+    model = [ddp.UniformDDp(configurator.init_long_model_lower(), configurator.init_long_model_upper()),
+             ddp.UniformDDp(configurator.init_short_model_lower(), configurator.init_short_model_upper())]
+    mat = human.Human(apartment, model)
+    mat.chose_start_room(configurator.init_p_of_staying(), configurator.init_p_type_behaviour())
     sensor_sample(apartment, time.current_time, mat, gateway)
     movement_tracker = movement_tracker.append({'Time': time.current_time, 'Room': mat.current_room.name},
                                                ignore_index=True)
