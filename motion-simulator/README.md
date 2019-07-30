@@ -1,11 +1,11 @@
 # Motion Simulator (Movements State)
 
-Simulates the movement of one person in the apartment and simulates the behaviour of the movmentState sensors in a selected time slice.
+Simulates the movement of one person in the apartment and simulates the behaviour of the movementState sensors in a selected time slice.
 The program gives three output csv files. 
 	"HF_input.csv" represents the measures of each sensor, used as input for the histgram filter
 	"out.csv" represents the room where the person is
 	"out_sensors.csv" represents the measure of the sensor of the room where the person is
-These files name can be set in the configurations.json
+These files name can be set in configurations.json
 ["info"]
   * ["output_histogram_filter"]["HF_input.csv"]
   * ["output_movement"]["out.csv"]
@@ -13,19 +13,19 @@ These files name can be set in the configurations.json
 
 ## Behaviour
 
-The simulated person can chooeses to stay in a room or not thanks to the parameter "probability_of_staying"
-The waiting time in a room (the time before the next movement) is drown from two uniform distributions.
-One represents a short time wating the second one a long time wating. The simulation can be done with one of this wating time or both.
+The simulated person can choose to stay in a room or not thanks to the parameter "probability_of_staying"
+The waiting time in a room (the time before the next movement) is drawn from two uniform distributions.
+One represents a short time waiting the second a long time waiting. The simulation can be done with one of this waiting time or both.
 
 # Configuration information
 
-It's necessary to define the appartment of the simulation, showing the adjacenses.
-To do it use the configurations.json, using the section "room".
-Use a room as key and its ajacenses rooms as values.
+It's necessary to define the apartment of the simulation, showing the adjacenses.
+To do it use configurations.json, using the section "room".
+Use a room as key and its adjacenses rooms as values.
 
-To deciede the slice time of simulation set the value of ["time"]["START_TIME"] and ["time"]["STOP_TIME"].
+To decide the slice time of the simulation, set the value of ["time"]["START_TIME"] and ["time"]["STOP_TIME"].
 
-To set the uniform distributions for the behaviour of the person's movment use these parameters.
+To set the uniform distributions for the behaviour of the person's movement use these parameters.
 * ["time"]["lower_long_waiting_time"]
 * ["time"]["upper_long_waiting_time"]
 * ["time"]["seed_long_waiting_time"]
