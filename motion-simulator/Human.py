@@ -118,9 +118,7 @@ class Human:
             if np.random.uniform(0, 1) > p_of_staying:
                 tmp = 1
             else:
-                # tmp = random.choice([self.long_time_model_movement, self
-                #                      .short_time_model_movement])
-                # tmp = tmp.generate_random_time()
+
                 if np.random.uniform(0, 1) > p_type_behaviour:
                     tmp = self.long_time_model_movement.generate_random_time()
                 else:

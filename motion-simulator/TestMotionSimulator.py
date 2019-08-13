@@ -46,7 +46,7 @@ def simulate(movement_tracker, time, mat, sensor_sample_time, gateway):
     while time.current_time < time.STOP_TIME:
 
         if time.check_time_delta(time.current_time, mat.time_next_move):
-            mat.move(time.current_time)                          # if timer is equal to human's timer-decision : human moves
+            mat.move(time.current_time)                     # if timer is equal to human's timer-decision : human moves
             movement_tracker = movement_tracker.append({'Time': time.current_time, 'Room': mat.current_room.name},
                                                        ignore_index=True)
 
@@ -69,8 +69,10 @@ if __name__ == "__main__":
     sensor_sample_time = configurator.init_sensor_sample_time()
     apartment, gateway = configurator.create_apartment()
     movement_tracker = pd.DataFrame(columns=['Time', 'Room'])
-    model = [ddp.UniformDDp(configurator.init_long_model_lower(), configurator.init_long_model_upper()),
-             ddp.UniformDDp(configurator.init_short_model_lower(), configurator.init_short_model_upper())]
+    model = [ddp.UniformDDp(configurator.init_long_model_lower(), configurator.init_long_model_upper(),
+                            configurator.init_long_model_seed(), configurator.init_test_mode()),
+             ddp.UniformDDp(configurator.init_short_model_lower(), configurator.init_short_model_upper(),
+                            configurator.init_short_model_seed(), configurator.init_test_mode())]
     mat = human.Human(apartment, model)
     mat.chose_start_room(configurator.init_p_of_staying(), configurator.init_p_type_behaviour())
     sensor_sample(apartment, time.current_time, mat, gateway)

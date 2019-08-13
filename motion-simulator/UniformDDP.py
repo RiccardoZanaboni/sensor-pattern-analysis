@@ -21,9 +21,27 @@ class UniformDDp:
 
     """
 
-    def __init__(self, lower, upper):
+    def __init__(self, lower, upper, seed, test_mode):
         self.lower = lower
         self.upper = upper
+        self.seed = seed
+        self.test_mode = test_mode
+
+    @property
+    def seed(self):
+        return self.__seed
+
+    @seed.setter
+    def seed(self, seed):
+        self.__seed = seed
+
+    @property
+    def test_mode(self):
+        return self.__test_mode
+
+    @test_mode.setter
+    def test_mode(self, test_mode):
+        self.__test_mode = test_mode
 
     @property
     def lower(self):
@@ -50,6 +68,8 @@ class UniformDDp:
             :return: int
                 the randomly generated waiting time
         """
-        # np.random.seed(self.seed)
+        if self.test_mode == "on":
+            np.random.seed(self.seed)
+
         random_time = np.random.uniform(self.lower, self.upper)
         return int(random_time)

@@ -147,3 +147,6 @@ class SystemConfig:
 
     def init_short_model_upper(self):
         return self.data_config["time"]["upper_short_waiting_time"]
+
+    def init_test_mode(self):
+        return self.data_config["info"]["debug_mode"]
