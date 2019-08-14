@@ -47,7 +47,12 @@ The probability of choosing to stay in a room or not is represented by
 * ["probability"]["probability_of_staying"]
 
 The probability of a short time permanence is represented by
-* ["probability"]["probability_of_short_moving_behaviour"] 
+* ["probability"]["probability_of_short_moving_behaviour"]
+
+# Output Information
+
+The simulator creates a file for each simulation, in which the info about the simulation are saved.
+These files are saved in the simulation-info directory, but they are ignored by git.
 
 
 
