@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 
 class UniformDDp:
@@ -24,8 +25,14 @@ class UniformDDp:
     def __init__(self, lower, upper, seed, test_mode):
         self.lower = lower
         self.upper = upper
-        self.seed = seed
         self.test_mode = test_mode
+
+        if self.test_mode == "on":
+            self.seed = seed
+        else:
+            self.seed = int(time.time())
+
+        np.random.seed(self.seed)
 
     @property
     def seed(self):
@@ -68,8 +75,6 @@ class UniformDDp:
             :return: int
                 the randomly generated waiting time
         """
-        if self.test_mode == "on":
-            np.random.seed(self.seed)
 
         random_time = np.random.uniform(self.lower, self.upper)
         return int(random_time)

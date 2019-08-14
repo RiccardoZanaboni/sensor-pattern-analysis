@@ -3,6 +3,7 @@ import pandas as pd
 import Time as t
 import UniformDDP as ddp
 import config
+import SimulationInfo as si
 
 
 def sensor_sample(apartment, current_time, mat, gateway):
@@ -19,6 +20,7 @@ def sensor_sample(apartment, current_time, mat, gateway):
         system to store the data
     :return:
     """
+
     states = []
     for i in apartment:
         i.alert_sensor(current_time, mat)
@@ -54,15 +56,30 @@ def simulate(movement_tracker, time, mat, sensor_sample_time, gateway):
             sensor_sample(apartment, time.current_time, mat, gateway)
             time_next_sample = time.current_time + sensor_sample_time
 
-
         time.increase_time()
 
     return movement_tracker, mat
 
 
-if __name__ == "__main__":
+def check_running_mode(configurator):
 
+    if configurator.init_test_mode() == "on":
+        print("Running in test mode...")
+    else:
+        print("Simulating...")
+
+
+def create_simulation_info(model):
+
+    print("Creating simulation info file....")
+    sim_info = si.SimulationInfo(model[0].seed, model[1].seed)
+    sim_info.create_file()
+
+
+if __name__ == "__main__":
     configurator = config.SystemConfig()
+    check_running_mode(configurator)
+
     time = t.Time(configurator.init_start_time(), configurator.init_stop_time(), configurator.init_time_epsilon(),
                   configurator.init_system_time_delta())
 
@@ -85,4 +102,6 @@ if __name__ == "__main__":
     ret[0].to_csv("out.csv", index=False)
     ret[1].current_room.sensor.gateway.dataframe.to_csv("out_sensors.csv", index=False)
     gateway.df_HF.to_csv("HF_input.csv", index=False)
+
+    create_simulation_info(model)
 
