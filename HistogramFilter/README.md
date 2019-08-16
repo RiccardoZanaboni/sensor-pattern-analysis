@@ -5,6 +5,8 @@ Calculates the probability in which room a person is in an apartment using the m
 'EvaluateOutput.py' evaluates the output of the filter using an index. Index = Probability of GroundTruth/max(Probability to be in a room).
 The script plots this index and save it in "output_evaluation.csv". 
 (It's possible to change the name in config.json ["info"]["output_evaluation"]).
+It also creates an image to show the index which represents the accuracy of the filter.
+(It's possible to change the name in config.json ["info"]["img_evaluation"]).
 
 
 ## Algorithm 
@@ -17,13 +19,13 @@ Discrete Bayes Filter
 
 # Configuration information
 
-The program takes in input a CSV file, the name of the input file can be set in config.json (["info"]["file_name"]).
+The program takes in input a CSV file, the name of the input file can be set in config.json (["info"]["input_file_name"]).
 The input file is created by the simulator program to respect the requirements:
 
 1. The first column labelled `Timestamp` is the timestamp
-2. The other columns labelled as the rooms of the appartment are considered for the output sensor of each room. (The room columns must have the same order of the 'state_domain')
+2. The other columns labelled as the rooms of the apartment are considered for the output sensor of each room. (The room columns must have the same order of the 'state_domain')
 
-A CSV file which represents the real movments of the person during the simualation (the ground truth), is also required.
+A CSV file which represents the real movements of the person during the simulation (the ground truth), is also required.
 The name of this file can be set in config.json (["info"]["ground_truth_file_name"]).
 It must have two columns, the first 'Timestamp'(the time of the system) the second 'Room' (where the person goes) and it is created by the simulator program.
 

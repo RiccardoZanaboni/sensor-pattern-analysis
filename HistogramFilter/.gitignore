@@ -1,0 +1,7 @@
+# pycharm files
+.idea
+__pycache__
+
+*.csv
+*.png
+

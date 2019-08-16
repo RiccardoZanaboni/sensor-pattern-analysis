@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
     It calculates the relative frequency between the number of time that the person is 
     in a room and the room is the one  the highest probability to be in for the histogram filter. 
 """
+
+
 def open_json(config_file_name):
     with open(config_file_name) as json_config:
         data_config = json.load(json_config)
@@ -20,9 +22,12 @@ def set_up():
     data = ReadFile.ReadFile(data_config["info"]["output_file_name"]).df
     return data
 
+
 """
     Dictionary [key='the name of the room' : value='the index of the column with the probability of the room' 
 """
+
+
 def dictionary_room():
     data_config = open_json("config.json")
     key = data_config["info"]["room_name"]
@@ -36,9 +41,11 @@ def dictionary_room():
 """
     Found the max value between the probability of the rooms 
 """
+
+
 def found_max(probability_arrrey: pd.Series):
     constant = len(open_json("config.json")["info"]["state_domain"]) + 2
-    #col = probability_arrrey.iloc[constant:].apply(float).idxmax(axis=1)
+    # col = probability_arrrey.iloc[constant:].apply(float).idxmax(axis=1)
     val_max = probability_arrrey.iloc[constant:].apply(float).max()
     return val_max
 
@@ -46,7 +53,7 @@ def found_max(probability_arrrey: pd.Series):
 if __name__ == "__main__" :
     df = pd.DataFrame(columns=['Time', 'Efficiency'])
     data = set_up()
-    i = 2
+    i = 0
     dictionary_rooms = dictionary_room()
     n_correct = 0
     while i < len(data.index):
@@ -60,7 +67,8 @@ if __name__ == "__main__" :
 
     ax = plt.gca()
     df.plot(kind='line', x='Time', y='Efficiency', ax=ax)
-    plt.show()
+    plt.savefig(open_json("config.json")["info"]["img_evaluation"])
+
 
 #TODO filtrare il caso di setup(misure uguali)
 #TODO plottare le probabilità delle rooms in confronto con il valore del grantruth

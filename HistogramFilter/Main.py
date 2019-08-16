@@ -13,7 +13,7 @@ def open_json(config_file_name):
 
 def system_set_up():
     data_config = open_json("config.json")
-    rf = ReadFile.ReadFile(data_config["info"]["input_file_name"])
+    rf = ReadFile.ReadFile(data_config["info"]["input_file_path"]+data_config["info"]["input_file_name"])
     bel = data_config["probability"]["bel_t0"]
     pos = data_config["info"]["state_domain"]
     prob_state = []
@@ -38,7 +38,8 @@ def check_measure(new_measure, previous_measure ):
 
 def crate_file_output(df1: pd.DataFrame, df2):
     data_config = open_json("config.json")
-    df3 = ReadFile.ReadFile(data_config["info"]["ground_truth_file_name"]).df
+    df3 = ReadFile.ReadFile(data_config["info"]["input_file_path"]+
+                            data_config["info"]["ground_truth_file_name"]).df
     df1["Room"] = ""
 
     for i, row in df1.copy().iterrows():
@@ -57,14 +58,13 @@ if __name__ == "__main__":
     data_in = rf.df
     columns = open_json("config.json")["info"]["columns_name"]
     df = pd.DataFrame(columns=columns)
-    i = 1
-    sensor_measures_previous = list(data_in.iloc[0])[1:]
+    i = 0
+    sensor_measures_previous = [0, 0, 0, 0, 0]
 
     while i < len(data_in.index):
 
         time = data_in.iloc[i, 0]
         sensor_measures = list(data_in.iloc[i])[1:]
-        sensor_measures_previous = list(data_in.iloc[i-1])[1:]
         sensor_measures_str = [str(int(x)) for x in sensor_measures]
         transactions = check_measure(sensor_measures, sensor_measures_previous)
         if len(transactions) > 0:
@@ -77,6 +77,8 @@ if __name__ == "__main__":
             tmp[columns[j]] = values[j]
 
         df = df.append(tmp, ignore_index=True)
+
+        sensor_measures_previous = sensor_measures
         i += 1
 
     crate_file_output(data_in, df)
