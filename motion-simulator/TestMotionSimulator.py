@@ -49,7 +49,8 @@ def simulate(movement_tracker, time, mat, sensor_sample_time, gateway):
 
         if time.check_time_delta(time.current_time, mat.time_next_move):
             mat.move(time.current_time)                     # if timer is equal to human's timer-decision : human moves
-            movement_tracker = movement_tracker.append({'Time': time.current_time, 'Room': mat.current_room.name},
+            movement_tracker = movement_tracker.append({'Time': time.truncate(time.current_time, 3),
+                                                        'Room': mat.current_room.name},
                                                        ignore_index=True)
 
         if time.check_time_delta(time.current_time, time_next_sample):
