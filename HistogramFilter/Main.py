@@ -32,8 +32,8 @@ def check_measure(new_measure, previous_measure ):
     out = [x - y for x, y in zip(new_measure, previous_measure)]
     for i in range(0, len(out)):
         if out[i] != 0:
-            return out
-    return {}
+            return out, i
+    return {}, 0
 
 
 def crate_file_output(df1: pd.DataFrame, df2):
@@ -66,10 +66,15 @@ if __name__ == "__main__":
         time = data_in.iloc[i, 0]
         sensor_measures = list(data_in.iloc[i])[1:]
         sensor_measures_str = [str(int(x)) for x in sensor_measures]
-        transactions = check_measure(sensor_measures, sensor_measures_previous)
+        transactions, transaction_index = check_measure(sensor_measures, sensor_measures_previous)
+
         if len(transactions) > 0:
-            belief.bel_projected_upgrade()
+            if transactions[transaction_index] == 1:
+                belief.bel_projected_upgrade()
+            else:
+                belief.bel_projected = belief.bel
             belief.bel_upgrade(sensor_measures_str, transactions)
+            
         tmp = {}
         values = [time] + belief.bel
 
