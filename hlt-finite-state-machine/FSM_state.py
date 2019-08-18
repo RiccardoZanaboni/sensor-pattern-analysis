@@ -62,13 +62,14 @@ def check_dataframe(current_ts, df, index):
         else:
             hlt_sensor.state = hlt_sensor.possible_states["NOT_WORKING"]
             update_fsm_states(current_ts)
+    return index
 
 
 if __name__ == '__main__':
 
     hlt_sensor = hlt_state.HltState()
     MAX_TIMER = Read_configurations.open_json()["FSM_info"]["number_missing_sample"] * hlt_sensor.st_mean
-    MAX_EQUAL_SAMPLES = Read_configurations.open_json()["FSM_info"]["MAX_EQUALS_SAMPLE"]
+    MAX_EQUAL_SAMPLES = Read_configurations.open_json()["FSM_info"]["MAX_EQUALS_SAMPLES"]
     fsm_states = pd.DataFrame(columns=['Timestamp', 'State'])
     index = 0
 
@@ -87,7 +88,7 @@ if __name__ == '__main__':
         hlt_sensor.update_timer()
         if current_ts - previous_time == delta:
             previous_time = current_ts
-            check_dataframe(current_ts, df, index)
+            index = check_dataframe(current_ts, df, index)
 
     fsm_states.to_csv(Read_configurations.open_json()["info"]["path_directory_output_FSM"] +
                       Read_configurations.open_json()["info"]["file_output_FSM"], index=False)

@@ -11,8 +11,8 @@ def binary_conversion(df):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv(Read_configurations.open_json()["info"]["path_directory_input_final_binary"]+
-                                                    ["info"]["file_input_final_binary"], ",")
+    df = pd.read_csv(Read_configurations.open_json()["info"]["path_directory_input_final_binary"] +
+                     Read_configurations.open_json()["info"]["file_input_final_binary"], ",")
     df = binary_conversion(df)
-    df.to_csv(Read_configurations.open_json()["info"]["path_directory_output_final_binary"]+
-                                                    ["info"]["file_output_final_binary"],index=False)
+    df.to_csv(Read_configurations.open_json()["info"]["path_directory_output_final_binary"] +
+              Read_configurations.open_json()["info"]["file_output_final_binary"], index=False)

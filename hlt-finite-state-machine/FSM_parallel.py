@@ -8,11 +8,13 @@ def create_df_fsm_differentation(fsm_states):
 
     def state_conversion(element):
         """Create a dictionary: key the state value, value the matching sequence output for the state"""
-        switch = {hlt_state.HltState.WORKING: [1, 0, 0, 0], hlt_state.HltState.WARNING_NOT_SAMPLE: [0, 1, 0, 0],
-                  hlt_state.HltState.WARNING_EQUAL_MEASURES: [0, 0, 1, 0], hlt_state.HltState.NOT_WORKING: [0, 0, 0, 1]}
+        switch = {hlt_state.HltState.possible_states["WORKING"]: [1, 0, 0, 0],
+                  hlt_state.HltState.possible_states["WARNING_NOT_SAMPLE"]: [0, 1, 0, 0],
+                  hlt_state.HltState.possible_states["WARNING_EQUAL_MEASURES"]: [0, 0, 1, 0],
+                  hlt_state.HltState.possible_states["NOT_WORKING"]: [0, 0, 0, 1]}
         return switch[element.iat[0, 1]]
 
-    state = Read_configurations.open_json()["state"]
+    state = Read_configurations.open_json()["FSM_info"]["state"]
     col = ["Timestamp"] + state
     fsm_different_states = pd.DataFrame(columns=col)
     for i in range(0, fsm_states.shape[0]):
@@ -26,11 +28,11 @@ def create_df_fsm_differentation(fsm_states):
 
 def read_samples():
     return pd.read_csv(Read_configurations.open_json()["info"]["path_directory_input_parallel"] +
-                       ["info"]["file_input_parallel"], ",")
+                       Read_configurations.open_json()["info"]["file_input_parallel"], ",")
 
 
 if __name__ == '__main__':
     df = read_samples()
     fsm_different_states = create_df_fsm_differentation(df)
     fsm_different_states.to_csv(Read_configurations.open_json()["info"]["path_directory_output_parallel"] +
-                                ["info"]["file_output_parallel"], index=False)
+                                Read_configurations.open_json()["info"]["file_output_parallel"], index=False)

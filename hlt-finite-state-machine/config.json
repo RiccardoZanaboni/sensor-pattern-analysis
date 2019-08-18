@@ -1,23 +1,24 @@
 {
   "info" : {
-    "path_directory_input_final_binary" : "input_final_binary/",
-    "file_input_final_binary" : ".csv",
+    "path_directory_input_final_binary" : "FSM_file/",
+    "file_input_final_binary" : "fsm_hlt_9.csv",
     "path_directory_output_final_binary" : "final_binary_file/",
-    "file_output_final_binary" : ".csv",
+    "file_output_final_binary" : "fsm_hlt_9_binary.csv",
 
-    "path_directory_input_parallel" : "input_parallel/",
-    "file_input_parallel" : ".csv",
+    "path_directory_input_parallel" : "FSM_file/",
+    "file_input_parallel" : "fsm_hlt_9.csv",
     "path_directory_output_parallel" : "parallel_file/",
-    "file_output_final_parallel" : ".csv",
+    "file_output_parallel" : "fsm_hlt_9_separate.csv",
 
     "path_directory_input_FSM" : "FSM_file/",
     "file_input_FSM" : "hlt_9.csv",
     "path_directory_output_FSM" : "FSM_file/",
-    "file_output_final_FSM" : ".csv",
+    "file_output_FSM" : "fsm_hlt_9.csv",
 
-    "directory_inout_FSM_statistics" : "input_FSM_statistics/",
-    "input_FSM_statistics" : [""],
-    "output_FSM_statistics" : ["hlt_statistics.csv"]
+    "directory_input_FSM_statistics" : "FSM_file/",
+    "input_FSM_statistics" : ["hlt_9.csv"],
+    "directory_output_FSM_statistics" : "FSM_statistics/",
+    "output_FSM_statistics" : "hlt_statistics.csv"
   },
 
 
@@ -27,12 +28,12 @@
     "number_missing_sample" : 3,
     "state": ["WORKING", "WARNING_NOT_SAMPLE", "WARNING_EQUAL_MEASURES","NOT_WORKING"],
     "state_values": {"WORKING" :  100,
-                     "WARNING_NOT_SAMPLE" : 75,
-                     "WARNING_EQUAL_MEASURES" : 50,
-                     "NOT_WORKING" : 25},
-    "sampling_mean" : 600,
+                     "WARNING_NOT_SAMPLE" : 50,
+                     "WARNING_EQUAL_MEASURES" : 25,
+                     "NOT_WORKING" : 0},
+    "sampling_mean" : 600
 
-  },
+  }
 
 
 

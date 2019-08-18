@@ -26,10 +26,10 @@ class HltState:
     """
 
     possible_states = Read_configurations.open_json()["FSM_info"]["state_values"]
-    state = list(possible_states.values())
+    state_values = list(possible_states.values())
 
     def __init__(self):
-        self.state = self.state[0]
+        self.state = self.state_values[0]
         self.n_of_equals = 0
         self.st_mean = Read_configurations.open_json()["FSM_info"]["sampling_mean"]
         self.timer = 0
@@ -41,7 +41,7 @@ class HltState:
 
     @state.setter
     def state(self, state):
-        if state in self.__possible_states:
+        if state in self.state_values:
             self.__state = state
         else:
             self.__state = -1
