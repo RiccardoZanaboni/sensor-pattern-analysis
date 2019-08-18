@@ -1,3 +1,6 @@
+import Read_configurations
+
+
 class HltState:
     """
     Class which represents the state of the final state machine of the sensor
@@ -22,21 +25,13 @@ class HltState:
 
     """
 
-    WORKING = 100
-    WARNING_NOT_SAMPLE = 50
-    WARNING_EQUAL_MEASURES = 25
-    NOT_WORKING = 0
-    __possible_states = [WARNING_NOT_SAMPLE, WORKING, WARNING_EQUAL_MEASURES, NOT_WORKING]
-    __sensor_sampling_times = {"/home/orso_matteo/Documents/Tesi/sensor-pattern-analysis/data2/hlt/hlt_4.csv": 600.294647241774,
-                               "/home/orso_matteo/Documents/Tesi/sensor-pattern-analysis/data2/hlt/hlt_7.csv": 600.32074126871,
-                               "/home/orso_matteo/Documents/Tesi/sensor-pattern-analysis/data2/hlt/hlt_9.csv": 600.318302387268,
-                               "/home/orso_matteo/Documents/Tesi/sensor-pattern-analysis/data2/hlt/hlt_19.csv": 600.34155597723,
-                               "/home/orso_matteo/Documents/Tesi/sensor-pattern-analysis/data2/hlt/hlt_29.csv": 600.557103064067}
+    possible_states = Read_configurations.open_json()["FSM_info"]["state_values"]
+    state_values = list(possible_states.values())
 
-    def __init__(self, sensor_name):
-        self.state = self.WORKING
+    def __init__(self):
+        self.state = self.state_values[0]
         self.n_of_equals = 0
-        self.st_mean = self.__sensor_sampling_times[sensor_name]
+        self.st_mean = Read_configurations.open_json()["FSM_info"]["sampling_mean"]
         self.timer = 0
         self.previous_sample = [-1, -1, -1]
 
@@ -46,7 +41,7 @@ class HltState:
 
     @state.setter
     def state(self, state):
-        if state in self.__possible_states:
+        if state in self.state_values:
             self.__state = state
         else:
             self.__state = -1
@@ -78,7 +73,3 @@ class HltState:
     def update_timer(self):
         self.timer += 60
 
-
-if __name__ == "__main__":
-    x = HltState()
-    print(x.state)
