@@ -1,0 +1,40 @@
+{
+  "info" : {
+    "path_directory_input_final_binary" : "input_final_binary/",
+    "file_input_final_binary" : ".csv",
+    "path_directory_output_final_binary" : "final_binary_file/",
+    "file_output_final_binary" : ".csv",
+
+    "path_directory_input_parallel" : "input_parallel/",
+    "file_input_parallel" : ".csv",
+    "path_directory_output_parallel" : "parallel_file/",
+    "file_output_final_parallel" : ".csv",
+
+    "path_directory_input_FSM" : "FSM_file/",
+    "file_input_FSM" : "hlt_9.csv",
+    "path_directory_output_FSM" : "FSM_file/",
+    "file_output_final_FSM" : ".csv",
+
+    "directory_inout_FSM_statistics" : "input_FSM_statistics/",
+    "input_FSM_statistics" : [""],
+    "output_FSM_statistics" : ["hlt_statistics.csv"]
+  },
+
+
+  "FSM_info" : {
+    "SAMPLE_TIME" : 10,
+    "MAX_EQUALS_SAMPLES" : 5,
+    "number_missing_sample" : 3,
+    "state": ["WORKING", "WARNING_NOT_SAMPLE", "WARNING_EQUAL_MEASURES","NOT_WORKING"],
+    "state_values": {"WORKING" :  100,
+                     "WARNING_NOT_SAMPLE" : 75,
+                     "WARNING_EQUAL_MEASURES" : 50,
+                     "NOT_WORKING" : 25},
+    "sampling_mean" : 600,
+
+  },
+
+
+
+
+}
