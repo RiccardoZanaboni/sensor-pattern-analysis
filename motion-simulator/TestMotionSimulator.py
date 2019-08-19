@@ -4,6 +4,7 @@ import Time as t
 import UniformDDP as ddp
 import config
 import SimulationInfo as si
+import ErrorLogger
 
 
 def sensor_sample(apartment, current_time, mat, gateway):
@@ -80,12 +81,13 @@ def create_simulation_info(model):
 if __name__ == "__main__":
     configurator = config.SystemConfig()
     check_running_mode(configurator)
+    sensor_error_logger = ErrorLogger.ErrorLogger()
 
     time = t.Time(configurator.init_start_time(), configurator.init_stop_time(), configurator.init_time_epsilon(),
                   configurator.init_system_time_delta())
 
     sensor_sample_time = configurator.init_sensor_sample_time()
-    apartment, gateway = configurator.create_apartment()
+    apartment, gateway = configurator.create_apartment(sensor_error_logger)
     movement_tracker = pd.DataFrame(columns=['Time', 'Room'])
     model = [ddp.UniformDDp(configurator.init_long_model_lower(), configurator.init_long_model_upper(),
                             configurator.init_long_model_seed(), configurator.init_test_mode()),

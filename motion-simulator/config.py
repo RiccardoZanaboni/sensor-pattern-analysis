@@ -72,7 +72,7 @@ class SystemConfig:
     def data_config(self, data_config):
         self.__data_config = data_config
 
-    def create_apartment(self):
+    def create_apartment(self, sensor_error_logger):
 
         apartment = []
         col = ["Time"]
@@ -82,7 +82,8 @@ class SystemConfig:
 
         for i in self.data_config["room"]:
             tmp = Room.Room(i, 0, Sensor.Sensor(i, g, self.data_config["time"]["sensor_sleep_time"],
-                                                self.data_config["probability"]["sensor_prob_error"]))
+                                                self.data_config["probability"]["sensor_prob_error"]),
+                            sensor_error_logger)
             apartment.append(tmp)
 
         for i in apartment:
