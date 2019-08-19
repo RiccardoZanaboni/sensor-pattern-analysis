@@ -1,5 +1,7 @@
 import json
 
+"""It returns the dictionary of configuration defined in config.json"""
+
 
 def open_json():
     config_file_name = "config.json"

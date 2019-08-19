@@ -1,11 +1,13 @@
 import pandas as pd
 import Read_configurations
 
+"""Takes in input a list of the HLT measures and writes in the output file the statistics of the sampling time"""
+
 
 def delta_timestamp(df, f, file_name):
     df["Timestamp"] = pd.to_datetime(df["Timestamp"])              # Timestamp to Datetime
 
-    df["Delta"] = df["Timestamp"].diff()                           # Caluclate delta between two consecutive timestamps
+    df["Delta"] = df["Timestamp"].diff()                           # Calculate delta between two consecutive timestamps
     df = df.dropna()
     df["Delta"] = df["Delta"].apply(lambda x: x.total_seconds())
 
