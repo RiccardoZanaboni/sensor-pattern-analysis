@@ -5,3 +5,6 @@ __pycache__
 *.csv
 #ignoring simulation info files
 simulation-info/*.txt
+
+#ignoring log file
+*.log

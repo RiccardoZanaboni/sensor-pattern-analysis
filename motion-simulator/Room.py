@@ -1,5 +1,6 @@
 import Time as t
 import numpy as np
+import ErrorLogger
 
 
 class Room:
@@ -25,7 +26,7 @@ class Room:
 
         """
 
-    def __init__(self, name, adjacencies, sensor):
+    def __init__(self, name, adjacencies, sensor, sensor_error_logger: ErrorLogger.ErrorLogger):
         """
         :param name: str
             the name of the Room
@@ -34,10 +35,10 @@ class Room:
         :param sensor: Sensor
             the Room's sensor
         """
+        self._sel = sensor_error_logger
         self.name = name
         self.adjacencies = adjacencies
         self.sensor = sensor
-
 
     @property
     def name(self):
@@ -82,9 +83,9 @@ class Room:
                     self.sensor.update_time_next_sample(current_time)
                     self.sensor.update(current_time)
                 else:
-                    print(current_time)
+                    self._sel.log_sensor_error(self.name, current_time)
             else:
-                if t.Time.check_time_delta(current_time,self.sensor.time_next_sample):
+                if t.Time.check_time_delta(current_time, self.sensor.time_next_sample):
                     self.sensor.update_time_next_sample(current_time)
         else:
             if self.sensor.state == 1 and self.sensor.time_next_sample <= current_time:
