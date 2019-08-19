@@ -43,7 +43,7 @@ All these setting can  be found in config.json file.
 In the "info" section :
 * "path_directory_input_FSM" is the directory of the input file
 * "file_input_FSM" is the name of the input file
-* "path_directory_output_FSM" is  the directory where the out file is created
+* "path_directory_output_FSM" is the directory where the out file is created
 * "file_output_FSM" is the name of the out file
 
 'WARNING' : if an existing file is selected as out file, it will be overwritten.
@@ -64,3 +64,49 @@ In the "FSM_info" section :
 ~$ python3 FSM_state.py
 
 ```  
+
+## FSM_parallel
+It creates a csv file which represents the four states of the FSM in every Timestamp. It set for each state the
+value 1 if the FSM is in that state and 0 if it is not.
+Moreover the program tsl can show parallel plots of the states condition of FSM thanks to this output csv.
+
+It takes in input the output file of FSM_state.py
+
+### Configuration
+All these setting can  be found in config.json file.
+
+In the "info" section :
+* "path_directory_input_parallel" is the directory of the input file
+* "file_input_parallel" is the name of the input file
+* "path_directory_output_parallel" is the directory where the out file is created
+* "file_output_parallel" is the name of the out file
+
+### Getting Started
+```
+
+~$ python3 FSM_parallel.py
+
+```
+
+## FSM_final_binary
+It creates a csv file which represents the output of the FSM in a binary format.
+ * 1 if the FSM is in WORKING state or in a WARNING states
+ * 0 if FSM is in NOT_WORKING state
+
+It takes in input the output file of FSM_state.py
+
+### Configuration
+All these setting can  be found in config.json file.
+
+In the "info" section :
+* "path_directory_input_final_binary" is the directory of the input file
+* "file_input_final_binary" is the name of the input file
+* "path_directory_output_final_binary" is the directory where the out file is created
+* "file_output_final_binary" is the name of the out file
+
+### Getting Started
+```
+
+~$ python3 FSM_final_binary.py
+
+```
