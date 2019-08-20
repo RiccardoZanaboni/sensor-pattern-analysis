@@ -1,0 +1,33 @@
+{
+"input":{
+  "directory":"",
+  "file":["MotionMultiSensor_4.csv","MotionMultiSensor_7.csv",
+    "MotionMultiSensor_9.csv","MotionMultiSensor_19.csv","MotionMultiSensor_29.csv"]
+},
+
+"output_create_hlt":{
+  "directory":"",
+  "file":["hlt_4.csv","hlt_7.csv","hlt_9.csv","hlt_19.csv","hlt_29.csv"]
+},
+
+"output_read_ms":{
+  "directory":"",
+  "file":["bedroom.csv","kitchen.csv","livingroom.csv","atrium.csv","toilet.csv"],
+  "class_name":["Bedroom","Kitchen","Livingroom","Atrium","Toilet"]
+
+},
+
+"input_unify_ms":{
+  "directory":"",
+  "file":["bedroom.csv","kitchen.csv","livingroom.csv","atrium.csv","toilet.csv"],
+  "starting_time":"2019-03-28 09:53:40"
+},
+
+"output_unify_ms":{
+  "directory":"",
+  "file_out_name": "sequenceofMS.csv"
+}
+
+
+
+}
