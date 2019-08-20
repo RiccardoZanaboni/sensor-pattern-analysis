@@ -8,6 +8,7 @@ def create_df_fsm_differentation(fsm_states):
 
     def state_conversion(element):
         """Create a dictionary: key the state value, value the matching sequence output for the state"""
+
         switch = {hlt_state.HltState.possible_states["WORKING"]: [1, 0, 0, 0],
                   hlt_state.HltState.possible_states["WARNING_NOT_SAMPLE"]: [0, 1, 0, 0],
                   hlt_state.HltState.possible_states["WARNING_EQUAL_MEASURES"]: [0, 0, 1, 0],
