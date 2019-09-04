@@ -28,12 +28,16 @@ def system_set_up():
     return belief, rf
 
 
-def check_measure(new_measure, previous_measure ):
-    out = [x - y for x, y in zip(new_measure, previous_measure)]
-    for i in range(0, len(out)):
-        if out[i] != 0:
-            return out, i
-    return {}, 0
+def check_measure(new_measure, previous_measure):
+    out_sum = sum([x - y for x, y in zip(new_measure, previous_measure)])
+
+    if out_sum == 0:
+        return {}
+
+    new_measure_str = [str(int(x)) for x in new_measure]
+    previous_measure_str = [str(int(x)) for x in previous_measure]
+    out_str = [x + y for x, y in zip(previous_measure_str, new_measure_str)]
+    return out_str
 
 
 def crate_file_output(df1: pd.DataFrame, df2):

@@ -70,7 +70,7 @@ class Belief:
     def bel_upgrade(self, sensor_output, transactions):
         for i in range(0, len(transactions)):
             if transactions[i] != 0:
-                self.bel = [y * x for y,x in zip(self.bel_projected, self.sensors_error_rate[i][sensor_output[i]])]
+                self.bel = [y * x for y, x in zip(self.bel_projected, self.sensors_error_rate[i][sensor_output[i]])]
         eta = 1/sum(self.bel)
         self.bel = [x * eta for x in self.bel]
 
