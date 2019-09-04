@@ -70,14 +70,11 @@ if __name__ == "__main__":
         time = data_in.iloc[i, 0]
         sensor_measures = list(data_in.iloc[i])[1:]
         sensor_measures_str = [str(int(x)) for x in sensor_measures]
-        transactions, transaction_index = check_measure(sensor_measures, sensor_measures_previous)
+        transactions = check_measure(sensor_measures, sensor_measures_previous)
 
         if len(transactions) > 0:
-            if transactions[transaction_index] == 1:
-                belief.bel_projected_upgrade()
-            else:
-                belief.bel_projected = belief.bel
-            belief.bel_upgrade(sensor_measures_str, transactions)
+            belief.bel_projected_upgrade()
+            belief.bel_upgrade(transactions)
             
         tmp = {}
         values = [time] + belief.bel

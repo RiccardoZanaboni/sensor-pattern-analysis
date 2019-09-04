@@ -67,10 +67,12 @@ class Belief:
     def sensors_error_rate(self, sensors_error_rate):
         self.__sensors_error_rate = sensors_error_rate
 
-    def bel_upgrade(self, sensor_output, transactions):
+    def bel_upgrade(self,transactions):
+        temp = []
         for i in range(0, len(transactions)):
-            if transactions[i] != 0:
-                self.bel = [y * x for y, x in zip(self.bel_projected, self.sensors_error_rate[i][sensor_output[i]])]
+            temp.append([y * x for y, x in zip(self.bel_projected, self.sensors_error_rate[i][transactions[i]])])
+
+        self.bel = [sum(x) for x in zip(*temp)]
         eta = 1/sum(self.bel)
         self.bel = [x * eta for x in self.bel]
 
@@ -78,3 +80,4 @@ class Belief:
         for i in range(0, len(self.pos)):
             self.bel_projected[i] = [x * self.bel[i] for x in self.prob_state[i]]
         self.bel_projected = [sum(x) for x in zip(*self.bel_projected)]
+
