@@ -8,7 +8,8 @@
     "room_name" : ["atrium","kitchen","livingroom","toilet", "bedroom"],
     "columns_name": ["Time", "bel(A)", "bel(K)", "bel(L)", "bel(T)", "bel(B)"],
     "output_evaluation": "output_evaluation.csv",
-    "img_evaluation" : "evaluate.png"
+    "img_evaluation" : "evaluate.png",
+    "movement_transaction": "01"
   },
 
   "probability": {

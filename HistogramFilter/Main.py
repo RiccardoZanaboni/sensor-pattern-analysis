@@ -22,9 +22,10 @@ def system_set_up():
         prob_state.append(data_config["probability"][prefix+i])
     prefix = "s"
     ser = []
+    movement_transaction = data_config["info"]["movement_transaction"]
     for i in pos:
         ser.append(data_config["sensor_error_probability"][prefix+i])
-    belief = Belief.Belief(bel, pos, prob_state, ser)
+    belief = Belief.Belief(bel, pos, prob_state, ser, movement_transaction)
     return belief, rf
 
 
