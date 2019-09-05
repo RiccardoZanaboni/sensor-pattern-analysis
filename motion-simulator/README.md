@@ -25,13 +25,25 @@ Use a room as key and its adjacenses rooms as values.
 
 To decide the slice time of the simulation, set the value of ["time"]["START_TIME"] and ["time"]["STOP_TIME"].
 
-To set the uniform distributions for the behaviour of the person's movement use these parameters.
-* ["time"]["lower_long_waiting_time"]
-* ["time"]["upper_long_waiting_time"]
-* ["time"]["seed_long_waiting_time"]
-* ["time"]["lower_short_waiting_time"]
-* ["time"]["upper_short_waiting_time"]
-* ["time"]["seed_short_waiting_time"]
+It's possible to simulate more than one person in the apartment, the exact number must be defined in the json file ["info]["person_number"].
+If there is more than one person, it's necessary to define the parameters needed for each person.
+
+To set the uniform distributions for the behaviour of the persons' movement use these parameters.
+The dimension of these lists needs to be equal to the number of person in the simulation.
+(First index for the first person...)
+* ["time"]["lower_long_waiting_time"][]
+* ["time"]["upper_long_waiting_time"][]
+* ["time"]["seed_long_waiting_time"][]
+* ["time"]["lower_short_waiting_time"][]
+* ["time"]["upper_short_waiting_time"][]
+* ["time"]["seed_short_waiting_time"][]
+
+The probability of choosing to stay in a room or not is represented by
+* ["probability"]["probability_of_staying"][]
+
+The probability of a short time permanence is represented by
+* ["probability"]["probability_of_short_moving_behaviour"][]
+
 
 The sensors are represented by two parameters.
 * ["time"]["sensor_sleep_time"] --> the amount of time the sensor sleeps after it reveals a movment
@@ -43,11 +55,6 @@ The amount of time by which the system timer is incremented(["time"]["system_tim
 The probability of error of the sensors is represented by
 * ["probability"]["sensor_prob_error"]
 
-The probability of choosing to stay in a room or not is represented by
-* ["probability"]["probability_of_staying"]
-
-The probability of a short time permanence is represented by
-* ["probability"]["probability_of_short_moving_behaviour"]
 
 # Output Information
 
