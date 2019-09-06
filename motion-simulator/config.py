@@ -57,6 +57,9 @@ class SystemConfig:
         init_p_type_behaviour(self): float
             set the probability of deciding for a short time moving behaviour
 
+        init_person_number(self) :  int
+            number of person in the simulation
+
     """
 
     def __init__(self):
@@ -95,8 +98,8 @@ class SystemConfig:
 
         return apartment, g
 
-    def init_p_of_staying(self):
-        return self.data_config["probability"]["probability_of_staying"]
+    def init_p_of_staying(self, i):
+        return self.data_config["probability"]["probability_of_staying"][i]
 
     def init_start_time(self):
         return self.data_config["time"]["START_TIME"]
@@ -110,8 +113,8 @@ class SystemConfig:
     def init_long_model_std(self):
         return self.data_config["time"]["std_long_waiting_time"]
 
-    def init_long_model_seed(self):
-        return self.data_config["time"]["seed_long_waiting_time"]
+    def init_long_model_seed(self, i):
+        return self.data_config["time"]["seed_long_waiting_time"][i]
 
     def init_short_model_mean(self):
         return self.data_config["time"]["mean_short_waiting_time"]
@@ -119,8 +122,8 @@ class SystemConfig:
     def init_short_model_std(self):
         return self.data_config["time"]["std_short_waiting_time"]
 
-    def init_short_model_seed(self):
-        return self.data_config["time"]["seed_short_waiting_time"]
+    def init_short_model_seed(self, i):
+        return self.data_config["time"]["seed_short_waiting_time"][i]
 
     def init_system_time_delta(self):
         return self.data_config["time"]["system_time_delta"]
@@ -134,20 +137,23 @@ class SystemConfig:
     def init_sensor_prob_error(self):
         return self.data_config["probability"]["sensor_prob_error"]
 
-    def init_p_type_behaviour(self):
-        return self.data_config["probability"]["probability_of_short_moving_behaviour"]
+    def init_p_type_behaviour(self, i):
+        return self.data_config["probability"]["probability_of_short_moving_behaviour"][i]
 
-    def init_long_model_lower(self):
-        return self.data_config["time"]["lower_long_waiting_time"]
+    def init_long_model_lower(self, i):
+        return self.data_config["time"]["lower_long_waiting_time"][i]
 
-    def init_long_model_upper(self):
-        return self.data_config["time"]["upper_long_waiting_time"]
+    def init_long_model_upper(self, i):
+        return self.data_config["time"]["upper_long_waiting_time"][i]
 
-    def init_short_model_lower(self):
-        return self.data_config["time"]["lower_short_waiting_time"]
+    def init_short_model_lower(self, i):
+        return self.data_config["time"]["lower_short_waiting_time"][i]
 
-    def init_short_model_upper(self):
-        return self.data_config["time"]["upper_short_waiting_time"]
+    def init_short_model_upper(self, i):
+        return self.data_config["time"]["upper_short_waiting_time"][i]
 
     def init_test_mode(self):
         return self.data_config["info"]["debug_mode"]
+
+    def init_person_number(self):
+        return self.data_config["info"]["person_number"]
