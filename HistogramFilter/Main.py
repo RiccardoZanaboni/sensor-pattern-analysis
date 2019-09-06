@@ -4,15 +4,15 @@ import ReadFile
 import pandas as pd
 
 
-def open_json(config_file_name):
-    with open(config_file_name) as json_config:
+def open_json():
+    with open("config_ap_one.json") as json_config:
         data_config = json.load(json_config)
     json_config.close()
     return data_config
 
 
 def system_set_up():
-    data_config = open_json("config.json")
+    data_config = open_json()
     rf = ReadFile.ReadFile(data_config["info"]["input_file_path"]+data_config["info"]["input_file_name"])
     bel = data_config["probability"]["bel_t0"]
     pos = data_config["info"]["state_domain"]
@@ -42,7 +42,7 @@ def check_measure(new_measure, previous_measure):
 
 
 def crate_file_output(df1: pd.DataFrame, df2):
-    data_config = open_json("config.json")
+    data_config = open_json()
     df3 = ReadFile.ReadFile(data_config["info"]["input_file_path"]+
                             data_config["info"]["ground_truth_file_name"]).df
     df1["Room"] = ""
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     belief, rf = system_set_up()
     data_in = rf.df
-    columns = open_json("config.json")["info"]["columns_name"]
+    columns = open_json()["info"]["columns_name"]
     df = pd.DataFrame(columns=columns)
     i = 0
     sensor_measures_previous = [0, 0, 0, 0, 0]

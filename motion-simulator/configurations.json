@@ -1,6 +1,6 @@
 {
   "room" : {
-    "atrium" : ["kitchen", "livingroom1", "toilet", "bedroom"],
+    "atrium" : ["kitchen", "livingroom", "toilet", "bedroom"],
     "kitchen" : ["atrium"],
     "livingroom" : ["atrium"],
     "toilet" : ["atrium"],
@@ -33,7 +33,3 @@
     "person_number" : 3
   }
 }
-
-
-
-

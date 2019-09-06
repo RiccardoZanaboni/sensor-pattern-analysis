@@ -10,15 +10,15 @@ import matplotlib.pyplot as plt
 """
 
 
-def open_json(config_file_name):
-    with open(config_file_name) as json_config:
+def open_json():
+    with open("config_ap_one.json") as json_config:
         data_config = json.load(json_config)
     json_config.close()
     return data_config
 
 
 def set_up():
-    data_config = open_json("config.json")
+    data_config = open_json()
     data = ReadFile.ReadFile(data_config["info"]["output_file_name"]).df
     return data
 
@@ -29,7 +29,7 @@ def set_up():
 
 
 def dictionary_room():
-    data_config = open_json("config.json")
+    data_config = open_json()
     key = data_config["info"]["room_name"]
     value = data_config["info"]["columns_name"][1:]
     dictionary = {}
@@ -44,8 +44,7 @@ def dictionary_room():
 
 
 def found_max(probability_arrrey: pd.Series):
-    constant = len(open_json("config.json")["info"]["state_domain"]) + 2
-    # col = probability_arrrey.iloc[constant:].apply(float).idxmax(axis=1)
+    constant = len(open_json()["info"]["state_domain"]) + 2
     val_max = probability_arrrey.iloc[constant:].apply(float).max()
     return val_max
 
@@ -63,12 +62,10 @@ if __name__ == "__main__" :
         df = df.append(temp, ignore_index=True)
         i += 1
 
-    df.to_csv(open_json("config.json")["info"]["output_evaluation"], index=False)
+    df.to_csv(open_json()["info"]["output_evaluation"], index=False)
 
     ax = plt.gca()
     df.plot(kind='line', x='Time', y='Efficiency', ax=ax)
-    plt.savefig(open_json("config.json")["info"]["img_evaluation"])
+    plt.savefig(open_json()["info"]["img_evaluation"])
 
 
-#TODO filtrare il caso di setup(misure uguali)
-#TODO plottare le probabilità delle rooms in confronto con il valore del grantruth
