@@ -70,7 +70,7 @@ if __name__ == "__main__":
     columns = config["info"]["columns_name"]
     df = pd.DataFrame(columns=columns)
     i = 0
-    sensor_measures_previous = [0, 0, 0, 0, 0]
+    sensor_measures_previous = [0 for x in range(0, len(belief.bel))]
 
     while i < len(data_in.index):
 
