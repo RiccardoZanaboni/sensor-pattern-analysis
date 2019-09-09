@@ -13,6 +13,14 @@ These files name can be set in configurations.json
   * ["output_histogram_filter"]["HF_input.csv"]
   * ["output_movement"]["out.csv"]
   * ["output_sensors"]["out_sensors.csv"]
+  
+
+# Getting Started
+
+To execute the simulator :
+```
+~$ python3 TestMotionSimulator.py name_of_configuration_file.json
+```  
 
 ## Behaviour
 
