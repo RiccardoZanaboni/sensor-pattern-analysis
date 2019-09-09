@@ -1,12 +1,12 @@
 {
   "room" : {
     "atrium_one" : ["kitchen", "livingroom", "toilet_one", "atrium_two"],
+    "atrium_two" : ["atrium_one", "bedroom", "toilet_two", "laundry"],
     "kitchen" : ["atrium_one"],
     "livingroom" : ["atrium_one"],
     "toilet_one" : ["atrium_one"],
-    "bedroom" : ["atrium_two"],
-    "atrium_two" : ["atrium_one", "bedroom", "toilet_two", "laundry"],
     "toilet_two" : ["atrium_two"],
+    "bedroom" : ["atrium_two"],
     "laundry" : ["atrium_two"]
   },
   "time" : {

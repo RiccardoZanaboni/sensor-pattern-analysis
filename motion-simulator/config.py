@@ -63,7 +63,7 @@ class SystemConfig:
     """
 
     def __init__(self):
-        with open("apartment_one.json") as json_config:
+        with open("configurations.json") as json_config:
             self.data_config = json.load(json_config)
         json_config.close()
 
