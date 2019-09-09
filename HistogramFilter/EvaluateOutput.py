@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 
 def open_json():
-    with open("config_ap_one.json") as json_config:
+    with open("config_ap_two.json") as json_config:
         data_config = json.load(json_config)
     json_config.close()
     return data_config
@@ -19,7 +19,7 @@ def open_json():
 
 def set_up():
     data_config = open_json()
-    data = ReadFile.ReadFile(data_config["info"]["output_file_name"]).df
+    data = ReadFile.ReadFile(data_config["info"]["input_file_path"]+data_config["info"]["output_file_name"]).df
     return data
 
 
@@ -62,10 +62,10 @@ if __name__ == "__main__" :
         df = df.append(temp, ignore_index=True)
         i += 1
 
-    df.to_csv(open_json()["info"]["output_evaluation"], index=False)
+    df.to_csv(open_json()["info"]["input_file_path"]+open_json()["info"]["output_evaluation"], index=False)
 
     ax = plt.gca()
     df.plot(kind='line', x='Time', y='Efficiency', ax=ax)
-    plt.savefig(open_json()["info"]["img_evaluation"])
+    plt.savefig(open_json()["info"]["input_file_path"]+open_json()["info"]["img_evaluation"])
 
 

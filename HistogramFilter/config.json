@@ -1,6 +1,6 @@
 {
   "info" : {
-    "input_file_path" : "",
+    "input_file_path" : "/home/mattia/Tesi/output_old_apartment/",
     "input_file_name" :"HF_input.csv",
     "ground_truth_file_name": "out.csv",
     "output_file_name": "HF_out.csv",
@@ -9,7 +9,9 @@
     "columns_name": ["Time", "bel(A)", "bel(K)", "bel(L)", "bel(T)", "bel(B)"],
     "output_evaluation": "output_evaluation.csv",
     "img_evaluation" : "evaluate.png",
-    "movement_transaction": "01"
+    "movement_transaction": "01",
+    "exit_transaction": "10",
+    "prob_exit_room": 0.1
   },
 
   "probability": {

@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def open_json():
-    with open("config_ap_one.json") as json_config:
+    with open("config_ap_two.json") as json_config:
         data_config = json.load(json_config)
     json_config.close()
     return data_config
@@ -54,7 +54,7 @@ def crate_file_output(df1: pd.DataFrame, df2):
         df1.loc[i, 'Room'] = r
 
     df = pd.merge(df1, df2, how='inner')
-    df.to_csv(data_config["info"]["output_file_name"], index=False)
+    df.to_csv(data_config["info"]["input_file_path"]+data_config["info"]["output_file_name"], index=False)
 
 
 if __name__ == "__main__":
