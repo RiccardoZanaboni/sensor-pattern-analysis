@@ -42,8 +42,7 @@ def check_measure(new_measure, previous_measure):
     return out_str
 
 
-def crate_file_output(df1: pd.DataFrame, df2):
-    data_config = open_json()
+def crate_file_output(df1: pd.DataFrame, df2, data_config):
     df3 = ReadFile.ReadFile(data_config["info"]["input_file_path"]+
                             data_config["info"]["ground_truth_file_name"]).df
     df1["Room"] = ""
@@ -95,6 +94,6 @@ if __name__ == "__main__":
         sensor_measures_previous = sensor_measures
         i += 1
 
-    crate_file_output(data_in, df)
+    crate_file_output(data_in, df, config)
 
 
