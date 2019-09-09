@@ -22,7 +22,7 @@ In the "info" section :
 
 ### Getting Started
 ```
-~$ python3 FSM_statistics.py
+~$ python3 FSM_statistics.py name_of_configuration_file.json
 
 ```
 
@@ -61,7 +61,7 @@ In the "FSM_info" section :
 ### Getting Started
 ```
 
-~$ python3 FSM_state.py
+~$ python3 FSM_state.py name_of_configuration_file.json
 
 ```  
 
@@ -84,7 +84,7 @@ In the "info" section :
 ### Getting Started
 ```
 
-~$ python3 FSM_parallel.py
+~$ python3 FSM_parallel.py name_of_configuration_file.json
 
 ```
 
@@ -107,6 +107,6 @@ In the "info" section :
 ### Getting Started
 ```
 
-~$ python3 FSM_final_binary.py
+~$ python3 FSM_final_binary.py name_of_configuration_file.json
 
 ```
