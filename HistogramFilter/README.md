@@ -17,6 +17,19 @@ Discrete Bayes Filter
 
 	bel(xt+1)=ηP(et+1∣xt+1)bel_signed(xt+1)
 
+# Getting Started
+
+To execute the histogram filter :
+'''
+~$ python3 Main.py name_of_configuration_file.json
+'''
+
+To execute the evaluation of the histogram filter :
+
+'''
+~$ python3 EvaluateOutput.py  name_of_configuration_file.json
+'''	
+
 # Configuration information
 
 The program takes in input a CSV file, the name of the input file can be set in config.json (["info"]["input_file_name"]).
