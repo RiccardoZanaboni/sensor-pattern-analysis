@@ -20,15 +20,18 @@ Discrete Bayes Filter
 # Getting Started
 
 To execute the histogram filter :
-'''
+```
+
 ~$ python3 Main.py name_of_configuration_file.json
-'''
+
+```
 
 To execute the evaluation of the histogram filter :
+```
 
-'''
 ~$ python3 EvaluateOutput.py  name_of_configuration_file.json
-'''	
+
+```	
 
 # Configuration information
 
