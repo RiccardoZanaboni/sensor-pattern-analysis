@@ -9,9 +9,7 @@
     "columns_name": ["Time", "bel(A1)", "bel(A2)", "bel(K)", "bel(LI)", "bel(T1)", "bel(T2)", "bel(B)","bel(LA)"],
     "output_evaluation": "output_evaluation.csv",
     "img_evaluation" : "evaluate.png",
-    "movement_transaction": "01",
-    "exit_transaction": "10",
-    "prob_exit_room": 0.1
+    "movement_transaction": "01"
   },
 
   "probability": {
