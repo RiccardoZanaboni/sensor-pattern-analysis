@@ -17,8 +17,8 @@ class NormalDDP(AbstractDDP.AbstractDDP):
 
     """
 
-    def __init__(self, mu, std, seed):
-        super().__init__(mu, std, seed)
+    def __init__(self, mu, std, seed, test_mode):
+        super().__init__(mu, std, seed, test_mode)
 
     def generate_random_time(self):
         """
@@ -29,7 +29,9 @@ class NormalDDP(AbstractDDP.AbstractDDP):
         :return: int
             the randomly generated waiting time
         """
-        # np.random.seed(self.seed)                                # test mode only!
+        if self.test_mode == "on":
+            np.random.seed(self.seed)
+
         rnd_number = np.random.normal(super().mu, super().std)
         rnd_number = round(rnd_number, 1)
 

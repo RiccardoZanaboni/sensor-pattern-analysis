@@ -20,12 +20,13 @@ class Belief:
      bel_upgrade(self, sensor_output)
     """
 
-    def __init__(self, bel, pos, prob_state, ser):
+    def __init__(self, bel, pos, prob_state, ser, movement_transaction):
         self.bel = bel
         self.bel_projected = [0 for x in range(0, len(pos))]
         self.pos = pos
         self.prob_state = prob_state
         self.sensors_error_rate = ser
+        self._movement_transaction = movement_transaction
 
     @property
     def bel(self):
@@ -67,10 +68,17 @@ class Belief:
     def sensors_error_rate(self, sensors_error_rate):
         self.__sensors_error_rate = sensors_error_rate
 
-    def bel_upgrade(self, sensor_output, transactions):
-        for i in range(0, len(transactions)):
-            if transactions[i] != 0:
-                self.bel = [y * x for y,x in zip(self.bel_projected, self.sensors_error_rate[i][sensor_output[i]])]
+    def bel_upgrade(self, transactions):
+        temp = []
+        if self._movement_transaction in transactions:
+            i = transactions.index(self._movement_transaction)
+            self.bel = [x*y for x, y in zip(self.bel_projected, self.sensors_error_rate[i][self._movement_transaction])]
+
+        else:
+            for i in range(0, len(transactions)):
+                temp.append([y * x for y, x in zip(self.bel_projected, self.sensors_error_rate[i][transactions[i]])])
+            self.bel = [sum(x) for x in zip(*temp)]
+
         eta = 1/sum(self.bel)
         self.bel = [x * eta for x in self.bel]
 
@@ -78,3 +86,4 @@ class Belief:
         for i in range(0, len(self.pos)):
             self.bel_projected[i] = [x * self.bel[i] for x in self.prob_state[i]]
         self.bel_projected = [sum(x) for x in zip(*self.bel_projected)]
+

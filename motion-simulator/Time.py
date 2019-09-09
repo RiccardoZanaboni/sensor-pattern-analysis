@@ -1,3 +1,6 @@
+import math
+
+
 class Time:
     """A class used to manage the system clock
         ...
@@ -65,3 +68,8 @@ class Time:
         if abs(a-b) < Time.epsilon:
             return True
         return False
+
+    @staticmethod
+    def truncate(number, digits) -> float:
+        stepper = 10.0 ** digits
+        return math.trunc(stepper * number) / stepper

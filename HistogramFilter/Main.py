@@ -1,19 +1,20 @@
 import json
+import sys
+
 import Belief
 import ReadFile
 import pandas as pd
 
 
-def open_json(config_file_name):
-    with open(config_file_name) as json_config:
+def open_json(conf):
+    with open(conf) as json_config:
         data_config = json.load(json_config)
     json_config.close()
     return data_config
 
 
-def system_set_up():
-    data_config = open_json("config.json")
-    rf = ReadFile.ReadFile(data_config["info"]["input_file_name"])
+def system_set_up(data_config):
+    rf = ReadFile.ReadFile(data_config["info"]["input_file_path"]+data_config["info"]["input_file_name"])
     bel = data_config["probability"]["bel_t0"]
     pos = data_config["info"]["state_domain"]
     prob_state = []
@@ -22,23 +23,28 @@ def system_set_up():
         prob_state.append(data_config["probability"][prefix+i])
     prefix = "s"
     ser = []
+    movement_transaction = data_config["info"]["movement_transaction"]
     for i in pos:
         ser.append(data_config["sensor_error_probability"][prefix+i])
-    belief = Belief.Belief(bel, pos, prob_state, ser)
+    belief = Belief.Belief(bel, pos, prob_state, ser, movement_transaction)
     return belief, rf
 
 
-def check_measure(new_measure, previous_measure ):
-    out = [x - y for x, y in zip(new_measure, previous_measure)]
-    for i in range(0, len(out)):
-        if out[i] != 0:
-            return out
-    return {}
+def check_measure(new_measure, previous_measure):
+    out_sum = sum([x - y for x, y in zip(new_measure, previous_measure)])
+
+    if out_sum == 0:
+        return {}
+
+    new_measure_str = [str(int(x)) for x in new_measure]
+    previous_measure_str = [str(int(x)) for x in previous_measure]
+    out_str = [x + y for x, y in zip(previous_measure_str, new_measure_str)]
+    return out_str
 
 
-def crate_file_output(df1: pd.DataFrame, df2):
-    data_config = open_json("config.json")
-    df3 = ReadFile.ReadFile(data_config["info"]["ground_truth_file_name"]).df
+def crate_file_output(df1: pd.DataFrame, df2, data_config):
+    df3 = ReadFile.ReadFile(data_config["info"]["input_file_path"]+
+                            data_config["info"]["ground_truth_file_name"]).df
     df1["Room"] = ""
 
     for i, row in df1.copy().iterrows():
@@ -48,28 +54,35 @@ def crate_file_output(df1: pd.DataFrame, df2):
         df1.loc[i, 'Room'] = r
 
     df = pd.merge(df1, df2, how='inner')
-    df.to_csv(data_config["info"]["output_file_name"], index=False)
+    df.to_csv(data_config["info"]["input_file_path"]+data_config["info"]["output_file_name"], index=False)
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Manca il nome del file json")
+        sys.exit(1)
 
-    belief, rf = system_set_up()
+    conf_file = sys.argv[1]
+    config = open_json(conf_file)
+
+    belief, rf = system_set_up(config)
     data_in = rf.df
-    columns = open_json("config.json")["info"]["columns_name"]
+    columns = config["info"]["columns_name"]
     df = pd.DataFrame(columns=columns)
-    i = 1
-    sensor_measures_previous = list(data_in.iloc[0])[1:]
+    i = 0
+    sensor_measures_previous = [0 for x in range(0, len(belief.bel))]
 
     while i < len(data_in.index):
 
         time = data_in.iloc[i, 0]
         sensor_measures = list(data_in.iloc[i])[1:]
-        sensor_measures_previous = list(data_in.iloc[i-1])[1:]
         sensor_measures_str = [str(int(x)) for x in sensor_measures]
         transactions = check_measure(sensor_measures, sensor_measures_previous)
+
         if len(transactions) > 0:
             belief.bel_projected_upgrade()
-            belief.bel_upgrade(sensor_measures_str, transactions)
+            belief.bel_upgrade(transactions)
+            
         tmp = {}
         values = [time] + belief.bel
 
@@ -77,8 +90,10 @@ if __name__ == "__main__":
             tmp[columns[j]] = values[j]
 
         df = df.append(tmp, ignore_index=True)
+
+        sensor_measures_previous = sensor_measures
         i += 1
 
-    crate_file_output(data_in, df)
+    crate_file_output(data_in, df, config)
 
 

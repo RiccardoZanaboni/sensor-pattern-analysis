@@ -23,11 +23,12 @@ class AbstractDDP(ABC):
 
         """
 
-    def __init__(self, mu, std, seed):
+    def __init__(self, mu, std, seed, test_mode):
         super().__init__()
         self.mu = mu
         self.std = std
         self.seed = seed
+        self.test_mode = test_mode
 
     @abstractmethod
     def generate_random_time(self):
@@ -56,3 +57,11 @@ class AbstractDDP(ABC):
     @std.setter
     def std(self, std):
         self.__std = std
+
+    @property
+    def test_mode(self):
+        return self.__test_mode
+
+    @test_mode.setter
+    def test_mode(self, test_mode):
+        self.__test_mode = test_mode

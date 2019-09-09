@@ -57,10 +57,22 @@ class SystemConfig:
         init_p_type_behaviour(self): float
             set the probability of deciding for a short time moving behaviour
 
+        init_person_number(self) :  int
+            number of person in the simulation
+
+        name_output_sim(self):   str
+            name of the file for the output of the simulator
+
+        name_output_gran_truth(self): str
+            name of the file for the gran truth
+
+        name_output_sensor(self): str
+            name of the file for sensors' output
+
     """
 
-    def __init__(self):
-        with open("configurations.json") as json_config:
+    def __init__(self, file_name):
+        with open(file_name) as json_config:
             self.data_config = json.load(json_config)
         json_config.close()
 
@@ -72,7 +84,7 @@ class SystemConfig:
     def data_config(self, data_config):
         self.__data_config = data_config
 
-    def create_apartment(self):
+    def create_apartment(self, sensor_error_logger):
 
         apartment = []
         col = ["Time"]
@@ -82,7 +94,8 @@ class SystemConfig:
 
         for i in self.data_config["room"]:
             tmp = Room.Room(i, 0, Sensor.Sensor(i, g, self.data_config["time"]["sensor_sleep_time"],
-                                                self.data_config["probability"]["sensor_prob_error"]))
+                                                self.data_config["probability"]["sensor_prob_error"]),
+                            sensor_error_logger)
             apartment.append(tmp)
 
         for i in apartment:
@@ -94,8 +107,8 @@ class SystemConfig:
 
         return apartment, g
 
-    def init_p_of_staying(self):
-        return self.data_config["probability"]["probability_of_staying"]
+    def init_p_of_staying(self, i):
+        return self.data_config["probability"]["probability_of_staying"][i]
 
     def init_start_time(self):
         return self.data_config["time"]["START_TIME"]
@@ -109,8 +122,8 @@ class SystemConfig:
     def init_long_model_std(self):
         return self.data_config["time"]["std_long_waiting_time"]
 
-    def init_long_model_seed(self):
-        return self.data_config["time"]["seed_long_waiting_time"]
+    def init_long_model_seed(self, i):
+        return self.data_config["time"]["seed_long_waiting_time"][i]
 
     def init_short_model_mean(self):
         return self.data_config["time"]["mean_short_waiting_time"]
@@ -118,8 +131,8 @@ class SystemConfig:
     def init_short_model_std(self):
         return self.data_config["time"]["std_short_waiting_time"]
 
-    def init_short_model_seed(self):
-        return self.data_config["time"]["seed_short_waiting_time"]
+    def init_short_model_seed(self, i):
+        return self.data_config["time"]["seed_short_waiting_time"][i]
 
     def init_system_time_delta(self):
         return self.data_config["time"]["system_time_delta"]
@@ -133,17 +146,32 @@ class SystemConfig:
     def init_sensor_prob_error(self):
         return self.data_config["probability"]["sensor_prob_error"]
 
-    def init_p_type_behaviour(self):
-        return self.data_config["probability"]["probability_of_short_moving_behaviour"]
+    def init_p_type_behaviour(self, i):
+        return self.data_config["probability"]["probability_of_short_moving_behaviour"][i]
 
-    def init_long_model_lower(self):
-        return self.data_config["time"]["lower_long_waiting_time"]
+    def init_long_model_lower(self, i):
+        return self.data_config["time"]["lower_long_waiting_time"][i]
 
-    def init_long_model_upper(self):
-        return self.data_config["time"]["upper_long_waiting_time"]
+    def init_long_model_upper(self, i):
+        return self.data_config["time"]["upper_long_waiting_time"][i]
 
-    def init_short_model_lower(self):
-        return self.data_config["time"]["lower_short_waiting_time"]
+    def init_short_model_lower(self, i):
+        return self.data_config["time"]["lower_short_waiting_time"][i]
 
-    def init_short_model_upper(self):
-        return self.data_config["time"]["upper_short_waiting_time"]
+    def init_short_model_upper(self, i):
+        return self.data_config["time"]["upper_short_waiting_time"][i]
+
+    def init_test_mode(self):
+        return self.data_config["info"]["debug_mode"]
+
+    def init_person_number(self):
+        return self.data_config["info"]["person_number"]
+
+    def name_output_sim(self):
+        return self.data_config["info"]["output_simulator"]
+
+    def name_output_gran_truth(self):
+        return self.data_config["info"]["output_movement"]
+
+    def name_output_sensor(self):
+        return self.data_config["info"]["output_sensors"]
