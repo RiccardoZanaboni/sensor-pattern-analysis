@@ -5,6 +5,7 @@ import UniformDDP as ddp
 import config
 import SimulationInfo as si
 import ErrorLogger
+import sys
 
 
 def sensor_sample(apartment, current_time, mat, gateway, n_of_person):
@@ -85,7 +86,11 @@ def create_simulation_info(model, n_of_person):
 
 
 if __name__ == "__main__":
-    configurator = config.SystemConfig()
+    if len(sys.argv) < 2:
+        print("Manca il nome del file json")
+        sys.exit(1)
+
+    configurator = config.SystemConfig(sys.argv[1])
     check_running_mode(configurator)
     sensor_error_logger = ErrorLogger.ErrorLogger()
     n_of_person = configurator.init_person_number()
@@ -117,8 +122,8 @@ if __name__ == "__main__":
 
     ret = simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_person)
 
-    ret[0].to_csv("out.csv", index=False)
-    ret[1][0].current_room.sensor.gateway.dataframe.to_csv("out_sensors.csv", index=False)
-    gateway.df_HF.to_csv("HF_input.csv", index=False)
+    ret[0].to_csv(configurator.name_output_gran_truth(), index=False)
+    ret[1][0].current_room.sensor.gateway.dataframe.to_csv(configurator.name_output_sensor(), index=False)
+    gateway.df_HF.to_csv(configurator.name_output_sim(), index=False)
 
     create_simulation_info(model, n_of_person)

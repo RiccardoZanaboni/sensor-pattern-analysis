@@ -60,10 +60,19 @@ class SystemConfig:
         init_person_number(self) :  int
             number of person in the simulation
 
+        name_output_sim(self):   str
+            name of the file for the output of the simulator
+
+        name_output_gran_truth(self): str
+            name of the file for the gran truth
+
+        name_output_sensor(self): str
+            name of the file for sensors' output
+
     """
 
-    def __init__(self):
-        with open("configurations.json") as json_config:
+    def __init__(self, file_name):
+        with open(file_name) as json_config:
             self.data_config = json.load(json_config)
         json_config.close()
 
@@ -157,3 +166,12 @@ class SystemConfig:
 
     def init_person_number(self):
         return self.data_config["info"]["person_number"]
+
+    def name_output_sim(self):
+        return self.data_config["info"]["output_simulator"]
+
+    def name_output_gran_truth(self):
+        return self.data_config["info"]["output_movement"]
+
+    def name_output_sensor(self):
+        return self.data_config["info"]["output_sensors"]
