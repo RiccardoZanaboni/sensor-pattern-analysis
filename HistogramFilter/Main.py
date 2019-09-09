@@ -1,18 +1,19 @@
 import json
+import sys
+
 import Belief
 import ReadFile
 import pandas as pd
 
 
-def open_json():
-    with open("config_ap_two.json") as json_config:
+def open_json(conf):
+    with open(conf) as json_config:
         data_config = json.load(json_config)
     json_config.close()
     return data_config
 
 
-def system_set_up():
-    data_config = open_json()
+def system_set_up(data_config):
     rf = ReadFile.ReadFile(data_config["info"]["input_file_path"]+data_config["info"]["input_file_name"])
     bel = data_config["probability"]["bel_t0"]
     pos = data_config["info"]["state_domain"]
@@ -58,10 +59,16 @@ def crate_file_output(df1: pd.DataFrame, df2):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Manca il nome del file json")
+        sys.exit(1)
 
-    belief, rf = system_set_up()
+    conf_file = sys.argv[1]
+    config = open_json(conf_file)
+
+    belief, rf = system_set_up(config)
     data_in = rf.df
-    columns = open_json()["info"]["columns_name"]
+    columns = config["info"]["columns_name"]
     df = pd.DataFrame(columns=columns)
     i = 0
     sensor_measures_previous = [0, 0, 0, 0, 0]
