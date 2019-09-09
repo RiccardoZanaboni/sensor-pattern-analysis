@@ -21,17 +21,13 @@ Discrete Bayes Filter
 
 To execute the histogram filter :
 ```
-
 ~$ python3 Main.py name_of_configuration_file.json
-
 ```
 
 To execute the evaluation of the histogram filter :
 ```
-
 ~$ python3 EvaluateOutput.py  name_of_configuration_file.json
-
-```	
+```
 
 # Configuration information
 
@@ -61,12 +57,14 @@ Example:
 * ["probability"]["probL"] Probability to go in each room at t1 being in room 'L' at t0
    .... for each room in the apartment.
 
-A dictionary of the probability to be in each room after the measurement of a sensor in a determinated room.
-The key represents the room where the measure happens. The value is the key of another dictionary and represent the possible value of the measures(0/1).
-The value of this dictionary is an array of probability to be in a room with that sensor output. The position in the array represents which room is considered.(same order 'state_domain')
-* [sensor_error_probability"] ["sA"] [1]
-* [sensor_error_probability"] ["sA"] [0]
-* [sensor_error_probability"] ["sb"] [1]
+A dictionary of the probability to be in each room after the measurement of a sensor in a determined room.
+The key represents the room, while the value is the key of another dictionary and represent the possible transactions of the sensors states(e.x. "01" is the transaction from 0 to 1).
+The value of this dictionary is an array of probability to be in a room with that set of output of all sensor. The position in the array represents which room is considered.(same order 'state_domain')
+* [sensor_error_probability"] ["sA"] ["01"]
+* [sensor_error_probability"] ["sA"] ["10"]
+* [sensor_error_probability"] ["sA"] ["11"]
+* [sensor_error_probability"] ["sA"] ["00"]
+* [sensor_error_probability"] ["sb"] ["01"]
    .... for each room in the apartment.
 
 
