@@ -2,11 +2,12 @@ import pandas as pd
 import functools
 import datetime
 import Read_configurations
+import sys
 
 """ It create HLT file from the original data file from the gateway"""
 
 
-def read_file(file_name, index):
+def read_file(file_name, index, configurator):
     measures = pd.read_csv(file_name,",", usecols=['Date', 'Time', 'Class', 'Value'])
 
     measures = measures[measures['Class'] != "MovementState"]
@@ -21,12 +22,18 @@ def read_file(file_name, index):
     t = t[['Timestamp', 'HumidityMeasurementState', 'LuminescenceState', 'TemperatureState']]
     t = t.sort_values(by=['Timestamp'], ascending=True)
 
-    t.to_csv(Read_configurations.open_json()["output_create_hlt"]["directory"] +
-             Read_configurations.open_json()["output_create_hlt"]["file"][index], index=False)
+    t.to_csv(configurator["output_create_hlt"]["directory"] +
+             configurator["output_create_hlt"]["file"][index], index=False)
 
 
 if __name__ == "__main__":
-    directory = Read_configurations.open_json()["input"]["directory"]
-    files = Read_configurations.open_json()["input"]["file"]
+    if len(sys.argv) < 2:
+        print("Manca il nome del file json")
+        sys.exit(1)
+
+    configurator = Read_configurations.open_json(sys.argv[1])
+
+    directory = configurator["input"]["directory"]
+    files = configurator["input"]["file"]
     for i in range(0, len(files)):
-        read_file(directory+files[i],i)
+        read_file(directory+files[i], i, configurator)
