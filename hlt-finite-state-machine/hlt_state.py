@@ -25,13 +25,12 @@ class HltState:
 
     """
 
-    possible_states = Read_configurations.open_json()["FSM_info"]["state_values"]
-    state_values = list(possible_states.values())
-
-    def __init__(self):
+    def __init__(self, configurator):
+        self.possible_states = configurator["FSM_info"]["state_values"]
+        self.state_values = list(self.possible_states.values())
         self.state = self.state_values[0]
         self.n_of_equals = 0
-        self.st_mean = Read_configurations.open_json()["FSM_info"]["sampling_mean"]
+        self.st_mean = configurator["FSM_info"]["sampling_mean"]
         self.timer = 0
         self.previous_sample = [-1, -1, -1]
 

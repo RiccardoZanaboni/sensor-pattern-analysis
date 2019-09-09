@@ -1,5 +1,6 @@
 import pandas as pd
 import Read_configurations
+import sys
 
 """Takes in input a list of the HLT measures and writes in the output file the statistics of the sampling time"""
 
@@ -24,19 +25,24 @@ def delta_timestamp(df, f, file_name):
 
 
 if __name__ == '__main__':
-    file_name = Read_configurations.open_json()["info"]["input_FSM_statistics"]
+    if len(sys.argv) < 2:
+        print("Manca il nome del file json")
+        sys.exit(1)
+
+    configurator = Read_configurations.open_json(sys.argv[1])
+    file_name = configurator["info"]["input_FSM_statistics"]
     for t in range(0, len(file_name)):
-        file_name[t] = Read_configurations.open_json()["info"]["directory_input_FSM_statistics"]+file_name[t]
+        file_name[t] = configurator["info"]["directory_input_FSM_statistics"]+file_name[t]
 
     data_frame = []
     for k in range(0, len(file_name)):
         data_frame.append(pd.read_csv(file_name[k]))
 
-    f = open(Read_configurations.open_json()["info"]["directory_output_FSM_statistics"]+
-             Read_configurations.open_json()["info"]["output_FSM_statistics"], "w")
+    f = open(configurator["info"]["directory_output_FSM_statistics"]+
+             configurator["info"]["output_FSM_statistics"], "w")
     f.close()
-    f = open(Read_configurations.open_json()["info"]["directory_output_FSM_statistics"]+
-             Read_configurations.open_json()["info"]["output_FSM_statistics"], "a")
+    f = open(configurator["info"]["directory_output_FSM_statistics"]+
+             configurator["info"]["output_FSM_statistics"], "a")
 
     i = 0
     for j in range(0, len(data_frame)):

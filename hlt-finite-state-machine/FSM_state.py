@@ -4,11 +4,11 @@ import datetime as dt
 import numpy
 import hlt_state
 import Read_configurations
+import sys
 
 
-def read_samples():
-    return pd.read_csv(Read_configurations.open_json()["info"]["path_directory_input_FSM"] +
-                       Read_configurations.open_json()["info"]["file_input_FSM"], ",")
+def read_samples(configurator):
+    return pd.read_csv(configurator["info"]["path_directory_input_FSM"] + configurator["info"]["file_input_FSM"], ",")
 
 
 def compare_samples(df, index):
@@ -66,15 +66,20 @@ def check_dataframe(current_ts, df, index):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("Manca il nome del file json")
+        sys.exit(1)
 
-    hlt_sensor = hlt_state.HltState()
-    MAX_TIMER = Read_configurations.open_json()["FSM_info"]["number_missing_sample"] * hlt_sensor.st_mean
-    MAX_EQUAL_SAMPLES = Read_configurations.open_json()["FSM_info"]["MAX_EQUALS_SAMPLES"]
+    configurator = Read_configurations.open_json(sys.argv[1])
+
+    hlt_sensor = hlt_state.HltState(configurator)
+    MAX_TIMER = configurator["FSM_info"]["number_missing_sample"] * hlt_sensor.st_mean
+    MAX_EQUAL_SAMPLES = configurator["FSM_info"]["MAX_EQUALS_SAMPLES"]
     fsm_states = pd.DataFrame(columns=['Timestamp', 'State'])
     index = 0
 
-    df = read_samples()
-    delta = dt.timedelta(minutes=Read_configurations.open_json()["FSM_info"]["SAMPLE_TIME"])
+    df = read_samples(configurator)
+    delta = dt.timedelta(minutes=configurator["FSM_info"]["SAMPLE_TIME"])
 
     last_date = dt.datetime.strptime(df.tail(1).iat[0, 0], "%Y-%m-%d %H:%M:%S")
     previous_time = df.head(1).iat[0, 0]  # last sample read by the hlt sensor
@@ -90,5 +95,5 @@ if __name__ == '__main__':
             previous_time = current_ts
             index = check_dataframe(current_ts, df, index)
 
-    fsm_states.to_csv(Read_configurations.open_json()["info"]["path_directory_output_FSM"] +
-                      Read_configurations.open_json()["info"]["file_output_FSM"], index=False)
+    fsm_states.to_csv(configurator["info"]["path_directory_output_FSM"] +
+                      configurator()["info"]["file_output_FSM"], index=False)
