@@ -13,6 +13,8 @@
                     "atrium": [8,12.5] },
 
   "probability_position"  : [ "bel(T)","bel(K)","bel(B)","bel(L)","bel(A)"],
+  "room_dictionary" : {"toilet": "bel(T)", "kitchen": "bel(K)", "bedroom": "bel(B)", "livingroom": "bel(L)",
+                    "atrium": "bel(A)" },
   "text_area" :{
     "position" : [0.5,1],
     "font_size" : 12
