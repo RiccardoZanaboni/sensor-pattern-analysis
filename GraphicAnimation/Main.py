@@ -22,16 +22,13 @@ def init_apartment(ax, config):
     dic = config["apartment"]
 
     for room in dic:
-        ap[room] = plt.Circle((dic[room][0], dic[room][1]), dic[room][2], fc=config["info"]["default_room_color"])
-
-    for i in ap:
-        ax.add_patch(ap[i])
+        ap[room] = (dic[room][0], dic[room][1])
 
     return ax, ap
 
 
 def init_filter():
-    person.center = apartment[df.iloc[0, 6]].get_center()
+    person.center = apartment[df.iloc[0, 6]]
     set_probability(0)
     ax.add_patch(person)
     return person, prob
@@ -46,19 +43,19 @@ def set_probability(index):
 
 
 def init():
-    person.center = apartment[df.iloc[0, 6]].get_center()
+    person.center = apartment[df.iloc[0, 6]]
     ax.add_patch(person)
     return person,
 
 
 def animate_filter(i):
-    person.center = apartment[df.iloc[i, 6]].get_center()
+    person.center = apartment[df.iloc[i, 6]]
     set_probability(i)
     return person, prob
 
 
 def animate(i):
-    person.center = apartment[df.iloc[i, 6]].get_center()
+    person.center = apartment[df.iloc[i, 6]]
     return person,
 
 
