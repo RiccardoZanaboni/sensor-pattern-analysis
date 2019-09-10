@@ -5,6 +5,7 @@ from matplotlib import animation
 import json
 
 
+
 def read_file(file_name):
     df = pd.read_csv(file_name, ',')
     return df
@@ -27,11 +28,15 @@ def init_apartment(ax, config):
     return ax, ap
 
 
+def animation_logic(i):
+    person.center = apartment[df.iloc[i, 6]]
+    set_probability(i)
+    set_ev_level(i)
+    filter_output.center = get_filter_output(i)
+
+
 def init_filter():
-    person.center = apartment[df.iloc[0, 6]]
-    set_probability(0)
-    set_ev_level(0)
-    filter_output.center = get_filter_output(0)
+    animation_logic(0)
     ax.add_patch(person)
     ax.add_patch(filter_output)
     return person, prob, filter_output, ev_level
@@ -46,15 +51,19 @@ def set_probability(index):
 
 
 def set_ev_level(index):
-    text = "Evaluation level : " + '%.3f' % df_filter.iloc[index, 1]
+    float_value = float(df_filter.iloc[index, 1])
+    value = '%.3f' % float_value
+    text = "Evaluation level : " + value
     ev_level.set_text(text)
+    dic = configurator["evaluation_thresholds"]
+    for r in dic:
+        if dic[r][1] >= float_value >= dic[r][0]:
+            filter_output.set_color(r)
+            return
 
 
 def animate_filter(i):
-    person.center = apartment[df.iloc[i, 6]]
-    set_probability(i)
-    set_ev_level(i)
-    filter_output.center = get_filter_output(i)
+    animation_logic(i)
     return person, prob, filter_output, ev_level
 
 
@@ -105,7 +114,7 @@ if __name__ == "__main__":
                         configurator["text_area"]["position"][1], "", fontsize=configurator["text_area"]["font_size"])
         ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
                             fontsize=configurator["ev_level"]["font_size"])
-        
+
         filter_output = plt.Circle((0, 0), 1, fc='w', fill=False)
         df_filter = read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
