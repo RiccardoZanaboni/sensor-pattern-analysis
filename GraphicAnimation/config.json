@@ -1,0 +1,8 @@
+{
+  "info": {
+    "apartment" : { "toilet": [2, 2, 1], "kitchen": [2,8,1], "bedroom": [8,2,1], "livingroom": [8,2,1],
+                    "atrium": [5,5,1] }
+    }
+
+
+}
