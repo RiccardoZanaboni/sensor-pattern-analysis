@@ -1,6 +1,6 @@
 {
   "info": {
-    "input_file" : "/home/mattia/Tesi/output_old_apartment/HF_out.csv",
+    "input_file" : "/home/orso/Tesi/output_old_apartment/HF_out.csv",
     "time_speed": 100,
     "x_lim": [0,10],
     "y_lim": [0,10],
@@ -12,6 +12,6 @@
   "apartment" : { "toilet": [2, 2, 1], "kitchen": [2,8,1], "bedroom": [8,2,1], "livingroom": [8,8,1],
                     "atrium": [5,5,1] },
 
-  "probability_position"  : { "toilet": [0,5, 2], "kitchen": [0,5,8], "bedroom": [9.5,2], "livingroom": [9.5,8],
-                    "atrium": [5,6.5] }
+  "probability_position"  : { "bel(T)": [0.5, 2], "bel(K)": [0.5,8], "bel(B)": [9.5,2], "bel(L)": [9.5,8],
+                    "bel(A)": [5,6.5] }
 }
