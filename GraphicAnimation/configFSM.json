@@ -1,0 +1,20 @@
+{
+  "info": {
+    "input_file_Animate_FSM" : "fsm_hlt_9_separate.csv",
+    "time_speed": 1000,
+    "x_lim": [0,16],
+    "y_lim": [0,8],
+    "figure_size" : [16,8],
+    "default_room_color" : "y",
+    "state_radius" : 1.5
+    },
+
+  "state_position" : {"WORKING": [2, 4], "WARNING_NOT_SAMPLE": [7, 8],
+                      "WARNING_EQUAL_MEASURES":  [7, 2], "NOT_WORKING" : [14, 6]},
+
+  "state_color": {"WORKING": "g", "WARNING_NOT_SAMPLE": "y", "WARNING_EQUAL_MEASURES": "y", "NOT_WORKING" : "r"},
+
+  "index" : {"1": "WORKING", "2": "WARNING_NOT_SAMPLE", "3": "WARNING_EQUAL_MEASURES", "4":  "NOT_WORKING"}
+
+
+}
