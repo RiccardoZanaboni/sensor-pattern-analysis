@@ -87,7 +87,8 @@ if __name__ == "__main__":
     person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
 
     if sys.argv[1] == "-f":
-        prob = plt.text(configurator["text_area"][0], configurator["text_area"][1], "", fontsize=12)
+        prob = plt.text(configurator["text_area"]["position"][0],
+                        configurator["text_area"]["position"][1], "", fontsize=configurator["text_area"]["font_size"])
 
         anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
