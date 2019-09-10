@@ -21,6 +21,10 @@
     "position" : [0.5,1],
     "font_size" : 12
   } ,
+  "ev_level" : {
+    "position" : [0.5,1],
+    "font_size" : 12
+  },
   "image": {
     "position": [0,20,5,20],
     "file" : "/home/mattia/Tesi/cat_piantina.png"

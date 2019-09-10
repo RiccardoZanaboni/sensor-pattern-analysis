@@ -103,7 +103,9 @@ if __name__ == "__main__":
     if sys.argv[1] == "-f":
         prob = plt.text(configurator["text_area"]["position"][0],
                         configurator["text_area"]["position"][1], "", fontsize=configurator["text_area"]["font_size"])
-        ev_level = plt.text(12, 2.5, "", fontsize=configurator["text_area"]["font_size"])
+        ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
+                            fontsize=configurator["ev_level"]["font_size"])
+        
         filter_output = plt.Circle((0, 0), 1, fc='w', fill=False)
         df_filter = read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
