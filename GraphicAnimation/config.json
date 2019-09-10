@@ -10,7 +10,8 @@
     },
 
   "apartment" : { "toilet": [2, 2, 1], "kitchen": [2,8,1], "bedroom": [8,2,1], "livingroom": [8,8,1],
-                    "atrium": [5,5,1] }
+                    "atrium": [5,5,1] },
 
-
+  "probability_position"  : { "toilet": [0,5, 2], "kitchen": [0,5,8], "bedroom": [9.5,2], "livingroom": [9.5,8],
+                    "atrium": [5,6.5] }
 }
