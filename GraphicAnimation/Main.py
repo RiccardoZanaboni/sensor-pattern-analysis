@@ -97,9 +97,9 @@ if __name__ == "__main__":
         prob = plt.text(configurator["text_area"]["position"][0],
                         configurator["text_area"]["position"][1], "", fontsize=configurator["text_area"]["font_size"])
         filter_output = plt.Circle((0, 0), 1, fc='w', fill=False)
-        df_filter = read_file("/home/mattia/Tesi/output_old_apartment/output_evaluation.csv")
+        df_filter = read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
-        gt_column_name = "Room"
+        gt_column_name = configurator["info"]["ground_truth_column_name"]
         anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
