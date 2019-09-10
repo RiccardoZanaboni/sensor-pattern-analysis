@@ -30,10 +30,11 @@ def init_apartment(ax, config):
 def init_filter():
     person.center = apartment[df.iloc[0, 6]]
     set_probability(0)
+    set_ev_level(0)
     filter_output.center = get_filter_output(0)
     ax.add_patch(person)
     ax.add_patch(filter_output)
-    return person, prob, filter_output
+    return person, prob, filter_output, ev_level
 
 
 def set_probability(index):
@@ -44,11 +45,17 @@ def set_probability(index):
     prob.set_text(text)
 
 
+def set_ev_level(index):
+    text = "Evaluation level : " + '%.3f' % df_filter.iloc[index, 1]
+    ev_level.set_text(text)
+
+
 def animate_filter(i):
     person.center = apartment[df.iloc[i, 6]]
     set_probability(i)
+    set_ev_level(i)
     filter_output.center = get_filter_output(i)
-    return person, prob, filter_output
+    return person, prob, filter_output, ev_level
 
 
 def get_filter_output(i):
@@ -96,6 +103,7 @@ if __name__ == "__main__":
     if sys.argv[1] == "-f":
         prob = plt.text(configurator["text_area"]["position"][0],
                         configurator["text_area"]["position"][1], "", fontsize=configurator["text_area"]["font_size"])
+        ev_level = plt.text(12, 2.5, "", fontsize=configurator["text_area"]["font_size"])
         filter_output = plt.Circle((0, 0), 1, fc='w', fill=False)
         df_filter = read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
