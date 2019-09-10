@@ -30,9 +30,20 @@ def init_apartment(ax, config):
     return ax, ap
 
 
+def init_filter():
+    person.center = apartment[df.iloc[0, 6]].get_center()
+    ax.add_patch(person)
+    return person,
+
+
 def init():
     person.center = apartment[df.iloc[0, 6]].get_center()
     ax.add_patch(person)
+    return person,
+
+
+def animate_filter(i):
+    person.center = apartment[df.iloc[i, 6]].get_center()
     return person,
 
 
@@ -62,7 +73,7 @@ if __name__ == "__main__":
 
     person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
 
-    anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index)-1,
+    anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
                                    interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
     plt.show()
