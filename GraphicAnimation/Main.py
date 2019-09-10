@@ -78,9 +78,9 @@ if __name__ == "__main__":
                   ylim=(configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))
 
     ax, apartment = init_apartment(ax, configurator)
-    img = plt.imread("/home/mattia/Tesi/cat_piantina.png")
-    ax.imshow(img, extent=[configurator["info"]["x_lim"][0], 15,
-                           configurator["info"]["y_lim"][0], 15])
+    img = plt.imread(configurator["image"]["file"])
+    ax.imshow(img, extent=[configurator["image"]["position"][0], configurator["image"]["position"][1],
+                           configurator["image"]["position"][2], configurator["image"]["position"][3]])
 
     df = read_file(configurator["info"]["input_file"])
 
