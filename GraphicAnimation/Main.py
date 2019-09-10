@@ -19,10 +19,10 @@ def open_json(file_name):
 
 def init_apartment(ax, config):
     ap = {}
-    dic = config["info"]["apartment"]
-    print(dic)
+    dic = config["apartment"]
+
     for room in dic:
-        ap[room] = plt.Circle((dic[room][0], dic[room][1]), dic[room][2], fc=config["info"]["default_color"])
+        ap[room] = plt.Circle((dic[room][0], dic[room][1]), dic[room][2], fc=config["info"]["default_room_color"])
 
     for i in ap:
         ax.add_patch(ap[i])
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     df = read_file(configurator["info"]["input_file"])
 
-    person = plt.Circle((2, 2), 0.25, fc='b')
+    person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
 
     anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index)-1,
                                    interval=configurator["info"]["time_speed"], blit=True, repeat=False)

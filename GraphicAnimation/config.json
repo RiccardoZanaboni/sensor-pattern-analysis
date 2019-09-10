@@ -1,14 +1,16 @@
 {
   "info": {
-    "apartment" : { "toilet": [2, 2, 1], "kitchen": [2,8,1], "bedroom": [8,2,1], "livingroom": [8,8,1],
-                    "atrium": [5,5,1] },
     "input_file" : "/home/mattia/Tesi/output_old_apartment/HF_out.csv",
     "time_speed": 100,
     "x_lim": [0,10],
     "y_lim": [0,10],
     "figure_size" : [7,7],
-    "default_color" : "y"
-    }
+    "default_room_color" : "y",
+    "person_radius" : 0.25
+    },
+
+  "apartment" : { "toilet": [2, 2, 1], "kitchen": [2,8,1], "bedroom": [8,2,1], "livingroom": [8,8,1],
+                    "atrium": [5,5,1] }
 
 
 }
