@@ -30,19 +30,19 @@ def init_apartment(ax, config):
     return ax, ap
 
 
-def display_probability(index):
-    for room in configurator["probability_position"]:
-        prob[room] = plt.text(configurator["probability_position"][room][0],
-                              configurator["probability_position"][room][1],
-                              df[room][index], fontsize=12)
-
-
 def init_filter():
     person.center = apartment[df.iloc[0, 6]].get_center()
-    display_probability(0)
-
+    set_probability(0)
     ax.add_patch(person)
-    return person,
+    return person, prob
+
+
+def set_probability(index):
+    text = ""
+    separator = "\n"
+    for room_bel in configurator["probability_position"]:
+        text = text+separator + room_bel + ":" + str(df[room_bel][index])
+    prob.set_text(text)
 
 
 def init():
@@ -53,9 +53,8 @@ def init():
 
 def animate_filter(i):
     person.center = apartment[df.iloc[i, 6]].get_center()
-    display_probability()
-
-    return person,
+    set_probability(i)
+    return person, prob
 
 
 def animate(i):
@@ -79,16 +78,19 @@ if __name__ == "__main__":
                   ylim=(configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))
 
     ax, apartment = init_apartment(ax, configurator)
+    img = plt.imread("/home/mattia/Tesi/cat_piantina.png")
+    ax.imshow(img, extent=[configurator["info"]["x_lim"][0], 15,
+                           configurator["info"]["y_lim"][0], 15])
 
     df = read_file(configurator["info"]["input_file"])
 
     person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
 
     if sys.argv[1] == "-f":
-        prob = {}
+        prob = plt.text(configurator["text_area"][0], configurator["text_area"][1], "", fontsize=12)
 
-    anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
-                                   interval=configurator["info"]["time_speed"], blit=True, repeat=False)
+        anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
+                                       interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
     plt.show()
 
