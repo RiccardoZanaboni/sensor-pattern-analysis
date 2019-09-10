@@ -38,7 +38,7 @@ def set_probability(index):
     text = ""
     separator = "\n"
     for room_bel in configurator["probability_position"]:
-        text = text+separator + room_bel + ":" + str(df[room_bel][index])
+        text = text+separator + room_bel + ":" + '%.3f' % df[room_bel][index]
     prob.set_text(text)
 
 
