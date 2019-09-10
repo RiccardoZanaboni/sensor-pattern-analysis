@@ -1,4 +1,4 @@
-import numpy as np
+import sys
 import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib import animation
@@ -17,40 +17,53 @@ def open_json(file_name):
     return data_config
 
 
-def init_apartment(ax):
-    apartment = {"toilet": plt.Circle((2, 2), 1, fc='y'), "kitchen": plt.Circle((2, 8), 1, fc='y'),
-                 "bedroom": plt.Circle((8, 2), 1, fc='y'), "livingroom": plt.Circle((8, 8), 1, fc='y'),
-                 "atrium": plt.Circle((5, 5), 1, fc='y')}
-    for i in apartment:
-        ax.add_patch(apartment[i])
-    return ax, apartment
+def init_apartment(ax, config):
+    ap = {}
+    dic = config["info"]["apartment"]
+    print(dic)
+    for room in dic:
+        ap[room] = plt.Circle((dic[room][0], dic[room][1]), dic[room][2], fc=config["info"]["default_color"])
+
+    for i in ap:
+        ax.add_patch(ap[i])
+
+    return ax, ap
 
 
 def init():
-    person.center = apartment[df.iloc[0, 1]].get_center()
+    person.center = apartment[df.iloc[0, 6]].get_center()
     ax.add_patch(person)
     return person,
 
 
 def animate(i):
-    person.center = apartment[df.iloc[i, 1]].get_center()
+    person.center = apartment[df.iloc[i, 6]].get_center()
     return person,
 
 
 if __name__ == "__main__":
 
+    if len(sys.argv) < 2:
+        print("Manca il nome del file json")
+        sys.exit(1)
+
+    configurator = open_json(sys.argv[1])
+
     fig = plt.figure()
     fig.set_dpi(100)
-    fig.set_size_inches(7, 6.5)
-    ax = plt.axes(xlim=(0, 10), ylim=(0, 10))
-    ax, apartment = init_apartment(ax)
+    fig.set_size_inches(configurator["info"]["figure_size"][0], configurator["info"]["figure_size"][1])
 
-    df = read_file("/home/mattia/Tesi/output_old_apartment/out.csv")
+    ax = plt.axes(xlim=(configurator["info"]["x_lim"][0], configurator["info"]["x_lim"][1]),
+                  ylim=(configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))
+
+    ax, apartment = init_apartment(ax, configurator)
+
+    df = read_file(configurator["info"]["input_file"])
 
     person = plt.Circle((2, 2), 0.25, fc='b')
 
     anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index)-1,
-                                   interval=1000, blit=True, repeat=False)
+                                   interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
     plt.show()
 
