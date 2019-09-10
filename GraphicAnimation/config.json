@@ -1,7 +1,7 @@
 {
   "info": {
     "input_file" : "/home/mattia/Tesi/output_old_apartment/HF_out.csv",
-    "time_speed": 100,
+    "time_speed": 10,
     "x_lim": [0,20],
     "y_lim": [0,20],
     "figure_size" : [7,7],
@@ -9,8 +9,8 @@
     "person_radius" : 0.25
     },
 
-  "apartment" : { "toilet": [2, 2, 1], "kitchen": [2,8,1], "bedroom": [8,2,1], "livingroom": [8,8,1],
-                    "atrium": [5,5,1] },
+  "apartment" : { "toilet": [7.5, 8], "kitchen": [6,16], "bedroom": [16,8], "livingroom": [16,16],
+                    "atrium": [8,12.5] },
 
   "probability_position"  : { "bel(T)": [0.5, 2], "bel(K)": [0.5,8], "bel(B)": [9.5,2], "bel(L)": [9.5,8],
                     "bel(A)": [5,6.5] },
