@@ -129,13 +129,12 @@ if __name__ == "__main__":
     ax, apartment = init_apartment(ax, configurator)
     set_image_background()
 
-    df = read_file(configurator["info"]["input_file"])
-
     person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
     time = plt.text(configurator["time"]["position"][0], configurator["time"]["position"][1], "",
                     fontsize=configurator["time"]["font_size"])
 
     if sys.argv[1] == "-f":
+        df = read_file(configurator["info"]["input_file"])
         prob = plt.text(configurator["text_area"]["position"][0],
                         configurator["text_area"]["position"][1], "", fontsize=configurator["text_area"]["font_size"])
         ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
@@ -149,8 +148,10 @@ if __name__ == "__main__":
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
     if sys.argv[1] == "-s":
-        sensor_output = plt.text(configurator["text_area"]["position"][0],
-                        configurator["text_area"]["position"][1], "Sensors output", fontsize=configurator["text_area"]["font_size"])
+        df = read_file(configurator["info"]["input_file_s"])
+        sensor_output = plt.text(configurator["text_area_s"]["position"][0],
+                        configurator["text_area_s"]["position"][1], "Sensors output",
+                                 fontsize=configurator["text_area_s"]["font_size"])
 
         anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index) - 1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
