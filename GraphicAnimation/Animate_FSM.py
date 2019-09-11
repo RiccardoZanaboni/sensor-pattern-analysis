@@ -1,30 +1,13 @@
 import sys
-import pandas as pd
-import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.pyplot.switch_backend("WebAgg")
 from matplotlib import animation
-import json
-
-
-
-def read_file(file_name):
-    df = pd.read_csv(file_name, ',')
-    return df
-
-
-def open_json(file_name):
-    with open(file_name) as json_config:
-        data_config = json.load(json_config)
-    json_config.close()
-    return data_config
+import utility
 
 
 def init_text(config):
 
     for state in config["state_position"]:
-        plt.text(config["state_position"][state][0], config["state_position"][state][1],
-        state, fontsize=12)
+        plt.text(config["state_position"][state][0], config["state_position"][state][1], state, fontsize=12)
 
 
 def found_state(row):
@@ -57,7 +40,7 @@ if __name__ == "__main__":
         print("Correct command = Animate_FSM.py name_of_the_configuration_file.json")
         sys.exit(1)
 
-    configurator = open_json(sys.argv[1])
+    configurator = utility.open_json(sys.argv[1])
 
     fig = plt.figure()
     fig.set_dpi(100)
@@ -67,7 +50,7 @@ if __name__ == "__main__":
                   ylim=(configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))
 
     init_text(configurator)
-    df = read_file(configurator["info"]["input_file_Animate_FSM"])
+    df = utility.read_file(configurator["info"]["input_file_Animate_FSM"])
 
     fsm_state = plt.Circle((2, 2), configurator["info"]["state_radius"], fc='b',  alpha=0.5)
 
