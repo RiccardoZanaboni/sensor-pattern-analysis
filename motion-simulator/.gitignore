@@ -1,8 +1,4 @@
-# ignoring pycharm files
-*.idea
-__pycache__
 
-*.csv
 #ignoring simulation info files
 simulation-info/*.txt
 
