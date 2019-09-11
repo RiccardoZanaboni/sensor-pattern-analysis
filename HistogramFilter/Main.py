@@ -1,16 +1,8 @@
-import json
 import sys
-
 import Belief
 import ReadFile
 import pandas as pd
-
-
-def open_json(conf):
-    with open(conf) as json_config:
-        data_config = json.load(json_config)
-    json_config.close()
-    return data_config
+import read_configuration as rd
 
 
 def system_set_up(data_config):
@@ -63,7 +55,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     conf_file = sys.argv[1]
-    config = open_json(conf_file)
+    config = rd.open_json(conf_file)
 
     belief, rf = system_set_up(config)
     data_in = rf.df

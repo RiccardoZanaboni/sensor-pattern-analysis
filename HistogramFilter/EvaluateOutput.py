@@ -1,7 +1,7 @@
 import sys
 
 import ReadFile
-import json
+import read_configuration as rd
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -10,13 +10,6 @@ import matplotlib.pyplot as plt
     It calculates the relative frequency between the number of time that the person is 
     in a room and the room is the one  the highest probability to be in for the histogram filter. 
 """
-
-
-def open_json(file_name):
-    with open(file_name) as json_config:
-        data_config = json.load(json_config)
-    json_config.close()
-    return data_config
 
 
 def set_up(data_config):
@@ -55,7 +48,7 @@ if __name__ == "__main__" :
         sys.exit(1)
 
     conf_file = sys.argv[1]
-    config = open_json(conf_file)
+    config = rd.open_json(conf_file)
     df = pd.DataFrame(columns=['Time', 'Efficiency'])
 
     data = set_up(config)
