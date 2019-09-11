@@ -40,8 +40,13 @@ def init_apartment(ax, config):
     return ax, ap
 
 
+def set_time(i):
+    time.set_text("Time : " + str(df["Time"][i]))
+
+
 def animation_logic(i):
     person.center = apartment[df.iloc[i, 6]]
+    set_time(i)
     set_probability(i)
     set_ev_level(i)
     filter_output.center = get_filter_output(i)
@@ -51,7 +56,7 @@ def init_filter():
     animation_logic(0)
     ax.add_patch(person)
     ax.add_patch(filter_output)
-    return person, prob, filter_output, ev_level
+    return person, prob, filter_output, ev_level, time
 
 
 def set_probability(index):
@@ -76,7 +81,7 @@ def set_ev_level(index):
 
 def animate_filter(i):
     animation_logic(i)
-    return person, prob, filter_output, ev_level
+    return person, prob, filter_output, ev_level, time
 
 
 def get_filter_output(i):
@@ -124,6 +129,7 @@ if __name__ == "__main__":
     df = read_file(configurator["info"]["input_file"])
 
     person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
+    time = plt.text(12.5, 3.5, "", fontsize=12)
 
     if sys.argv[1] == "-f":
         prob = plt.text(configurator["text_area"]["position"][0],
