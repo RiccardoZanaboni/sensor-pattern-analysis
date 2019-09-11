@@ -5,7 +5,6 @@ from matplotlib import animation
 import json
 
 
-
 def read_file(file_name):
     df = pd.read_csv(file_name, ',')
     return df
@@ -16,6 +15,19 @@ def open_json(file_name):
         data_config = json.load(json_config)
     json_config.close()
     return data_config
+
+
+def set_figure():
+    figure = plt.figure()
+    figure.set_dpi(100)
+    figure.set_size_inches(configurator["info"]["figure_size"][0], configurator["info"]["figure_size"][1])
+    return figure
+
+
+def set_image_background():
+    img = plt.imread(configurator["image"]["file"])
+    ax.imshow(img, extent=[configurator["image"]["position"][0], configurator["image"]["position"][1],
+                           configurator["image"]["position"][2], configurator["image"]["position"][3]])
 
 
 def init_apartment(ax, config):
@@ -101,18 +113,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     configurator = open_json(sys.argv[2])
-
-    fig = plt.figure()
-    fig.set_dpi(100)
-    fig.set_size_inches(configurator["info"]["figure_size"][0], configurator["info"]["figure_size"][1])
+    fig = set_figure()
 
     ax = plt.axes(xlim=(configurator["info"]["x_lim"][0], configurator["info"]["x_lim"][1]),
                   ylim=(configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))
 
     ax, apartment = init_apartment(ax, configurator)
-    img = plt.imread(configurator["image"]["file"])
-    ax.imshow(img, extent=[configurator["image"]["position"][0], configurator["image"]["position"][1],
-                           configurator["image"]["position"][2], configurator["image"]["position"][3]])
+    set_image_background()
 
     df = read_file(configurator["info"]["input_file"])
 
