@@ -91,24 +91,27 @@ def get_filter_output(i):
     return apartment[room]
 
 
-def found_one(row):
-    #row = row[1:len(configurator["apartment"])]
-    room = df.iloc[0, :][:len(configurator["apartment"])]
-    return room
-    # columns with one
+def set_sensor_output(i):
+    series = df.iloc[i][1:len(configurator["probability_position"])+1]
+    text = "Sensors output"
+    for column, val in series.iteritems():
+        text = text + "\n" + column + " : " + str(val)
+    sensor_output.set_text(text)
 
 
 def init():
     person.center = apartment[df.iloc[0, 6]]
-    #for room in found_one(df.iloc[0:]):
-
+    set_sensor_output(0)
+    set_time(0)
     ax.add_patch(person)
-    return person,
+    return person, sensor_output, time
 
 
 def animate(i):
     person.center = apartment[df.iloc[i, 6]]
-    return person,
+    set_sensor_output(i)
+    set_time(i)
+    return person, sensor_output, time
 
 
 if __name__ == "__main__":
@@ -146,8 +149,11 @@ if __name__ == "__main__":
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
     if sys.argv[1] == "-s":
-        sensor_output = plt.text()
+        sensor_output = plt.text(configurator["text_area"]["position"][0],
+                        configurator["text_area"]["position"][1], "Sensors output", fontsize=configurator["text_area"]["font_size"])
 
+        anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index) - 1,
+                                       interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
     plt.show()
 
