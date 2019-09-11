@@ -27,21 +27,34 @@ def init_apartment(ax, config):
     return ax, ap
 
 
+def set_person_image():
+    image = plt.imread("person.png")
+    return ax.imshow(image, extent=[0, 0, 0, 0])
+
+
+def set_person_position(i):
+    centre = apartment[df.iloc[i, 6]]
+    img_extent = [centre[0] - 1, centre[0] + 1, centre[1] - 1, centre[1] + 1]
+    person.set_extent(img_extent)
+
+
 def set_time(i):
     time.set_text("Time : " + str(df["Time"][i]))
 
 
 def animation_logic(i):
-    person.center = apartment[df.iloc[i, 6]]
+    if i != 0:
+        set_person_position(i)
     set_time(i)
     set_probability(i)
-    set_ev_level(i)
     filter_output.center = get_filter_output(i)
+    set_ev_level(i)
+
 
 
 def init_filter():
     animation_logic(0)
-    ax.add_patch(person)
+    #ax.add_patch(person)
     ax.add_patch(filter_output)
     return person, prob, filter_output, ev_level, time
 
@@ -116,7 +129,8 @@ if __name__ == "__main__":
     ax, apartment = init_apartment(ax, configurator)
     set_image_background()
 
-    person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
+    #person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
+    person = set_person_image()
     time = plt.text(configurator["time"]["position"][0], configurator["time"]["position"][1], "",
                     fontsize=configurator["time"]["font_size"])
 
@@ -127,7 +141,7 @@ if __name__ == "__main__":
         ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
                             fontsize=configurator["ev_level"]["font_size"])
 
-        filter_output = plt.Circle((0, 0), 1, fc='w', alpha=0.5)
+        filter_output = plt.Circle((0, 0), 2, fc='w', alpha=0.5)
         df_filter = utility.read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
         gt_column_name = configurator["info"]["ground_truth_column_name"]
