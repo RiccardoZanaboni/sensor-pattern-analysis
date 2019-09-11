@@ -29,13 +29,14 @@ def init_apartment(ax, config):
 
 def set_person_image():
     image = plt.imread("person.png")
-    return ax.imshow(image, extent=[0, 0, 0, 0])
+    #return ax.imshow(image, extent=[0, 0, 0, 0])
 
 
 def set_person_position(i):
     centre = apartment[df.iloc[i, 6]]
-    img_extent = [centre[0] - 1, centre[0] + 1, centre[1] - 1, centre[1] + 1]
-    person.set_extent(img_extent)
+    #img_extent = [centre[0] - 1, centre[0] + 1, centre[1] - 1, centre[1] + 1]
+    #person.set_extent(img_extent)
+    person.set_center(centre)
 
 
 def set_time(i):
@@ -51,6 +52,7 @@ def animation_logic(i):
 
 
 def init_filter():
+    ax.add_patch(person)
     ax.add_patch(filter_output)
     return person, prob, filter_output, ev_level, time
 
@@ -122,7 +124,8 @@ if __name__ == "__main__":
     ax, apartment = init_apartment(ax, configurator)
     set_image_background()
 
-    person = set_person_image()
+    #person = set_person_image()
+    person = plt.Circle((0, 0), 0.5, fc="b")
     time = plt.text(configurator["time"]["position"][0], configurator["time"]["position"][1], "",
                     fontsize=configurator["time"]["font_size"])
 

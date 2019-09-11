@@ -4,7 +4,7 @@
     "input_file_s" : "/home/mattia/Tesi/output_old_apartment/HF_out.csv",
     "evaluation_file": "/home/mattia/Tesi/output_old_apartment/output_evaluation.csv",
     "ground_truth_column_name": "Room",
-    "time_speed": 250,
+    "time_speed": 500,
     "x_lim": [0,20],
     "y_lim": [0,20],
     "figure_size" : [7,7],
