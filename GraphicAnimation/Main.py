@@ -129,7 +129,8 @@ if __name__ == "__main__":
     df = read_file(configurator["info"]["input_file"])
 
     person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
-    time = plt.text(12.5, 3.5, "", fontsize=12)
+    time = plt.text(configurator["time"]["position"][0], configurator["time"]["position"][1], "",
+                    fontsize=configurator["time"]["font_size"])
 
     if sys.argv[1] == "-f":
         prob = plt.text(configurator["text_area"]["position"][0],
@@ -143,7 +144,9 @@ if __name__ == "__main__":
         gt_column_name = configurator["info"]["ground_truth_column_name"]
         anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
-    #if sys.argv[1] == "-s":
+
+    if sys.argv[1] == "-s":
+        sensor_output = plt.text()
 
 
     plt.show()
