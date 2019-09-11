@@ -74,8 +74,16 @@ def get_filter_output(i):
     return apartment[room]
 
 
+def found_one(row):
+    #row = row[1:len(configurator["apartment"])]
+    room = df.iloc[0, :][:len(configurator["apartment"])]
+    return room
+    # columns with one
+
 def init():
     person.center = apartment[df.iloc[0, 6]]
+    for room in found_one(df.iloc[0:]):
+
     ax.add_patch(person)
     return person,
 
@@ -121,6 +129,8 @@ if __name__ == "__main__":
         gt_column_name = configurator["info"]["ground_truth_column_name"]
         anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
+    if sys.argv[1] == "-s":
+    ###
 
     plt.show()
 
