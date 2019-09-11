@@ -5,9 +5,8 @@ import utility
 
 
 def init_text(config):
-
-    for state in config["state_position"]:
-        plt.text(config["state_position"][state][0], config["state_position"][state][1], state, fontsize=12)
+    for state in config["text_position"]:
+        plt.text(config["text_position"][state][0], config["text_position"][state][1], state, fontsize=17)
 
 
 def found_state(row):
@@ -34,6 +33,19 @@ def animate(i):
     return fsm_state,
 
 
+def set_image():
+    img_center = plt.imread(configurator["image"]["gateway"])
+    ax.imshow(img_center, extent=[configurator["image"]["position_g"][0], configurator["image"]["position_g"][1],
+                                  configurator["image"]["position_g"][2], configurator["image"]["position_g"][3]])
+    sensor_img = plt.imread(configurator["image"]["sensor"])
+
+    for position in configurator["image"]["sensor_positions"]:
+        ax.imshow(sensor_img, extent=[configurator["image"]["sensor_positions"][position][0],
+                                      configurator["image"]["sensor_positions"][position][1],
+                                      configurator["image"]["sensor_positions"][position][2],
+                                      configurator["image"]["sensor_positions"][position][3]])
+
+
 if __name__ == "__main__":
 
     if len(sys.argv) < 2:
@@ -47,8 +59,9 @@ if __name__ == "__main__":
     fig.set_size_inches(configurator["info"]["figure_size"][0], configurator["info"]["figure_size"][1])
 
     ax = plt.axes(xlim=(configurator["info"]["x_lim"][0], configurator["info"]["x_lim"][1]),
-                  ylim=(configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))
+                  ylim=(configurator["info"]["y_lim"][0], configurator["info"]["y_lim"][1]))
 
+    set_image()
     init_text(configurator)
     df = utility.read_file(configurator["info"]["input_file_Animate_FSM"])
 
