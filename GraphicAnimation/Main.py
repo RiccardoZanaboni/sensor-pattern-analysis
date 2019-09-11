@@ -43,18 +43,14 @@ def set_time(i):
 
 
 def animation_logic(i):
-    if i != 0:
-        set_person_position(i)
+    set_person_position(i)
     set_time(i)
     set_probability(i)
     filter_output.center = get_filter_output(i)
     set_ev_level(i)
 
 
-
 def init_filter():
-    animation_logic(0)
-    #ax.add_patch(person)
     ax.add_patch(filter_output)
     return person, prob, filter_output, ev_level, time
 
@@ -100,15 +96,12 @@ def set_sensor_output(i):
 
 
 def init():
-    person.center = apartment[df.iloc[0, 6]]
-    set_sensor_output(0)
-    set_time(0)
-    ax.add_patch(person)
+
     return person, sensor_output, time
 
 
 def animate(i):
-    person.center = apartment[df.iloc[i, 6]]
+    set_person_position(i)
     set_sensor_output(i)
     set_time(i)
     return person, sensor_output, time
@@ -129,7 +122,6 @@ if __name__ == "__main__":
     ax, apartment = init_apartment(ax, configurator)
     set_image_background()
 
-    #person = plt.Circle((2, 2), configurator["info"]["person_radius"], fc='b')
     person = set_person_image()
     time = plt.text(configurator["time"]["position"][0], configurator["time"]["position"][1], "",
                     fontsize=configurator["time"]["font_size"])
