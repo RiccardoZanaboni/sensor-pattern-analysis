@@ -4,7 +4,7 @@
     "input_file_s" : "/home/mattia/Tesi/output_old_apartment/HF_out.csv",
     "evaluation_file": "/home/mattia/Tesi/output_old_apartment/output_evaluation.csv",
     "ground_truth_column_name": "Room",
-    "time_speed": 100,
+    "time_speed": 50,
     "x_lim": [0,20],
     "y_lim": [0,20],
     "figure_size" : [7,7],
@@ -12,8 +12,8 @@
     "person_radius" : 0.25
     },
 
-  "apartment" : { "toilet": [7.5, 8], "kitchen": [6,16], "bedroom": [16,8], "livingroom": [16,16],
-                    "atrium": [8,12.5] },
+  "apartment" : { "toilet": [8, 7.5], "kitchen": [6,16.5], "bedroom": [16,8], "livingroom": [15,16],
+                    "atrium": [8.5,12] },
 
   "probability_position"  : [ "bel(T)","bel(K)","bel(B)","bel(L)","bel(A)"],
   "room_dictionary" : {"bel(T)":"toilet","bel(K)": "kitchen", "bel(B)":"bedroom", "bel(L)":"livingroom" ,

@@ -58,7 +58,7 @@ def set_apartment_heat_map():
     circles = []
     dic = configurator["apartment"]
     for i in dic:
-        circles.append(plt.Circle(dic[i], 2, fc='white', alpha=0.5))
+        circles.append(plt.Circle(dic[i], 2, fc='white', alpha=0.35))
     for c in circles:
         ax.add_patch(c)
     return circles
@@ -163,7 +163,7 @@ if __name__ == "__main__":
         ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
                             fontsize=configurator["ev_level"]["font_size"])
 
-        filter_output = plt.Circle((0, 0), 2, fc='w', alpha=0.5)
+        # filter_output = plt.Circle((0, 0), 2, fc='w', alpha=0.5)
         df_filter = utility.read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
         gt_column_name = configurator["info"]["ground_truth_column_name"]
@@ -174,9 +174,11 @@ if __name__ == "__main__":
     if sys.argv[1] == "-s":
         df = utility.read_file(configurator["info"]["input_file_s"])
 
-
         anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index) - 1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
+    # Writer = animation.writers['ffmpeg']
+    # writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+    # anim.save("graph_animation.mp4",writer=writer)
     plt.show()
 
