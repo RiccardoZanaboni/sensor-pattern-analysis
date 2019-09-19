@@ -71,18 +71,17 @@ def set_time(i):
 def animation_logic(i):
     set_person_position(i)
     set_time(i)
-    set_probability(i)
+    set_sensor_output(i)
     color_heat_map(i)
     set_ev_level(i)
 
 
 def init_filter():
-    # ax.add_patch(person)
-    # ax.add_patch(filter_output)
+
     for c in ap_heat_map:
         ax.add_patch(c)
 
-    ret_list = [person, prob, ev_level, time]+ap_heat_map
+    ret_list = [person, sensor_output, ev_level, time]+ap_heat_map
     return ret_list
 
 
@@ -103,7 +102,7 @@ def set_ev_level(index):
 
 def animate_filter(i):
     animation_logic(i)
-    ret_list = [person, prob, ev_level, time] + ap_heat_map
+    ret_list = [person, sensor_output, ev_level, time] + ap_heat_map
     return ret_list
 
 
@@ -153,6 +152,9 @@ if __name__ == "__main__":
     # person = plt.Circle((0, 0), 0.5, fc="b")
     time = plt.text(configurator["time"]["position"][0], configurator["time"]["position"][1], "",
                     fontsize=configurator["time"]["font_size"])
+    sensor_output = plt.text(configurator["text_area_s"]["position"][0],
+                             configurator["text_area_s"]["position"][1], "Sensors output",
+                             fontsize=configurator["text_area_s"]["font_size"])
 
     if sys.argv[1] == "-f":
         df = utility.read_file(configurator["info"]["input_file"])
@@ -171,9 +173,7 @@ if __name__ == "__main__":
 
     if sys.argv[1] == "-s":
         df = utility.read_file(configurator["info"]["input_file_s"])
-        sensor_output = plt.text(configurator["text_area_s"]["position"][0],
-                        configurator["text_area_s"]["position"][1], "Sensors output",
-                                 fontsize=configurator["text_area_s"]["font_size"])
+
 
         anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index) - 1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
