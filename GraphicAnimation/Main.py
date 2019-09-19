@@ -17,6 +17,21 @@ def set_image_background():
                            configurator["image"]["position"][2], configurator["image"]["position"][3]])
 
 
+def color_heat_map(i):
+    room_list = configurator["probability_position"]
+
+    def set_color(value, j):
+        dic = configurator["evaluation_thresholds"]
+
+        for r in dic:
+            if dic[r][1] >= value >= dic[r][0]:
+                ap_heat_map[j].set_color(r)
+                return
+
+    for index, room in enumerate(room_list):
+        set_color(df[room][i], index)
+
+
 def init_apartment(ax, config):
     ap = {}
     dic = config["apartment"]
@@ -29,14 +44,24 @@ def init_apartment(ax, config):
 
 def set_person_image():
     image = plt.imread("person.png")
-    #return ax.imshow(image, extent=[0, 0, 0, 0])
+    return ax.imshow(image, extent=[0, 0, 0, 0])
 
 
 def set_person_position(i):
     centre = apartment[df.iloc[i, 6]]
-    #img_extent = [centre[0] - 1, centre[0] + 1, centre[1] - 1, centre[1] + 1]
-    #person.set_extent(img_extent)
-    person.set_center(centre)
+    img_extent = [centre[0] - 1, centre[0] + 1, centre[1] - 1, centre[1] + 1]
+    person.set_extent(img_extent)
+    # person.set_center(centre)
+
+
+def set_apartment_heat_map():
+    circles = []
+    dic = configurator["apartment"]
+    for i in dic:
+        circles.append(plt.Circle(dic[i], 2, fc='white', alpha=0.5))
+    for c in circles:
+        ax.add_patch(c)
+    return circles
 
 
 def set_time(i):
@@ -47,14 +72,18 @@ def animation_logic(i):
     set_person_position(i)
     set_time(i)
     set_probability(i)
-    filter_output.center = get_filter_output(i)
+    color_heat_map(i)
     set_ev_level(i)
 
 
 def init_filter():
-    ax.add_patch(person)
-    ax.add_patch(filter_output)
-    return person, prob, filter_output, ev_level, time
+    # ax.add_patch(person)
+    # ax.add_patch(filter_output)
+    for c in ap_heat_map:
+        ax.add_patch(c)
+
+    ret_list = [person, prob, ev_level, time]+ap_heat_map
+    return ret_list
 
 
 def set_probability(index):
@@ -70,16 +99,12 @@ def set_ev_level(index):
     value = '%.3f' % float_value
     text = "Evaluation level : " + value
     ev_level.set_text(text)
-    dic = configurator["evaluation_thresholds"]
-    for r in dic:
-        if dic[r][1] >= float_value >= dic[r][0]:
-            filter_output.set_color(r)
-            return
 
 
 def animate_filter(i):
     animation_logic(i)
-    return person, prob, filter_output, ev_level, time
+    ret_list = [person, prob, ev_level, time] + ap_heat_map
+    return ret_list
 
 
 def get_filter_output(i):
@@ -124,8 +149,8 @@ if __name__ == "__main__":
     ax, apartment = init_apartment(ax, configurator)
     set_image_background()
 
-    #person = set_person_image()
-    person = plt.Circle((0, 0), 0.5, fc="b")
+    person = set_person_image()
+    # person = plt.Circle((0, 0), 0.5, fc="b")
     time = plt.text(configurator["time"]["position"][0], configurator["time"]["position"][1], "",
                     fontsize=configurator["time"]["font_size"])
 
@@ -140,6 +165,7 @@ if __name__ == "__main__":
         df_filter = utility.read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
         gt_column_name = configurator["info"]["ground_truth_column_name"]
+        ap_heat_map = set_apartment_heat_map()
         anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
