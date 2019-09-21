@@ -58,10 +58,20 @@ def set_apartment_heat_map():
     circles = []
     dic = configurator["apartment"]
     for i in dic:
-        circles.append(plt.Circle(dic[i], 2, fc='white', alpha=0.35))
+        circles.append(plt.Circle(dic[i], 1, fc='white', alpha=0.25))
     for c in circles:
         ax.add_patch(c)
     return circles
+
+
+def set_prob_value():
+    text_area = []
+    dic = configurator["prob_text_area"]
+
+    for i in dic:
+        text_area.append(plt.text(dic[i][0], dic[i][1], "", fontsize='14'))
+
+    return text_area
 
 
 def set_time(i):
@@ -72,6 +82,7 @@ def animation_logic(i):
     set_person_position(i)
     set_time(i)
     set_sensor_output(i)
+    set_probability(i)
     color_heat_map(i)
     set_ev_level(i)
 
@@ -81,16 +92,14 @@ def init_filter():
     for c in ap_heat_map:
         ax.add_patch(c)
 
-    ret_list = [person, sensor_output, ev_level, time]+ap_heat_map
+    ret_list = [person, sensor_output, ev_level, time]+ap_heat_map+prob_value
     return ret_list
 
 
 def set_probability(index):
-    text = ""
-    separator = "\n"
-    for room_bel in configurator["probability_position"]:
-        text = text+separator + room_bel + ":" + '%.3f' % df[room_bel][index]
-    prob.set_text(text)
+
+    for j, room_bel in enumerate(configurator["probability_position"]):
+        prob_value[j].set_text('%.3f' % df[room_bel][index])
 
 
 def set_ev_level(index):
@@ -102,7 +111,7 @@ def set_ev_level(index):
 
 def animate_filter(i):
     animation_logic(i)
-    ret_list = [person, sensor_output, ev_level, time] + ap_heat_map
+    ret_list = [person, sensor_output, ev_level, time] + ap_heat_map+prob_value
     return ret_list
 
 
@@ -164,6 +173,7 @@ if __name__ == "__main__":
                             fontsize=configurator["ev_level"]["font_size"])
 
         # filter_output = plt.Circle((0, 0), 2, fc='w', alpha=0.5)
+        prob_value = set_prob_value()
         df_filter = utility.read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
         gt_column_name = configurator["info"]["ground_truth_column_name"]

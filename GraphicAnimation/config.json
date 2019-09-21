@@ -22,6 +22,8 @@
     "position" : [0.5,1],
     "font_size" : 12
   } ,
+  "prob_text_area" : {"toilet": [7,8.5], "kitchen" : [7, 18], "bedroom" : [12.5,9], "livingroom" : [12.5, 12],
+                      "atrium" :  [7,10]},
   "text_area_s" :{
     "position" : [0.5,0.5],
     "font_size" : 12
