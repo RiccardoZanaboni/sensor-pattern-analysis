@@ -1,13 +1,13 @@
 # Graphic Animation
-It contains two scripts to show the graphic animation of the three algorithms implemented in this repository:
+It contains a script to show the graphic animation of two algorithms implemented in this repository:
 * Histogram Filter 
 * Simulator
-* FSM 
+
 ## Main
 It shows the animation of the output of the histogram filter and simulator.
 Thanks to a parameter from command line you can execute one of the two animation.
-The histogram filter animation shows the output of the filter and the position of the person inside a map
-of the apartment at every timestamp.
+The histogram filter animation shows the output of the filter and the position of the person inside a map (a graph
+defined by the room adjacencies) of the apartment at every timestamp.
 The simulator animation  shows the output of the sensor and the position of the person inside a map
 of the apartment at every timestamp.
 
@@ -44,6 +44,16 @@ In the "ev_level" section :
 * "position" is the position of the text which indicates the evaluation of the filter,
 * "font_size" is the dimension of the text
 
+In "prob_text_name" section you can set the position of the name of the rooms on the figure
+
+In "prob_text_area" section you can chose the position of the probability of the rooms
+
+In "adj" section the adjacencies of the apartment are defined.
+Chose the center that must be linked by the edges
+
+The dictionary "evaluation_thresholds" defines the color for each range of probability 
+
+
 ### Getting Started
 To execute the animation of the histogram filter:
 ```
@@ -55,35 +65,4 @@ To execute the animation of the simulator
 ~$ python3 Main.py -f name_of_configuration_file.json to execute the animation of histogram filter
 
 ```
-
-
-
-## Animation_FSM
-It shows the animation of the Final State Machine used for the hlt sensors.
-It used three figure which represents the state of the FSM.
-
-### Configuration
-All these settings can be found in config.json file.
-
-In the "info" section :
-* "input_file" is the input file for "Animate_FSM" script
-* "time_speed" is the value of one timestamp (10 min) for the animation 
-* "x_lim" and "y_lim" are the dimension of axes
-* "figure_size" is the dimension of the figure
-* "status_radius" is the dimension of the circle which represents the state of the FSM
-
-"state_position" is a dictionary where the values are the states of the fsm and the values their position
-
-"state_color" is a dictionary where the keys are the state of the fsm and the keys the text color 
-
-"index" is a dictionary to match the index of state column in input file with the state name
-
-### Getting Started
-
-To execute the animation of the FSM 
-```
-~$ python3 Animation_FSM.py name_of_configuration_file.json 
-
-```
-
 
