@@ -11,10 +11,24 @@ def set_figure():
     return figure
 
 
-def set_image_background():
-    img = plt.imread(configurator["image"]["file"])
-    ax.imshow(img, extent=[configurator["image"]["position"][0], configurator["image"]["position"][1],
-                           configurator["image"]["position"][2], configurator["image"]["position"][3]])
+def set_background():
+    circle = []
+    for room in configurator["apartment"]:
+        circle.append(plt.Circle(configurator["apartment"][room], 2, fc='y', alpha=0.25))
+
+    for c in circle:
+        ax.add_patch(c)
+
+    return circle
+
+
+def set_line():
+    line = []
+    for room in configurator["adj"]:
+        line.append(plt.Line2D(room[0], room[1]))
+
+    for l in line:
+        ax.add_line(l)
 
 
 def color_heat_map(i):
@@ -58,7 +72,7 @@ def set_apartment_heat_map():
     circles = []
     dic = configurator["apartment"]
     for i in dic:
-        circles.append(plt.Circle(dic[i], 1, fc='white', alpha=0.25))
+        circles.append(plt.Circle(dic[i], 2, fc='white', alpha=0.25))
     for c in circles:
         ax.add_patch(c)
     return circles
@@ -70,6 +84,16 @@ def set_prob_value():
 
     for i in dic:
         text_area.append(plt.text(dic[i][0], dic[i][1], "", fontsize='14'))
+
+    return text_area
+
+
+def set_name():
+    text_area = []
+    dic = configurator["prob_text_name"]
+
+    for i in dic:
+        text_area.append(plt.text(dic[i][0], dic[i][1], i, fontsize='14'))
 
     return text_area
 
@@ -88,6 +112,12 @@ def animation_logic(i):
 
 
 def init_filter():
+    line = []
+    for room in configurator["adj"]:
+        line.append(plt.Line2D(room[0], room[1]))
+
+    for l in line:
+        ax.add_line(l)
 
     for c in ap_heat_map:
         ax.add_patch(c)
@@ -131,15 +161,16 @@ def set_sensor_output(i):
 
 
 def init():
-
-    return person, sensor_output, time
+    ret_list = [person, sensor_output, time] + graph
+    return ret_list
 
 
 def animate(i):
     set_person_position(i)
     set_sensor_output(i)
     set_time(i)
-    return person, sensor_output, time
+    ret_list = [person, sensor_output, time] + graph 
+    return ret_list
 
 
 if __name__ == "__main__":
@@ -155,7 +186,7 @@ if __name__ == "__main__":
                   ylim=(configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))
 
     ax, apartment = init_apartment(ax, configurator)
-    set_image_background()
+    #set_image_background()
 
     person = set_person_image()
     # person = plt.Circle((0, 0), 0.5, fc="b")
@@ -174,6 +205,8 @@ if __name__ == "__main__":
 
         # filter_output = plt.Circle((0, 0), 2, fc='w', alpha=0.5)
         prob_value = set_prob_value()
+        text_name = set_name()
+        lines = set_line()
         df_filter = utility.read_file(configurator["info"]["evaluation_file"])
         step = len(configurator["probability_position"])+2
         gt_column_name = configurator["info"]["ground_truth_column_name"]
@@ -183,7 +216,9 @@ if __name__ == "__main__":
 
     if sys.argv[1] == "-s":
         df = utility.read_file(configurator["info"]["input_file_s"])
-
+        text_name = set_name()
+        graph = set_background()
+        lines = set_line()
         anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index) - 1,
                                        interval=configurator["info"]["time_speed"], blit=True, repeat=False)
 
