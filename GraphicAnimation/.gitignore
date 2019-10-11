@@ -1,0 +1,6 @@
+# ignoring pycharm files
+
+.idea/
+__pycache__/
+*.csv
+
