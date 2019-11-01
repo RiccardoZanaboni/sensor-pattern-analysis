@@ -1,7 +1,10 @@
 import sys
+
+import networkx as nx
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import utility
+import numpy as np
 
 
 def set_figure():
@@ -11,166 +14,94 @@ def set_figure():
     return figure
 
 
-def set_background():
-    circle = []
-    for room in configurator["apartment"]:
-        circle.append(plt.Circle(configurator["apartment"][room], 2, fc='y', alpha=0.25))
-
-    for c in circle:
-        ax.add_patch(c)
-
-    return circle
-
-
-def set_line():
-    line = []
-    for room in configurator["adj"]:
-        line.append(plt.Line2D(room[0], room[1]))
-
-    for l in line:
-        ax.add_line(l)
-
-
 def color_heat_map(i):
-    room_list = configurator["probability_position"]
-
-    def set_color(value, j):
-        dic = configurator["evaluation_thresholds"]
-
-        for r in dic:
-            if dic[r][1] >= value >= dic[r][0]:
-                ap_heat_map[j].set_color(r)
-                return
-
-    for index, room in enumerate(room_list):
-        set_color(df[room][i], index)
+    dic = configurator["evaluation_thresholds"]
+    rgba = configurator["rgba_tuple"]
+    colormap = []
+    for bel in df.iloc[i][len(configurator2["room"]) + 2:(len(configurator2["room"]) + 1) * 2]:
+        for color in dic:
+            if dic[color][1] >= bel >= dic[color][0]:  # se il valore  è compreso nella soglia setto il colore
+                tupla=(rgba[color][0],rgba[color][1],rgba[color][2],rgba[color][3])
+                colormap.append(tupla)
+    nodes.set_color(colormap)
 
 
-def init_apartment(ax, config):
-    ap = {}
-    dic = config["apartment"]
-
-    for room in dic:
-        ap[room] = (dic[room][0], dic[room][1])
-
-    return ax, ap
-
-
-def set_person_image():
-    image = plt.imread("person.png")
-    return ax.imshow(image, extent=[0, 0, 0, 0])
-
-
-def set_person_position(i):
-    centre = apartment[df.iloc[i, 6]]
-    img_extent = [centre[0] - 1, centre[0] + 1, centre[1] - 1, centre[1] + 1]
-    person.set_extent(img_extent)
-    # person.set_center(centre)
-
-
-def set_apartment_heat_map():
-    circles = []
-    dic = configurator["apartment"]
-    for i in dic:
-        circles.append(plt.Circle(dic[i], 2, fc='white', alpha=0.25))
-    for c in circles:
-        ax.add_patch(c)
-    return circles
-
-
-def set_prob_value():
-    text_area = []
-    dic = configurator["prob_text_area"]
-
-    for i in dic:
-        text_area.append(plt.text(dic[i][0], dic[i][1], "", fontsize='14'))
-
-    return text_area
-
-
-def set_name():
-    text_area = []
-    dic = configurator["prob_text_name"]
-
-    for i in dic:
-        text_area.append(plt.text(dic[i][0], dic[i][1], i, fontsize='14'))
-
-    return text_area
+def set_probability(i):
+    x = 0
+    for bel in df.iloc[i][len(configurator2["room"]) + 2:(len(configurator2["room"]) + 1) * 2]:
+        value = '%.3f' % bel
+        probabilities[x].set_text(value)
+        x += 1
 
 
 def set_time(i):
-    time.set_text("Time : " + str(df["Time"][i]))
+    time.set_text("Time : " + str(df["Time"][i]))  # il tempo lo prendo da HF_out
 
 
 def animation_logic(i):
-    set_person_position(i)
+    set_lamp_position(i)
     set_time(i)
     set_sensor_output(i)
     set_probability(i)
     color_heat_map(i)
+    set_correct_room(i)
     set_ev_level(i)
 
 
-def init_filter():
-    line = []
-    for room in configurator["adj"]:
-        line.append(plt.Line2D(room[0], room[1]))
-
-    for l in line:
-        ax.add_line(l)
-
-    for c in ap_heat_map:
-        ax.add_patch(c)
-
-    ret_list = [person, sensor_output, ev_level, time]+ap_heat_map+prob_value
-    return ret_list
-
-
-def set_probability(index):
-
-    for j, room_bel in enumerate(configurator["probability_position"]):
-        prob_value[j].set_text('%.3f' % df[room_bel][index])
-
-
 def set_ev_level(index):
-    float_value = float(df_filter.iloc[index, 1])
+    float_value = float(df_filter.iloc[index, 1])  # prendo la colonna efficienza di output_evaluation
     value = '%.3f' % float_value
     text = "Evaluation level : " + value
     ev_level.set_text(text)
 
 
+def set_correct_room(i):
+    value = df["Room"][i]
+    x = np.array(sizes)
+    i=0
+    for room in df.columns[1:len(configurator2["room"]) + 1]:
+        if room==value:
+            index=i
+        i+=1
+    x[index]=8500
+    nodes.set_sizes(x)
+    text = "Ground truth : " + value
+    correct_room.set_text(text)
+
+
+def set_sensors_lamp():
+    image = plt.imread("lamp.png")
+    return ax.imshow(image)
+
+def set_lamp_position(i):
+    x = 0
+    series = df.iloc[i][1:len(configurator2["room"]) + 1]
+    for room in df.columns[1:len(configurator2["room"]) + 1]:
+        for column, val in series.iteritems():
+            if (room == column):
+                if (val == 1):
+                    position = [pos[room][0] + 1.8, pos[room][1]]
+                    img_extent = [position[0] + 1, position[0]+0.2, position[1] - 1, position[1]+0.2]
+                    sensor_lamp[x].set_extent(img_extent)
+                    sensor_lamp[x].set_visible(True)
+                else:
+                    sensor_lamp[x].set_visible(False)
+        x += 1
+
 def animate_filter(i):
     animation_logic(i)
-    ret_list = [person, sensor_output, ev_level, time] + ap_heat_map+prob_value
+    nodi = [nodes]
+    ret_list = [sensor_output, ev_level, time, correct_room] + nodi + probabilities + sensor_lamp
     return ret_list
-
-
-def get_filter_output(i):
-
-    max_room = df.iloc[i, :][step:].apply(float).idxmax()
-    room = configurator["room_dictionary"][max_room]
-    return apartment[room]
 
 
 def set_sensor_output(i):
-    series = df.iloc[i][1:len(configurator["probability_position"])+1]
+    series = df.iloc[i][1:len(
+        configurator2["room"]) + 1]  # iloc mi seleziona riga e colonna in questo caso prendo il valore dei sensori
     text = "Sensors output"
-    for column, val in series.iteritems():
+    for column, val in series.iteritems():  # iteritems va a iterare su un valore con pandas e mi da colonna e valore
         text = text + "\n" + column + " : " + str(val)
-    sensor_output.set_text(text)
-
-
-def init():
-    ret_list = [person, sensor_output, time] + graph
-    return ret_list
-
-
-def animate(i):
-    set_person_position(i)
-    set_sensor_output(i)
-    set_time(i)
-    ret_list = [person, sensor_output, time] + graph 
-    return ret_list
+    sensor_output.set_text(text)  # metto il testo nelle posizioni che ho preso dal json prima nel main
 
 
 if __name__ == "__main__":
@@ -180,50 +111,46 @@ if __name__ == "__main__":
         sys.exit(1)
 
     configurator = utility.open_json(sys.argv[2])
-    fig = set_figure()
+    fig = set_figure()  # setto dimensioni figura
 
     ax = plt.axes(xlim=(configurator["info"]["x_lim"][0], configurator["info"]["x_lim"][1]),
-                  ylim=(configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))
-
-    ax, apartment = init_apartment(ax, configurator)
-    #set_image_background()
-
-    person = set_person_image()
-    # person = plt.Circle((0, 0), 0.5, fc="b")
+                  ylim=(
+                      configurator["info"]["y_lim"][0], configurator["info"]["x_lim"][1]))  # definisco intervalle assi
     time = plt.text(configurator["time"]["position"][0], configurator["time"]["position"][1], "",
-                    fontsize=configurator["time"]["font_size"])
+                    fontsize=configurator["time"]["font_size"])  # scelgo posizione e fontsize del tempo
     sensor_output = plt.text(configurator["text_area_s"]["position"][0],
                              configurator["text_area_s"]["position"][1], "Sensors output",
-                             fontsize=configurator["text_area_s"]["font_size"])
+                             fontsize=configurator["text_area_s"]["font_size"])  # posizione output sensori
+    configurator2 = utility.open_json(configurator["info"]["adj_file"])
 
     if sys.argv[1] == "-f":
         df = utility.read_file(configurator["info"]["input_file"])
-        prob = plt.text(configurator["text_area"]["position"][0],
-                        configurator["text_area"]["position"][1], "", fontsize=configurator["text_area"]["font_size"])
         ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
                             fontsize=configurator["ev_level"]["font_size"])
-
-        # filter_output = plt.Circle((0, 0), 2, fc='w', alpha=0.5)
-        prob_value = set_prob_value()
-        text_name = set_name()
-        lines = set_line()
+        correct_room = plt.text(configurator["correct_room"]["position"][0],
+                                configurator["correct_room"]["position"][1], "",
+                                fontsize=configurator["correct_room"]["font_size"])
+        G = nx.Graph()
+        sensor_lamp = []
+        sizes=[]
+        for room in df.columns[1:len(configurator2["room"]) + 1]:
+            sizes.append(3400)
+            sensor_lamp.append(set_sensors_lamp())
+            G.add_node(room)
+        for room in df.columns[1:len(configurator2["room"]) + 1]:
+            for adj in configurator2["room"][room]:
+                G.add_edge(room, adj)
+        pos = nx.spring_layout(G, center=[10, 13], scale=5)
+        nodes = nx.draw_networkx_nodes(G, pos=pos, with_labels="true", node_size=3400, ax=ax)
+        edges = nx.draw_networkx_edges(G, pos=pos, with_labels="true", ax=ax, font_size=80)
+        labels = nx.draw_networkx_labels(G, pos=pos, font_size=17)
+        probabilities = []
+        for room in df.columns[1:len(configurator2["room"]) + 1]:
+            probabilities.append(plt.text(pos[room][0] - 0.8, pos[room][1] - 0.9, "", fontsize=15))
         df_filter = utility.read_file(configurator["info"]["evaluation_file"])
-        step = len(configurator["probability_position"])+2
-        gt_column_name = configurator["info"]["ground_truth_column_name"]
-        ap_heat_map = set_apartment_heat_map()
-        anim = animation.FuncAnimation(fig, animate_filter, init_func=init_filter, frames=len(df.index)-1,
-                                       interval=configurator["info"]["time_speed"], blit=True, repeat=False)
+        anim = animation.FuncAnimation(fig, animate_filter, frames=len(df.index) - 1,
+                                       interval=configurator["info"]["time_speed"], blit=False,
+                                       repeat=False)
+        #  animate_filter è la funzione che viene richiamata ad ogni frame
 
-    if sys.argv[1] == "-s":
-        df = utility.read_file(configurator["info"]["input_file_s"])
-        text_name = set_name()
-        graph = set_background()
-        lines = set_line()
-        anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(df.index) - 1,
-                                       interval=configurator["info"]["time_speed"], blit=True, repeat=False)
-
-    # Writer = animation.writers['ffmpeg']
-    # writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
-    # anim.save("graph_animation.mp4",writer=writer)
     plt.show()
-

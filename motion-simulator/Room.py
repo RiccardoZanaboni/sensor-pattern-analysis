@@ -76,19 +76,19 @@ class Room:
 
         """
 
-        if self.name == human.current_room.name:
+        if self.name == human.current_room.name: # imposto sensore a 1 se la persona è in quella stanza
             if self.sensor.state == 0:
                 if np.random.uniform(0, 1) > self.sensor.prob_error:
                     self.sensor.state = 1
-                    self.sensor.update_time_next_sample(current_time)
-                    self.sensor.update(current_time)
+                    self.sensor.update_time_next_sample(current_time) # misura dopo 180 secondi
+                    self.sensor.update(current_time) #manda dati al gateway
                 else:
-                    self._sel.log_sensor_error(self.name, current_time)
+                    self._sel.log_sensor_error(self.name, current_time) # se non supero 0.1 di errore registro errore del sensore
             else:
                 if t.Time.check_time_delta(current_time, self.sensor.time_next_sample):
-                    self.sensor.update_time_next_sample(current_time)
+                    self.sensor.update_time_next_sample(current_time) # se il sensore è gia a 1  misura dopo 180 secondi
         else:
-            if self.sensor.state == 1 and self.sensor.time_next_sample <= current_time:
+            if self.sensor.state == 1 and self.sensor.time_next_sample <= current_time:  #se sono passati 180 secondi spegni
                 self.sensor.state = 0
-                self.sensor.update(current_time)
+                self.sensor.update(current_time)  # manda dati al gateway
 

@@ -83,7 +83,6 @@ class SystemConfig:
     @data_config.setter
     def data_config(self, data_config):
         self.__data_config = data_config
-
     def create_apartment(self, sensor_error_logger):
 
         apartment = []
@@ -98,9 +97,9 @@ class SystemConfig:
                             sensor_error_logger)
             apartment.append(tmp)
 
-        for i in apartment:
+        for i in apartment:    #i is every room of the apartment
             i.adjacencies = []
-            for room_name in self.data_config["room"][i.name]:
+            for room_name in self.data_config["room"][i.name]:  #room_name is an adjacencie of a room
                 for j in apartment:
                     if room_name == j.name:
                         i.adjacencies.append(j)
