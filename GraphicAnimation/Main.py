@@ -6,6 +6,12 @@ from matplotlib import animation
 import utility
 import numpy as np
 
+""" There are two execution types :
+
+ -Time triggered: to execute: python3 Main.py -time config.json 
+ 
+ -Event triggered: to execute: python3 Main.py -evtr config.json """
+
 
 def set_figure():
     figure = plt.figure()
@@ -88,13 +94,6 @@ def set_lamp_position(i):
                     sensor_lamp[x].set_visible(False)
         x += 1
 
-def animate_filter(i):
-    animation_logic(i)
-    nodi = [nodes]
-    ret_list = [sensor_output, ev_level, time, correct_room] + nodi + probabilities + sensor_lamp
-    return ret_list
-
-
 def set_sensor_output(i):
     series = df.iloc[i][1:len(
         configurator2["room"]) + 1]  # iloc mi seleziona riga e colonna in questo caso prendo il valore dei sensori
@@ -103,6 +102,14 @@ def set_sensor_output(i):
         text = text + "\n" + column + " : " + str(val)
     sensor_output.set_text(text)  # metto il testo nelle posizioni che ho preso dal json prima nel main
 
+def animate_filter(i):
+    animation_logic(i)
+    nodi = [nodes]
+    ret_list = [sensor_output, ev_level, time, correct_room] + nodi + probabilities + sensor_lamp
+    return ret_list
+
+def animate_evtr(i):
+    animation_logic(int(round(event["Time"][i])))
 
 if __name__ == "__main__":
 
@@ -123,34 +130,39 @@ if __name__ == "__main__":
                              fontsize=configurator["text_area_s"]["font_size"])  # posizione output sensori
     configurator2 = utility.open_json(configurator["info"]["adj_file"])
 
-    if sys.argv[1] == "-f":
-        df = utility.read_file(configurator["info"]["input_file"])
-        ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
+    df = utility.read_file(configurator["info"]["input_file"])
+    ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
                             fontsize=configurator["ev_level"]["font_size"])
-        correct_room = plt.text(configurator["correct_room"]["position"][0],
+    correct_room = plt.text(configurator["correct_room"]["position"][0],
                                 configurator["correct_room"]["position"][1], "",
                                 fontsize=configurator["correct_room"]["font_size"])
-        G = nx.Graph()
-        sensor_lamp = []
-        sizes=[]
-        for room in df.columns[1:len(configurator2["room"]) + 1]:
-            sizes.append(3400)
-            sensor_lamp.append(set_sensors_lamp())
-            G.add_node(room)
-        for room in df.columns[1:len(configurator2["room"]) + 1]:
-            for adj in configurator2["room"][room]:
-                G.add_edge(room, adj)
-        pos = nx.spring_layout(G, center=[10, 13], scale=5)
-        nodes = nx.draw_networkx_nodes(G, pos=pos, with_labels="true", node_size=3400, ax=ax)
-        edges = nx.draw_networkx_edges(G, pos=pos, with_labels="true", ax=ax, font_size=80)
-        labels = nx.draw_networkx_labels(G, pos=pos, font_size=17)
-        probabilities = []
-        for room in df.columns[1:len(configurator2["room"]) + 1]:
-            probabilities.append(plt.text(pos[room][0] - 0.8, pos[room][1] - 0.9, "", fontsize=15))
-        df_filter = utility.read_file(configurator["info"]["evaluation_file"])
+    G = nx.Graph()
+    sensor_lamp = []
+    sizes=[]
+    for room in df.columns[1:len(configurator2["room"]) + 1]:
+        sizes.append(3400)
+        sensor_lamp.append(set_sensors_lamp())
+        G.add_node(room)
+    for room in df.columns[1:len(configurator2["room"]) + 1]:
+        for adj in configurator2["room"][room]:
+            G.add_edge(room, adj)
+    pos = nx.spring_layout(G, center=[10, 13], scale=5)
+    nodes = nx.draw_networkx_nodes(G, pos=pos, with_labels="true", node_size=3400, ax=ax)
+    edges = nx.draw_networkx_edges(G, pos=pos, with_labels="true", ax=ax, font_size=80)
+    labels = nx.draw_networkx_labels(G, pos=pos, font_size=17)
+    probabilities = []
+    for room in df.columns[1:len(configurator2["room"]) + 1]:
+        probabilities.append(plt.text(pos[room][0] - 0.8, pos[room][1] - 0.9, "", fontsize=15))
+    df_filter = utility.read_file(configurator["info"]["evaluation_file"])
+
+    if sys.argv[1] == "-time":
         anim = animation.FuncAnimation(fig, animate_filter, frames=len(df.index) - 1,
                                        interval=configurator["info"]["time_speed"], blit=False,
                                        repeat=False)
         #  animate_filter è la funzione che viene richiamata ad ogni frame
-
+    if sys.argv[1] == "-evtr":
+        event=utility.read_file(configurator["info"]["event_file"])
+        anim = animation.FuncAnimation(fig, animate_evtr, frames=len(event.index) - 1,
+                                       interval=configurator["info"]["time_speed_evtr"], blit=False,
+                                       repeat=False)
     plt.show()

@@ -1,10 +1,13 @@
 {
   "info": {
-    "input_file" : "/home/riccardo/PycharmProjects/sensor-pattern-analysis-graphic-animation/motion-simulator/HF_out.csv",
-    "input_file_s" : "/home/riccardo/PycharmProjects/sensor-pattern-analysis-graphic-animation/motion-simulator/HF_out.csv",
-    "evaluation_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-graphic-animation/motion-simulator/output_evaluation.csv",
-    "adj_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-graphic-animation/motion-simulator/configurations.json",
+    "input_file" : "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/HF_out.csv",
+    "input_file_s" : "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/HF_out.csv",
+    "evaluation_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/output_evaluation.csv",
+    "adj_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/configurations.json",
     "time_speed": 50,
+    "time_speed_evtr": 8000,
+    "event_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/out_time.csv",
+    "sensor_event": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/time.csv",
     "x_lim": [0,20],
     "y_lim": [0,20],
     "figure_size" : [12,9]
@@ -29,23 +32,23 @@
   },
 
   "evaluation_thresholds": {
-    "red3" : [0.8,1],
-    "red2": [0.6,0.799],
-    "red1" : [0.5,0.599],
-    "yellow": [0.4,0.499],
-    "green2" : [0.3,0.399],
-    "green1" : [0.2,0.299],
-    "green0" : [0.0,0.199]
+    "red6" : [0.8,1],
+    "red5": [0.6,0.799],
+    "red4" : [0.5,0.599],
+    "red3": [0.4,0.499],
+    "red2" : [0.3,0.399],
+    "red1" : [0.2,0.299],
+    "red0" : [0.0,0.199]
   },
 
   "rgba_tuple": {
-    "red3" : [1.0,0.0,0.0,0.0],
-    "red2": [1.0,0.5,0.4,0.0],
-    "red1" : [1.0,0.7,0.7,0.0],
-    "yellow": [1.0,1.0,0.4,0.0],
-    "green2" : [0.85,1.0,0.4,0.0],
-    "green1" : [0.6,1.0,0.4,0.0],
-    "green0" : [0.0,1.0,0.0,0.0]
+    "red6" : [1.0,0.0,0.0,0.0],
+    "red5": [0.94,0.30,0.30,0.0],
+    "red4" : [0.95,0.40,0.44,0.0],
+    "red3": [0.96,0.53,0.53,0.0],
+    "red2" : [0.97,0.82,0.82,0.0],
+    "red1" : [0.98,0.91,0.91,0.0],
+    "red0" : [0.99,0.93,0.93,0.0]
   },
 
   "time": {

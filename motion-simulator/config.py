@@ -174,3 +174,6 @@ class SystemConfig:
 
     def name_output_sensor(self):
         return self.data_config["info"]["output_sensors"]
+
+    def output_time(self):
+        return self.data_config["info"]["output_time"]

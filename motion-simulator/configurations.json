@@ -29,6 +29,7 @@
     "output_simulator" : "HF_input.csv",
     "output_movement" : "out.csv",
     "output_sensors" : "out_sensors.csv",
+    "output_time": "out_time.csv",
     "debug_mode"  : "off",
     "person_number" : 1
   }

@@ -8,7 +8,7 @@ import ErrorLogger
 import sys
 
 
-def sensor_sample(apartment, current_time, mat, gateway, n_of_person):
+def sensor_sample(apartment, current_time, mat, gateway, n_of_person, times):
     """
     make the sensor sample
 
@@ -26,13 +26,13 @@ def sensor_sample(apartment, current_time, mat, gateway, n_of_person):
     states = []
     for j in range(0, n_of_person):
         for i in apartment:
-            i.alert_sensor(current_time, mat[j])  # verifico la misura di tutti i sensori
+            i.alert_sensor(current_time, mat[j], times)  # verifico la misura di tutti i sensori
             states.append(i.sensor.state)
 
     gateway.update_df_HF(current_time, states)
 
 
-def simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_person):
+def simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_person, times):
     """
     simulate the movement of the person
 
@@ -55,15 +55,17 @@ def simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_pers
                 movement_tracker = movement_tracker.append({'Time': time.truncate(time.current_time, 3),
                                                             'Room': mat[i].current_room.name, 'Person': i},
                                                            ignore_index=True)
+                times = times.append({'Time': time.truncate(time.current_time, 3)},
+                                     ignore_index=True)
 
         if time.check_time_delta(time.current_time, time_next_sample):  # misuro ogni secondo con i sensori
             sensor_sample(apartment, time.current_time, mat, gateway,
-                          n_of_person)  # scrive cambiamenti dei sensori sia con alert sensor che con updategateway
+                          n_of_person,
+                          times)  # scrive cambiamenti dei sensori sia con alert sensor che con updategateway
             time_next_sample = time.current_time + sensor_sample_time  # misuro ogni secondo
-
         time.increase_time()  # aumento il tempo di un decimo di secondo
 
-    return movement_tracker, mat
+    return movement_tracker, times, mat
 
 
 def check_running_mode(configurator):
@@ -111,20 +113,23 @@ if __name__ == "__main__":
         mat.append(human.Human(apartment, model[i]))
 
     movement_tracker = pd.DataFrame(columns=['Time', 'Room', 'Person'])
+    times = pd.DataFrame(columns=['Time'])
     for i in range(0, n_of_person):
         mat[i].chose_start_room(configurator.init_p_of_staying(i), configurator.init_p_type_behaviour(i))
 
-    sensor_sample(apartment, time.current_time, mat, gateway, n_of_person)
+    sensor_sample(apartment, time.current_time, mat, gateway, n_of_person, times)
     for i in range(0, n_of_person):
         movement_tracker = movement_tracker.append({'Time': time.current_time, 'Room': mat[i].current_room.name,
                                                     'Person': i}, ignore_index=True)  # inizializzo il file di out.csv
+        times = times.append({'Time': time.current_time}, ignore_index=True)
     time.increase_time()
 
-    ret = simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_person)
+    ret = simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_person, times)
 
     ret[0].to_csv(configurator.name_output_gran_truth(), index=False)  # ha tutti i movimenti della persona in out.csv
-    ret[1][0].current_room.sensor.gateway.dataframe.to_csv(configurator.name_output_sensor(),
+    ret[2][0].current_room.sensor.gateway.dataframe.to_csv(configurator.name_output_sensor(),
                                                            index=False)  # scrive i cambiamenti dei sensori
+    ret[1].to_csv(configurator.output_time(), index=False)  # scrivo ogni cambiamento
     gateway.df_HF.to_csv(configurator.name_output_sim(), index=False)  # scrive tutti 0/1 delle stanze per istante
 
     create_simulation_info(model, n_of_person)
