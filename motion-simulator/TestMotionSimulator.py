@@ -64,7 +64,7 @@ def simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_pers
                           times)  # scrive cambiamenti dei sensori sia con alert sensor che con updategateway
             time_next_sample = time.current_time + sensor_sample_time  # misuro ogni secondo
         time.increase_time()  # aumento il tempo di un decimo di secondo
-
+    times.drop_duplicates("Time", inplace=True)
     return movement_tracker, times, mat
 
 
