@@ -121,7 +121,7 @@ if __name__ == "__main__":
     for i in range(0, n_of_person):
         movement_tracker = movement_tracker.append({'Time': time.current_time, 'Room': mat[i].current_room.name,
                                                     'Person': i}, ignore_index=True)  # inizializzo il file di out.csv
-        times = times.append({'Time': time.current_time}, ignore_index=True)
+    times = times.append({'Time': time.current_time}, ignore_index=True)
     time.increase_time()
 
     ret = simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_person, times)
