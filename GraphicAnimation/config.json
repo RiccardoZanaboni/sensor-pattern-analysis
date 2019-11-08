@@ -1,58 +1,66 @@
 {
   "info": {
-    "input_file" : "/home/orso/Tesi/output_old_apartment/HF_out.csv",
-    "input_file_s" : "/home/orso/Tesi/output_old_apartment/HF_out.csv",
-    "evaluation_file": "/home/orso/Tesi/output_old_apartment/output_evaluation.csv",
-    "ground_truth_column_name": "Room",
+    "input_file" : "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/HF_out.csv",
+    "input_file_s" : "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/HF_out.csv",
+    "evaluation_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/output_evaluation.csv",
+    "adj_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/configurations.json",
     "time_speed": 50,
+    "time_speed_evtr": 8000,
+    "event_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/out_time.csv",
+    "ground_truth_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/out.csv",
     "x_lim": [0,20],
     "y_lim": [0,20],
-    "figure_size" : [7,7],
-    "default_room_color" : "y",
-    "person_radius" : 0.25
+    "figure_size" : [12,9]
     },
 
-  "apartment" : { "toilet": [8, 7.5], "kitchen": [6,16.5], "bedroom": [16,8], "livingroom": [15,16],
-                    "atrium": [8.5,12] },
-  "adj" : [[[8,8.5],[7.5,12]], [[6,8.5],[16.5,12]], [[16,8.5],[8,12]], [[15,8.5],[16,12]]],
-
-  "probability_position"  : [ "bel(T)","bel(K)","bel(B)","bel(L)","bel(A)"],
-  "room_dictionary" : {"bel(T)":"toilet","bel(K)": "kitchen", "bel(B)":"bedroom", "bel(L)":"livingroom" ,
-                    "bel(A)":"atrium" },
   "text_area" :{
     "position" : [0.5,1],
     "font_size" : 12
   } ,
-  "prob_text_name" : {"toilet": [3.5,8], "kitchen" : [5, 18.8], "bedroom" : [14,10.5], "livingroom" : [13, 18.5],
-                      "atrium" :  [4,12.5]},
-  "prob_text_area" : {"toilet": [3.6,7], "kitchen" : [7.5, 18], "bedroom" : [17.2,9.7], "livingroom" : [16.3, 17.7],
-                      "atrium" :  [4,11.5]},
   "text_area_s" :{
     "position" : [0.5,0.5],
     "font_size" : 12
   },
-  "ev_level" : {
-    "position" : [12,2.5],
+  "text_area_pers" :{
+    "position" : [12,1.5],
     "font_size" : 12
   },
-  "image": {
-    "position": [0,20,5,20],
-    "file" : "cat_piantina.png"
+  "text_area_numb" :{
+    "position" : [12,3.0],
+    "font_size" : 11
+  },
+  "ev_level" : {
+    "position" : [12,2.0],
+    "font_size" : 12
+  },
+
+  "correct_room" : {
+    "position" : [12,1.0],
+    "font_size" : 12
   },
 
   "evaluation_thresholds": {
-    "red" : [0.8,1],
-    "orange": [0.6,0.799],
-    "gold" : [0.5,0.599],
-    "yellow": [0.300,0.499],
-    "green": [0.4,0.499],
-    "lime" : [0.3,0.399],
-    "aqua" : [0.2,0.299],
-    "blue" : [0.0,0.199]
+    "red6" : [0.8,1],
+    "red5": [0.6,0.799],
+    "red4" : [0.5,0.599],
+    "red3": [0.4,0.499],
+    "red2" : [0.3,0.399],
+    "red1" : [0.2,0.299],
+    "red0" : [0.0,0.199]
+  },
+
+  "rgba_tuple": {
+    "red6" : [1.0,0.0,0.0,0.0],
+    "red5": [0.94,0.30,0.30,0.0],
+    "red4" : [0.95,0.40,0.44,0.0],
+    "red3": [0.96,0.53,0.53,0.0],
+    "red2" : [0.98,0.68,0.68,0.0],
+    "red1" : [0.98,0.85,0.85,0.0],
+    "red0" : [0.99,0.93,0.93,0.0]
   },
 
   "time": {
-    "position": [12,3.5],
+    "position": [12,2.5],
     "font_size" : 11
   }
 }

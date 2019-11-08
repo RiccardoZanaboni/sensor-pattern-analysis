@@ -30,9 +30,9 @@ class UniformDDp:
         if self.test_mode == "on":
             self.seed = seed
         else:
-            self.seed = int(time.time())
+            self.seed = int(time.time())  #time.time mi da il tempo corrente in secondi
 
-        np.random.seed(self.seed)
+        np.random.seed(self.seed)  # makes the random numbers predictable
 
     @property
     def seed(self):

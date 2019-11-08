@@ -64,7 +64,6 @@ class Time:
     @staticmethod
     def check_time_delta(a, b):
         """ compare the absolute difference between two float to a threshold epsilon """
-
         if abs(a-b) < Time.epsilon:
             return True
         return False

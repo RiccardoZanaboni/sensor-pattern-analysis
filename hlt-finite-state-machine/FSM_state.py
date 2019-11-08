@@ -96,4 +96,4 @@ if __name__ == '__main__':
             index = check_dataframe(current_ts, df, index)
 
     fsm_states.to_csv(configurator["info"]["path_directory_output_FSM"] +
-                      configurator()["info"]["file_output_FSM"], index=False)
+                      configurator["info"]["file_output_FSM"], index=False)

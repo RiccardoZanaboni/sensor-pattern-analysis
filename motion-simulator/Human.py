@@ -115,11 +115,11 @@ class Human:
                 the time at which the person will choose his next move
             """
             nonlocal current_time
-            if np.random.uniform(0, 1) > p_of_staying:
+            if np.random.uniform(0, 1) > p_of_staying:  # possibilita che si passi subito da una stanza all'altra in un secondo
                 tmp = 1
             else:
 
-                if np.random.uniform(0, 1) > p_type_behaviour:
+                if np.random.uniform(0, 1) > p_type_behaviour: # vedo con 50 e 50 se usare modello lungo o corto
                     tmp = self.long_time_model_movement.generate_random_time()
                 else:
                     tmp = self.short_time_model_movement.generate_random_time()
@@ -135,6 +135,6 @@ class Human:
 
         """
         self.current_room = random.choice(self.apartment)
-        self.time_next_move = self.short_time_model_movement.generate_random_time()
+        self.time_next_move = self.short_time_model_movement.generate_random_time() # inizializzo tempo della prossima mossa con numero a caso da modello breve
         self.p_of_staying = p_of_staying
         self.p_type_behaviour = p_type_behaviour

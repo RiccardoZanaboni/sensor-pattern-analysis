@@ -31,6 +31,6 @@ if __name__ == "__main__":
 
     df = read_file(directory+file_names[0], configurator)
     for file in file_names[1:5]:
-        df = df.append(read_file(directory+file), ignore_index=True)
+        df = df.append(read_file(directory+file,configurator), ignore_index=True)
 
     write_file(df, configurator["output_unify_ms"]["directory"] + configurator["output_unify_ms"]["file_out_name"])
