@@ -1,10 +1,13 @@
 import sys
+from argparse import ArgumentParser
 
 import networkx as nx
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import utility
 import numpy as np
+from pathlib import Path
+import argparse
 
 """ There are two execution types :
 
@@ -205,11 +208,20 @@ def init_filter():
 
 if __name__ == "__main__":
 
-    if len(sys.argv) < 3:
-        print("Chiamare il programma in maniera corretta")
-        sys.exit(1)
+    #if len(sys.argv) < 3:
+     #   print("Chiamare il programma in maniera corretta")
+     #   sys.exit(1)
 
-    configurator = utility.open_json(sys.argv[2])
+    parser = argparse.ArgumentParser(description="mod of execution (-time,-evtr),and path of config file")
+    #parser.add_argument("mod",type= str)
+    mod = "-time"
+    parser.add_argument("path")
+    args = parser.parse_args()
+    config_path = Path(args.path)
+
+
+    configurator = utility.open_json(config_path)
+    results_path = config_path.parents[2]/configurator["info"]["results_rel_path"]     #setto il percorso dove ho tutti i file risultato
     fig = set_figure()  # setto dimensioni figura
 
     ax = plt.axes(xlim=(configurator["info"]["x_lim"][0], configurator["info"]["x_lim"][1]),
@@ -223,9 +235,9 @@ if __name__ == "__main__":
     person_color = plt.text(configurator["text_area_pers"]["position"][0],
                              configurator["text_area_pers"]["position"][1], "Wanted person color: Green",
                              fontsize=configurator["text_area_pers"]["font_size"])  # colore prima persona
-    configurator2 = utility.open_json(configurator["info"]["adj_file"])
+    configurator2 = utility.open_json(config_path.parents[1]/configurator["info"]["adj_file"])
 
-    df = utility.read_file(configurator["info"]["input_file"])
+    df = utility.read_file(results_path/configurator["info"]["input_file"])
     ev_level = plt.text(configurator["ev_level"]["position"][0], configurator["ev_level"]["position"][1], "",
                         fontsize=configurator["ev_level"]["font_size"])
     correct_room = plt.text(configurator["correct_room"]["position"][0],
@@ -235,7 +247,7 @@ if __name__ == "__main__":
     number_person = plt.text(configurator["text_area_numb"]["position"][0],
                             configurator["text_area_numb"]["position"][1], "Number of person:"+ str(n_of_person),
                             fontsize=configurator["text_area_numb"]["font_size"])
-    df_ground_truth = utility.read_file(configurator["info"]["ground_truth_file"])
+    df_ground_truth = utility.read_file(results_path/configurator["info"]["ground_truth_file"])
     G = nx.Graph()
     sensor_lamp = []
     ground_truth = []
@@ -267,14 +279,14 @@ if __name__ == "__main__":
     for room in df.columns[1:len(configurator2["room"]) + 1]:
         person_excess.append(plt.text(pos[room][0] - 20/len(room_counter) - (3 / 8)/len(room_counter), pos[room][1] - 3/len(room_counter), "", fontsize=15-(0.4*len(room_counter))))
         probabilities.append(plt.text(pos[room][0] - 0.4, pos[room][1] - 0.6, "", fontsize=15-(0.4*len(room_counter))))
-    df_filter = utility.read_file(configurator["info"]["evaluation_file"])
-    if sys.argv[1] == "-time":
+    df_filter = utility.read_file(results_path/configurator["info"]["evaluation_file"])
+    if mod == "-time":
         anim = animation.FuncAnimation(fig, animate_filter, frames=len(df.index) - 1, init_func=init_filter,
                                        interval=configurator["info"]["time_speed"], blit=False,
                                        repeat=False)
         #  animate_filter è la funzione che viene richiamata ad ogni frame
-    if sys.argv[1] == "-evtr":
-        event = utility.read_file(configurator["info"]["event_file"])
+    if mod == "-evtr":
+        event = utility.read_file(results_path/configurator["info"]["event_file"])
         anim = animation.FuncAnimation(fig, animate_evtr, frames=len(event.index) - 1, init_func=init_filter,
                                        interval=configurator["info"]["time_speed_evtr"], blit=False,
                                        repeat=False)

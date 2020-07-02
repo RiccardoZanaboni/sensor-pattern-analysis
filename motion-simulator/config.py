@@ -7,7 +7,7 @@ import json
 
 class SystemConfig:
 
-    """ Class which configures the simulator reading from configurations.json
+    """ Class which configures the simulator reading from configurations_before.json
         ...
 
         Attributes
@@ -177,3 +177,6 @@ class SystemConfig:
 
     def output_time(self):
         return self.data_config["info"]["output_time"]
+
+    def outputh_path(self):                             #aggiunta dalla versione precedente per sistemare i percorsi
+        return self.data_config["info"]["output_path"]

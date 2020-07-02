@@ -1,13 +1,14 @@
 {
   "info": {
-    "input_file" : "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/HF_out.csv",
-    "input_file_s" : "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/HF_out.csv",
-    "evaluation_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/output_evaluation.csv",
-    "adj_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/configurations.json",
+    "results_rel_path": "results/configurations_results",
+    "input_file" : "HF_out.csv",
+    "input_file_s" : "HF_out.csv",
+    "evaluation_file": "output_evaluation.csv",
+    "adj_file": "configurations_MS/configurations.json",
     "time_speed": 50,
     "time_speed_evtr": 8000,
-    "event_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/out_time.csv",
-    "ground_truth_file": "/home/riccardo/PycharmProjects/sensor-pattern-analysis-Animation-with-Graph/motion-simulator/out.csv",
+    "event_file": "out_time.csv",
+    "ground_truth_file": "out.csv",
     "x_lim": [0,20],
     "y_lim": [0,20],
     "figure_size" : [12,9]

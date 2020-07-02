@@ -4,6 +4,8 @@ import ReadFile
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
+import argparse
 
 """
     Script used to evaluate the output of the histogram filter after a simulation.
@@ -19,8 +21,8 @@ def open_json(file_name):
     return data_config
 
 
-def set_up(data_config):
-    data = ReadFile.ReadFile(data_config["info"]["input_file_path"]+data_config["info"]["output_file_name"]).df
+def set_up(data_config,results_path):
+    data = ReadFile.ReadFile(results_path/data_config["info"]["output_file_name"]).df
     return data
 
 
@@ -54,11 +56,24 @@ if __name__ == "__main__" :
     #    print("Manca il nome del file json")
     #    sys.exit(1)
 
-    conf_file = "config.json"
-    config = open_json(conf_file)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path")
+    args = parser.parse_args()
+    config_path = Path(args.path)
+
+    config = open_json(config_path)
+    results_path = config_path.parents[2]/config["info"]["results_rel_path"]
     df = pd.DataFrame(columns=['Time', 'Efficiency'])
 
-    data = set_up(config)
+    n_same_config = 0
+    first_stem = results_path.stem
+    while (results_path / config["info"]["output_evaluation"]).exists() == True:
+        n_same_config += 1
+        stem = first_stem + '[' + str(n_same_config) + ']'
+        results_path = results_path.parent
+        results_path = results_path / stem
+
+    data = set_up(config, results_path)
     i = 0
     dictionary_rooms = dictionary_room(config)
     n_correct = 0
@@ -69,10 +84,10 @@ if __name__ == "__main__" :
         df = df.append(temp, ignore_index=True)
         i += 1
 
-    df.to_csv(config["info"]["input_file_path"]+config["info"]["output_evaluation"], index=False)
+    df.to_csv(results_path/config["info"]["output_evaluation"], index=False)
 
     ax = plt.gca()
     df.plot(kind='line', x='Time', y='Efficiency', ax=ax)
-    plt.savefig(config["info"]["input_file_path"]+config["info"]["img_evaluation"])
+    plt.savefig(results_path/config["info"]["img_evaluation"])
 
 

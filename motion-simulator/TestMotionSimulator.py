@@ -5,7 +5,9 @@ import UniformDDP as ddp
 import config
 import SimulationInfo as si
 import ErrorLogger
-import sys
+from pathlib import Path
+import argparse
+import json
 
 
 def sensor_sample(apartment, current_time, mat, gateway, n_of_person, times):
@@ -32,7 +34,7 @@ def sensor_sample(apartment, current_time, mat, gateway, n_of_person, times):
     gateway.update_df_HF(current_time, states)
 
 
-def simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_person, times):
+def simulate(movement_tracker, apartment, time, mat, sensor_sample_time, gateway, n_of_person, times):
     """
     simulate the movement of the person
 
@@ -64,7 +66,7 @@ def simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_pers
                           times)  # scrive cambiamenti dei sensori sia con alert sensor che con updategateway
             time_next_sample = time.current_time + sensor_sample_time  # misuro ogni secondo
         time.increase_time()  # aumento il tempo di un decimo di secondo
-    #times.drop_duplicates("Time", inplace=True)
+    # times.drop_duplicates("Time", inplace=True)
     return movement_tracker, times, mat
 
 
@@ -87,12 +89,17 @@ def create_simulation_info(model, n_of_person):
     sim_info.create_file()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # if len(sys.argv) < 2:
     #    print("Manca il nome del file json")
     #    sys.exit(1)
 
-    configurator = config.SystemConfig("configurations.json")
+    parser = argparse.ArgumentParser(description="Elabora il percorso del file")
+    parser.add_argument("file_path")
+    args = parser.parse_args()
+    file_path = Path(args.file_path)
+
+    configurator = config.SystemConfig(file_path)
     check_running_mode(configurator)
     sensor_error_logger = ErrorLogger.ErrorLogger()
     n_of_person = configurator.init_person_number()
@@ -124,12 +131,26 @@ if __name__ == "__main__":
     times = times.append({'Time': time.current_time}, ignore_index=True)
     time.increase_time()
 
-    ret = simulate(movement_tracker, time, mat, sensor_sample_time, gateway, n_of_person, times)
+    ret = simulate(movement_tracker, apartment, time, mat, sensor_sample_time, gateway, n_of_person, times)
 
-    ret[0].to_csv(configurator.name_output_gran_truth(), index=False)  # ha tutti i movimenti della persona in out.csv
-    ret[2][0].current_room.sensor.gateway.dataframe.to_csv(configurator.name_output_sensor(),
+    file_output_path = file_path.parents[
+                           2] / Path(configurator.outputh_path())  # se il percorso assoluto d'usita del file non esiste viene creata la cartella per i risultati
+
+    n_conf = 0
+    if (file_output_path / Path(configurator.name_output_gran_truth())).exists():
+        while file_output_path.exists():
+            n_conf += 1
+            file_output_path = file_path.parents[2] / Path(configurator.outputh_path()+'['+str(n_conf)+']')
+
+    if file_output_path.exists() == False:  # in base all' outputh_path che si trova nel corrispondete file json che sto simulando
+        file_output_path.mkdir()
+
+    ret[0].to_csv(file_output_path / Path(configurator.name_output_gran_truth()),
+                  index=False)  # ha tutti i movimenti della persona in out.csv
+    ret[2][0].current_room.sensor.gateway.dataframe.to_csv(file_output_path / Path(configurator.name_output_sensor()),
                                                            index=False)  # scrive i cambiamenti dei sensori
-    ret[1].to_csv(configurator.output_time(), index=False)  # scrivo ogni cambiamento
-    gateway.df_HF.to_csv(configurator.name_output_sim(), index=False)  # scrive tutti 0/1 delle stanze per istante
+    ret[1].to_csv(file_output_path / Path(configurator.output_time()), index=False)  # scrivo ogni cambiamento
+    gateway.df_HF.to_csv(file_output_path / Path(configurator.name_output_sim()),
+                         index=False)  # scrive tutti 0/1 delle stanze per istante
 
     create_simulation_info(model, n_of_person)

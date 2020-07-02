@@ -4,6 +4,8 @@ import sys
 import Belief
 import ReadFile
 import pandas as pd
+from pathlib import Path
+import argparse
 
 
 def open_json(conf):
@@ -13,8 +15,8 @@ def open_json(conf):
     return data_config
 
 
-def system_set_up(data_config):
-    rf = ReadFile.ReadFile(data_config["info"]["input_file_path"]+data_config["info"]["input_file_name"]) #legge HF_input
+def system_set_up(data_config, results_path):
+    rf = ReadFile.ReadFile(results_path/data_config["info"]["input_file_name"]) #legge HF_input
     bel = data_config["probability"]["bel_t0"]  # probabilita di essere in quella stanza all inizio
     pos = data_config["info"]["state_domain"]   # sono le iniziali delle stanze
     prob_state = []
@@ -41,9 +43,8 @@ def check_measure(new_measure, previous_measure):
     return out_str
 
 
-def crate_file_output(df1: pd.DataFrame, df2, data_config):
-    df3 = ReadFile.ReadFile(data_config["info"]["input_file_path"]+
-                            data_config["info"]["ground_truth_file_name"]).df  # questo df3 è out.csv che rappresenta dove la persona è
+def crate_file_output(df1: pd.DataFrame, df2, data_config, results_path):
+    df3 = ReadFile.ReadFile(results_path/data_config["info"]["ground_truth_file_name"]).df  # questo df3 è out.csv che rappresenta dove la persona è
     df1["Room"] = ""  # df1 è HF_input e df2 sono le probabilità
 
     for i, row in df1.copy().iterrows():
@@ -52,7 +53,8 @@ def crate_file_output(df1: pd.DataFrame, df2, data_config):
         df1.loc[i, 'Room'] = r  # aggiungo le stanze in cui la persona si trova realmente da out.csv
 
     df = pd.merge(df1, df2, how='inner')
-    df.to_csv(data_config["info"]["input_file_path"]+data_config["info"]["output_file_name"], index=False)
+
+    df.to_csv(results_path/data_config["info"]["output_file_name"], index=False)
 
 
 if __name__ == "__main__":
@@ -60,10 +62,24 @@ if __name__ == "__main__":
     #    print("Manca il nome del file json")
     #    sys.exit(1)
 
-    conf_file = "config.json"
-    config = open_json(conf_file)
+    parser = argparse.ArgumentParser(description="elabora il percorso del file")
+    parser.add_argument("file_path")
+    args = parser.parse_args()
+    conf_file = Path(args.file_path)
 
-    belief, rf = system_set_up(config) # carica e inizializza
+    print('Calculating probability...')
+    config = open_json(conf_file)
+    results_path = conf_file.parents[2]/Path(config["info"]["results_rel_path"])
+
+    n_same_config = 0
+    first_stem = results_path.stem
+    while (results_path / config["info"]["output_file_name"]).exists() == True:
+        n_same_config += 1
+        stem = first_stem + '[' + str(n_same_config) + ']'
+        results_path = results_path.parent
+        results_path = results_path / stem
+
+    belief, rf = system_set_up(config, results_path) # carica e inizializza
     data_in = rf.df  #carico HF_input
     columns = config["info"]["columns_name"]
     df = pd.DataFrame(columns=columns)
@@ -79,7 +95,7 @@ if __name__ == "__main__":
         if len(transactions) > 0:  # se qualche sensore è cambiato
             belief.bel_projected_upgrade()
             belief.bel_upgrade(transactions)
-            
+
         tmp = {}
         values = [time] + belief.bel
 
@@ -91,6 +107,6 @@ if __name__ == "__main__":
         sensor_measures_previous = sensor_measures   #assegno a previous la misura precedente dei sensori
         i += 1
 
-    crate_file_output(data_in, df, config)
+    crate_file_output(data_in, df, config, results_path)
 
 
