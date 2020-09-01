@@ -56,20 +56,25 @@ def crate_file_output(df1: pd.DataFrame, df2, data_config, results_path):
 
     df.to_csv(results_path/data_config["info"]["output_file_name"], index=False)
 
+def init_argparser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('file_path', action='store', type=str,
+                        help='Path of the base configuration relative to your current position')
+    return parser
+
 
 if __name__ == "__main__":
     #if len(sys.argv) < 2:
     #    print("Manca il nome del file json")
     #    sys.exit(1)
 
-    parser = argparse.ArgumentParser(description="elabora il percorso del file")
-    parser.add_argument("file_path")
+    parser = init_argparser()
     args = parser.parse_args()
     conf_file = Path(args.file_path)
 
     print('Calculating probability...')
     config = open_json(conf_file)
-    results_path = conf_file.parents[2]/Path(config["info"]["results_rel_path"])
+    results_path = Path(config["info"]["results_path"])
 
     n_same_config = 0
     first_stem = results_path.stem

@@ -118,7 +118,8 @@ if __name__ == '__main__':
                       ddp.UniformDDp(configurator.init_short_model_lower(i), configurator.init_short_model_upper(i),
                                      configurator.init_short_model_seed(i), configurator.init_test_mode())])
         mat.append(human.Human(apartment, model[i]))
-
+        print('Simulation seed person '+str(i)+' long model: ' + str(model[i][0].seed))
+        print('Simulation seed person '+str(i)+' short model: ' + str(model[i][1].seed))
     movement_tracker = pd.DataFrame(columns=['Time', 'Room', 'Person'])
     times = pd.DataFrame(columns=['Time'])
     for i in range(0, n_of_person):
@@ -133,14 +134,13 @@ if __name__ == '__main__':
 
     ret = simulate(movement_tracker, apartment, time, mat, sensor_sample_time, gateway, n_of_person, times)
 
-    file_output_path = file_path.parents[
-                           2] / Path(configurator.outputh_path())  # se il percorso assoluto d'usita del file non esiste viene creata la cartella per i risultati
+    file_output_path = Path(configurator.outputh_path())  # se il percorso assoluto d'usita del file non esiste viene creata la cartella per i risultati
 
     n_conf = 0
-    if (file_output_path / Path(configurator.name_output_gran_truth())).exists():
+    if (file_output_path/Path(configurator.name_output_gran_truth())).exists():
         while file_output_path.exists():
             n_conf += 1
-            file_output_path = file_path.parents[2] / Path(configurator.outputh_path()+'['+str(n_conf)+']')
+            file_output_path =Path(configurator.outputh_path()+'['+str(n_conf)+']')
 
     if file_output_path.exists() == False:  # in base all' outputh_path che si trova nel corrispondete file json che sto simulando
         file_output_path.mkdir()

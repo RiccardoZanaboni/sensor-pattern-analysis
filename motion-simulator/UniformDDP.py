@@ -26,11 +26,7 @@ class UniformDDp:
         self.lower = lower
         self.upper = upper
         self.test_mode = test_mode
-
-        if self.test_mode == "on":
-            self.seed = seed
-        else:
-            self.seed = int(time.time())  #time.time mi da il tempo corrente in secondi
+        self.seed = time.time_ns()%1_000_000_000  #time.time mi da il tempo corrente in secondi
 
         np.random.seed(self.seed)  # makes the random numbers predictable
 
