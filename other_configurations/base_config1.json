@@ -1,0 +1,189 @@
+{
+  "room": {
+    "atrium1": [
+      "kitchen",
+      "livingroom",
+      "atrium2"
+    ],
+    "kitchen": [
+      "atrium1"
+    ],
+    "livingroom": [
+      "atrium1"
+    ],
+    "atrium2": [
+      "atrium1",
+      "bedroom1",
+      "bedroom2",
+      "toilet"
+    ],
+    "bedroom2": [
+      "atrium2"
+    ],
+    "bedroom1": [
+      "atrium2"
+    ],
+    "toilet": [
+      "atrium2"
+    ]
+  },
+  "time": {
+    "START_TIME": 0.0,
+    "STOP_TIME": 1000.0,
+    "lower_long_waiting_time": [
+      181,
+      181,
+      181,
+      181,
+      181
+    ],
+    "upper_long_waiting_time": [
+      600,
+      610,
+      620,
+      630,
+      650
+    ],
+    "seed_long_waiting_time": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "lower_short_waiting_time": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "upper_short_waiting_time": [
+      179,
+      179,
+      179,
+      179,
+      179
+    ],
+    "seed_short_waiting_time": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "sensor_sleep_time": 180,
+    "system_time_delta": 0.1,
+    "sensor_sample_time": 1.0,
+    "epsilon": 0.001
+  },
+  "probability": {
+    "sensor_prob_error": 0.1,
+    "probability_of_staying": [
+      0.4,
+      0.6,
+      0.5,
+      0.6,
+      0.5
+    ],
+    "probability_of_short_moving_behaviour": [
+
+    ]
+  },
+
+  "info": {
+    "output_path": "results",
+    "output_simulator": "",
+    "output_movement": "",
+    "output_sensors": "",
+    "output_time": "",
+    "debug_mode": "off",
+    "person_number": 1
+  },
+
+  "generator_info":{
+    "number_of_simulations":1,
+    "number_of_configurations": 1,
+    "max_person_number": 1
+  },
+
+  "paths" : {
+    "main_MS":"motion-simulator/TestMotionSimulator.py",
+    "main_HF":"HistogramFilter/Main.py",
+    "main_EV":"HistogramFilter/EvaluateOutput.py",
+    "main_HIST": "Histogram.py"
+  },
+
+  "info_HF" : {
+    "results_path" : "results",
+    "input_file_name" :"",
+    "ground_truth_file_name": "",
+    "output_file_name": "",
+    "state_domain": ["A1","K","L","A2","B1","B2","T"],
+    "room_name" : ["atrium1","kitchen","livingroom","atrium2", "bedroom1", "bedroom2", "toilet"],
+    "columns_name": ["Time", "bel(A1)", "bel(K)", "bel(L)", "bel(A2)", "bel(B1)", "bel(B2)", "bel(T)"],
+    "output_evaluation": "",
+    "img_evaluation" : "",
+    "img_histogram": "",
+    "output_histogram" : "",
+    "histogram_quantum": 0.1,
+    "movement_transaction": "01"
+  },
+
+
+  "probability_HF": {
+    "bel_t0": [0.143, 0.143, 0.143, 0.143, 0.143, 0.143, 0.143],
+    "probA1" : [0.25, 0.25, 0.25, 0.25, 0, 0, 0],
+    "probK" : [0.50, 0.50, 0 , 0, 0, 0, 0],
+    "probL" : [0.50, 0, 0.50, 0, 0, 0, 0],
+    "probA2" : [0.20, 0, 0, 0.20, 0.20, 0.20, 0.20],
+    "probB1" : [0, 0, 0, 0.50, 0.50, 0, 0],
+    "probB2" : [0, 0, 0, 0.50, 0, 0.50, 0],
+    "probT" : [0, 0, 0, 0.50, 0, 0, 0.50]
+  },
+
+  "sensor_error_probability": {
+    "sA1" : {
+      "01" : [0.9,0.017,0.017,0.017,0.017,0.017, 0.017],
+      "10" : [0.1,0.15,0.15,0.15,0.15,0.15,0.15],
+      "11" : [0.5,0.084,0.084,0.084,0.084,0.084,0.084],
+      "00" : [0.1,0.15,0.15,0.15,0.15,0.15,0.15]
+    },
+    "sK" : {
+      "01" : [0.017,0.9,0.017,0.017,0.017,0.017, 0.017],
+      "10" : [0.015,0.1,0.15,0.15,0.15,0.15,0.15],
+      "11" : [0.084,0.5,0.084,0.084,0.084,0.084,0.084],
+      "00" : [0.15,0.1,0.15,0.15,0.15,0.15,0.15]
+    },
+    "sL" : {
+      "01" : [0.017,0.017,0.9,0.017,0.017,0.017, 0.017],
+      "10" : [0.15,0.15,0.1,0.15,0.15,0.15,0.15],
+      "11" : [0.084,0.084,0.5,0.084,0.084,0.084,0.084],
+      "00" : [0.15,0.15,0.1,0.15,0.15,0.15,0.15]
+    },
+    "sA2" : {
+      "01" : [0.017,0.017,0.017,0.9,0.017,0.017, 0.017],
+      "10" : [0.15,0.15,0.15,0.1,0.15,0.15,0.15],
+      "11" : [0.084,0.084,0.084,0.5,0.084,0.084,0.084],
+      "00" : [0.15,0.15,0.15,0.1,0.15,0.15,0.15]
+    },
+    "sB1" : {
+      "01" : [0.017,0.017,0.017,0.017,0.9,0.017, 0.017],
+      "10" : [0.15,0.15,0.15,0.15,0.1,0.15,0.15],
+      "11" : [0.084,0.084,0.084,0.084,0.5,0.084,0.084],
+      "00" : [0.15,0.15,0.15,0.15,0.1,0.15,0.15]
+    },
+    "sB2" : {
+      "01" : [0.017,0.017,0.017,0.017,0.017,0.9, 0.017],
+      "10" : [0.15,0.15,0.15,0.15,0.15,0.1,0.15],
+      "11" : [0.084,0.084,0.084,0.084,0.084,0.5,0.084],
+      "00" : [0.15,0.15,0.15,0.15,0.15,0.1,0.15]
+    },
+    "sT" : {
+      "01" : [0.017,0.017,0.017,0.017,0.017,0.017, 0.9],
+      "10" : [0.15,0.15,0.15,0.15,0.15,0.15,0.1],
+      "11" : [0.084,0.084,0.084,0.084,0.084,0.084,0.5],
+      "00" : [0.15,0.15,0.15,0.15,0.15,0.15,0.1]
+    }
+  }
+}

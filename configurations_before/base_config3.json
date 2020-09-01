@@ -1,0 +1,41 @@
+{
+  "room": {
+    "bathroom1": ["livingroom"],
+    "livingroom": ["bathroom1","kitchen","atrium"],
+    "atrium": ["livingroom","bedroom"],
+    "bedroom": ["atrium","bathroom"],
+    "bathroom": ["bedroom"]
+  },
+  "time" : {
+    "START_TIME" : 0.0,
+    "STOP_TIME" : 10000.0,
+    "lower_long_waiting_time" : [181, 181, 181, 181, 181],
+    "upper_long_waiting_time" : [600, 610, 620, 630, 650],
+    "seed_long_waiting_time": [3,3, 3, 3, 3,3,3, 3, 3, 3],
+    "lower_short_waiting_time" : [4,4,4,4,4],
+    "upper_short_waiting_time" : [179, 179, 179,179, 179],
+    "seed_short_waiting_time": [3, 3, 3, 3, 3,3, 3, 3, 3, 3],
+    "sensor_sleep_time": 180,
+    "system_time_delta": 0.1,
+    "sensor_sample_time": 1.0,
+    "epsilon": 0.001
+  },
+  "probability" : {
+    "sensor_prob_error" : 0.1,
+    "probability_of_staying" : [0.4,
+      0.6,
+      0.5,
+      0.6,
+      0.5],
+    "probability_of_short_moving_behaviour": []
+  },
+  "info" : {
+    "output_path" : "",
+    "output_simulator" : "",
+    "output_movement" : "",
+    "output_sensors" : "",
+    "output_time": "",
+    "debug_mode"  : "",
+    "person_number" : 1
+  }
+}
