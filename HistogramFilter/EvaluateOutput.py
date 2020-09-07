@@ -146,12 +146,33 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots()
 
-    ax.bar(dfh['Interval'], dfh['Efficiencies_count'], width, label='Intervals')
+    ax.bar(dfh['Interval'], dfh['Efficiencies_count'], width)
 
     ax.set_ylabel('Count of efficiency values')
     ax.set_xlabel('Intervals')
     ax.set_title('Scores divided by intervals')
-    ax.legend()
+
+
+    rects = ax.patches
+    i = 0
+
+    for rect in rects:
+        y_value = rect.get_height()
+        x_value = rect.get_x() + rect.get_width() / 2
+
+        va = 'top'
+        space = 10
+
+        label = f'{percentages[i]}%'
+
+        plt.annotate(
+            label,  # Use `label` as label
+            (x_value, y_value),  # Place label at end of the bar
+            xytext=(0, space),  # Vertically shift label by `space`
+            textcoords="offset points",  # Interpret `xytext` as offset in points
+            ha='center',  # Horizontally center label
+            va=va)
+        i += 1
 
     plt.xticks(rotation=-25)
     plt.savefig(results_path / config["info"]["img_histogram"])

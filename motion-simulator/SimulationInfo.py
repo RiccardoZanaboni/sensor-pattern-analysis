@@ -65,10 +65,11 @@ class SimulationInfo:
         :return:
         """
         file_name = self._directory_name+"/"+self._file_name+".txt"
-        f = open(file_name, "w+")
-        f.write("Simulation Info :"+"\n")
-        f.write("Long  waiting time  seed : " + str(self.lwt_seed) + "\n")
-        f.write("Short  waiting time seed : " + str(self.swt_seed) + "\n")
-        f.write("Number of person : %d \n" % self.number_of_person)
-        f.close()
+        with open(file_name, "w+") as f:
+            BODY = f"""Simulation Info :
+Long waiting time seed : {self.lwt_seed}
+Short  waiting time seed : {self.swt_seed}
+"Number of person : {self.number_of_person}
+"""
+            f.write(BODY)
 

@@ -114,9 +114,9 @@ if __name__ == '__main__':
     mat = []
     for i in range(0, n_of_person):
         model.append([ddp.UniformDDp(configurator.init_long_model_lower(i), configurator.init_long_model_upper(i),
-                                     configurator.init_long_model_seed(i), configurator.init_test_mode()),
+                                     configurator.init_test_mode()),
                       ddp.UniformDDp(configurator.init_short_model_lower(i), configurator.init_short_model_upper(i),
-                                     configurator.init_short_model_seed(i), configurator.init_test_mode())])
+                                     configurator.init_test_mode())])
         mat.append(human.Human(apartment, model[i]))
         print('Simulation seed person '+str(i)+' long model: ' + str(model[i][0].seed))
         print('Simulation seed person '+str(i)+' short model: ' + str(model[i][1].seed))
@@ -140,7 +140,7 @@ if __name__ == '__main__':
     if (file_output_path/Path(configurator.name_output_gran_truth())).exists():
         while file_output_path.exists():
             n_conf += 1
-            file_output_path =Path(configurator.outputh_path()+'['+str(n_conf)+']')
+            file_output_path = Path(configurator.outputh_path()+'['+str(n_conf)+']')
 
     if file_output_path.exists() == False:  # in base all' outputh_path che si trova nel corrispondete file json che sto simulando
         file_output_path.mkdir()

@@ -272,7 +272,7 @@ if __name__ == "__main__":
             G.add_edge(room, adj)
     pos = nx.spring_layout(G, center=[10, 13], scale=5)
     nodes = nx.draw_networkx_nodes(G, pos=pos, with_labels="true", node_size=3400-(160*len(room_counter)), ax=ax)
-    edges = nx.draw_networkx_edges(G, pos=pos, with_labels="true", ax=ax, font_size=8,alpha=0.5)
+    edges = nx.draw_networkx_edges(G, pos=pos, with_labels="true", ax=ax, font_size=8, alpha=0.5)
     labels = nx.draw_networkx_labels(G, pos=pos, font_size=int(17-(0.2*len(room_counter))))  # 17
     probabilities = []
     person_excess = []

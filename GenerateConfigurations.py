@@ -1,8 +1,47 @@
 import json
 import argparse
+import networkx as nx
 import numpy as np
 from pathlib import Path
+import matplotlib.pyplot as plt
 import sys
+
+"""
+Questo GeneratorConfigurations.py genera una lista di configurazioni a partire da una determinata configurazione base
+e crea uno script bash che lancia le simulazioni. (usare come esempio base_config1.json)
+Prima di lanciare il programma è necessario creare una cartella(nome arbitrario) al cui interno va inserito il file
+json base da utilizzare per la creazione delle configurazioni : all'interno del file vanno inserite le informazioni 
+di una configurazione realtive al motion-simulator e all'histogramfilter come nelle precedenti configurazioni da sole
+per il generatore vanno inserite all'interno del file anche questi due pezzi:
+
+"generator_info":{
+    "number_of_simulations":2,      questo valore corrisponde al numero di simulazioni da fare per ogni configurazione
+    "number_of_configurations": 10,     questo valore specifica wuante configurazioni diverse che abbiano comportamenti diversi di persone creare
+    "max_person_number": 5,         questo valore indica il numero massimo di persone all'interno dell'appartamento
+    "topology": "apartment_topology1.png"       nome del file che rappresenta la topologia dell'appartamento
+  },
+
+  "paths" : {
+    "main_MS":"motion-simulator/TestMotionSimulator.py",
+    "main_HF":"HistogramFilter/Main.py",
+    "main_EV":"HistogramFilter/EvaluateOutput.py",
+    "main_HIST": "Histogram.py"
+  }
+  
+  Infine nel dictionary info_HF questo:
+  histogram_quantum : (valore del quanto dell'istogramma voluto)
+  
+  Nella cartella va inserito anche un ulteriore directory chiamata 'simulation-info'
+  
+  
+  per lanciare il programma scrivere questo sulla linea di comando:
+  
+  python3 GenerateConfigurations.py (percorso relativo della directory in cui si trova la config base) --projectdir 
+  (percorso della directory del progetto sensor-pattern-analysis)
+
+  ----> il secondo argomento ovvero il percorso della directory del progetto è opzionale e può essere omesso se la directory di lavoro
+  è già quest'ultima.
+"""
 
 CONFIG_HF = "configurations_HF"
 CONFIG_MS = "configurations_MS"
@@ -77,10 +116,12 @@ def generate(path, main_path):
     print('Generating Configurations...')
     n_config = 0
     for base_config in path.glob('*.json'):
-        person_number = 0
 
+        person_number = 0
         with open(base_config, 'r') as filejson:
             data = json.load(filejson)
+
+        create_graph(data, path)
             
         data_HF = data.copy()
 
@@ -142,6 +183,26 @@ echo "Creating simulation total Histogram..."
 python3 $MAINPATH/$MAIN_EXE_HIST $CONFPATH
 '''
         f.write(histogram_command)
+
+
+
+def create_graph(data, path):
+    topology_file = data['generator_info']['topology']
+    G = nx.Graph()
+    for room in data['room']:
+        G.add_node(room)
+    for room in data['room']:
+        for adj in data['room'][room]:
+            G.add_edge(room, adj)
+
+    pos = nx.spring_layout(G, center=[9, 13], scale=5)
+    nx.draw_networkx_nodes(G, pos=pos, with_labels="true", node_size=650)
+    nx.draw_networkx_edges(G, pos=pos, with_labels="true", font_size=8, alpha=0.5)
+    nx.draw_networkx_labels(G, pos=pos, font_size=12)  # 17
+
+    plt.savefig(path/Path(topology_file))
+
+
 
 def init_argparser():
     parser = argparse.ArgumentParser()

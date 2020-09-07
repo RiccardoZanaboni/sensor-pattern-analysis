@@ -27,6 +27,7 @@
       "atrium2"
     ]
   },
+
   "time": {
     "START_TIME": 0.0,
     "STOP_TIME": 1000.0,
@@ -102,9 +103,10 @@
   },
 
   "generator_info":{
-    "number_of_simulations":1,
-    "number_of_configurations": 1,
-    "max_person_number": 1
+    "number_of_simulations":2,
+    "number_of_configurations": 10,
+    "max_person_number": 5,
+    "topology": "apartment_topology1.png"
   },
 
   "paths" : {

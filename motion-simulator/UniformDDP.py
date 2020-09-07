@@ -22,7 +22,7 @@ class UniformDDp:
 
     """
 
-    def __init__(self, lower, upper, seed, test_mode):
+    def __init__(self, lower, upper, test_mode):
         self.lower = lower
         self.upper = upper
         self.test_mode = test_mode

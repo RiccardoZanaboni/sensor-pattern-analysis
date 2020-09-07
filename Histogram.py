@@ -26,8 +26,18 @@ def do_total_count(path):
     df['Efficiencies_count'] = total_count
     return df
 
-#def calculate_percentage()
+def calc_percentage(df):
 
+    total = 0
+    counts_effic = df['Efficiencies_count']
+    for count in counts_effic:
+        total += count
+    percentages = []
+    for value in counts_effic:
+        percentage = (value*100)/total
+        percentages.append(percentage)
+
+    return percentages
 
 def init_argparser():
     parser = argparse.ArgumentParser()
@@ -41,6 +51,8 @@ if __name__ == '__main__':
     config_path = Path(args.configs_path)
 
     df = do_total_count(config_path)
+    percentages = calc_percentage(df)
+
     df.to_csv('Total_histogram.csv', index=False)
 
     width = 0.7  # the width of the bars: can also be len(x) sequence
@@ -51,7 +63,28 @@ if __name__ == '__main__':
 
     ax.set_ylabel('Count of efficiency values')
     ax.set_title('Scores divided by interval')
-    ax.legend()
+
+
+    rects = ax.patches
+    i = 0
+
+    for rect in rects:
+        y_value = rect.get_height()
+        x_value = rect.get_x() + rect.get_width() / 2
+
+        va = 'top'
+        space = 10
+
+        label = f'{format(percentages[i], ".2f")}%'
+
+        plt.annotate(
+            label,  # Use `label` as label
+            (x_value, y_value),  # Place label at end of the bar
+            xytext=(0, space),  # Vertically shift label by `space`
+            textcoords="offset points",  # Interpret `xytext` as offset in points
+            ha='center',  # Horizontally center label
+            va=va)
+        i += 1
 
     plt.xticks(rotation=-25)
     plt.savefig('Total_histogram.png')
