@@ -1,0 +1,4 @@
+Simulation Info :
+Long waiting time seed : [986862000, 986954000]
+Short  waiting time seed : [986894000, 986959000]
+"Number of person : 2
