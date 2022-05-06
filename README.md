@@ -15,3 +15,24 @@ The system takes as input a configuration file in `json` format. In this configu
 
 https://user-images.githubusercontent.com/48360582/167180303-7000f95a-ad10-4fbf-a8d7-7ae9fe12639e.mov
 
+
+Once all is setted the simulation starts and it gives as output a csv file in which each row corresponds to a second and each column represents values of a sensor(0-off or 1-on).
+
+This csv file is the used fo the 'historgram filter': it calculates the probability in which room a person is in an apartment using the measures of some movement states sensors and then the prediction of the probabilities is compared to the ground truth.
+
+Algorith used :
+
+>Discrete Bayes Filter
+
+	bel_signed(xt+1)=∑xtP(xt+1∣xt)bel(xt)
+
+	bel(xt+1)=ηP(et+1∣xt+1)bel_signed(xt+1)
+
+<h2>Focus of my work</h2>
+
+In this project the focus of my work was the creation of a method that could allow someone to create a large number of configurations from a single base configuration and creating at the same time a script that runs all of the simulations of these configurations. Thanks to the larger number of simulations and data it is now possible in the project to evaluate the performance of the algorithm used for the prediction and it is visualized in an histogram.
+
+![Schermata 2022-05-06 alle 19 52 40](https://user-images.githubusercontent.com/48360582/167189560-1c02b910-13fa-40da-8bee-7a3b247c82b6.png)
+
+
+The intervals show how much accurate the algorithm has been in the prediction and how much valued fall in that interval. The interval 0.9-1 is the one that indicates correct prediction while the one 0.0-0.1 indicates that the filter was completly wrong in the prediction.
