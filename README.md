@@ -8,7 +8,7 @@ The apartment has a motion sensor in each room. The output of a sensor is either
 
 <h2>How it works</h2>
 
-The system takes as input a configuration file in `json` format. In this configuration file are specified all the characteristics wanted for the simulation; for example the topology of the apartment, the number of people in the apartment, the probabilities of changing rooms and others.
+The system takes as input a configuration file in `json` format. In this configuration file are specified all the characteristics wanted for the simulation; for example the topology of the apartment, the number of people in the apartment, the probabilities of changing the room and others.
 
 ![Schermata 2022-05-06 alle 19 12 01](https://user-images.githubusercontent.com/48360582/167180291-ef552498-b955-402a-a0c2-263f7e203dc0.png)
 
