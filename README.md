@@ -40,7 +40,7 @@ The topology matrix in the json file is initially approximated as a totally inte
 ![image](https://user-images.githubusercontent.com/48378307/167291875-0d4e54ca-9cbb-4f48-b3bd-7c85ccb58d79.png)
 
 Although the filter differs greatly from the correct configuration, it is **able to obtain a reconstruction of the topology** of the house in question through the path given by the highest probability out of the filter moment by moment.
-To improve this task an initial time window is exploited in order to obtain a reconstruction of the topology as correct as possible,then the topology is updated at each instant on the basis of the reconstructed adjacencies until the end of the simulation.This is called **Dynamic Filter**.
+To improve this task an initial time window is exploited in order to obtain a reconstruction of the topology as correct as possible,then the topology is updated at each instant on the basis of the reconstructed adjacencies until the end of the simulation. This is called **Dynamic Filter**.
 
 Once the execution of the dynamic filter is finished, the last topology matrix obtained dynamically is displayed through a pair of heatmaps.  
 In the first, the real existing adjacencies are shown in green, introducing a color scale from the lightest green for the lowest probabilities to the darkest green for the highest ones.Similarly, non-existent adjacencies are shown in red, introducing a color scale from the lightest red for the lowest probabilities to the darkest red for the highest ones.    
