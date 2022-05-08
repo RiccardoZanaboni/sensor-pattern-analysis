@@ -4,7 +4,7 @@ This project has been created to simulate and analyze movement of one person or 
 
 <h2>The Environment</h2>
 
-The apartment has a motion sensor in each room. The output of a sensor is either '0' or '1'; each second every sensor checks for movement and when it captures it the value change from 0 to 1 and then stays 1 for 3 minutes. After this time the sensor checks if there is still someone in the room: if yes, it remains 1 for another 3 minutes otherwise it returns 0. All output of sensors are sent to a gateway.
+The apartment has a motion sensor in each room. The output of a sensor is either '0' or '1'; each second every sensor checks for movement and when it captures it the value change from 0 to 1 and then stays 1 for 3 minutes. After this time the sensor checks if there is still someone in the room: if yes, it remains 1 for another 3 minutes otherwise it returns 0.  All sensor outputs are sent to a gateway.
 
 <h2>How it works</h2>
 
