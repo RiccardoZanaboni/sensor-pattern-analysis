@@ -28,11 +28,16 @@ Algorithm used :
 
 <h2>Focus of my work</h2>
 
+<h3>Graphical interface</h3>
+
 In this project the focus of my work was initially the creation of a **graphical interface** represeting the simulated person moving in the house.
 
 The apartment is modeled using a graph that highlights the connections between the different rooms, represented through nodes. A stylized man is placed to the left of the room where the subject really is in order to immediately represent his position. Similarly, a light bulb placed to the right of a node symbolizes the switching on of the sensor in that room. Each node is characterized by the probability coming out of the filter that the subject is in the corresponding room. The different forecasts are depicted on a white to red color scale where white represents the least probable forecast and red the most probable one. All this information is summarized in text form at the bottom of the interface.
 
 https://user-images.githubusercontent.com/48378307/167291441-7161581c-df6a-4254-b721-1ba61be87cae.mp4
+
+
+<h3>Unknown Topology</h3>
 
 After dealing with the management of the interface, I dedicated myself to evaluating the Histogram Filter in the event that the **topology was unknown**.
 The topology matrix in the json file is initially approximated as a totally interconnected apartment, as can be seen in the figure, in which the probabilities are all equal.
