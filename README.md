@@ -1,3 +1,6 @@
+# Sensor-Pattern-Analysis
+Bachelor's degree thesis project at University of Pavia
+
 <h2>The Project</h2>
 
 This project has been created to simulate and analyze movement of one person or more people in a domotic apartment equipped with motion sensors in order to create a system that learns habits and tries to understand if something is wrong in the behaviour of people and in this case call assistance; the system is designed especially for older people that live alone.
