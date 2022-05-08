@@ -28,7 +28,7 @@ Algorithm used :
 
 <h2>Focus of my work</h2>
 
-In this project the focus of my work was the creation of a **graphical interface** represeting the simulated person moving in the house.
+In this project the focus of my work initially was the creation of a **graphical interface** represeting the simulated person moving in the house.
 
 The apartment is modeled using a graph that highlights the connections between the different rooms, represented through nodes. A stylized man is placed to the left of the room where the subject really is in order to immediately represent his position. Similarly, a light bulb placed to the right of a node symbolizes the switching on of the sensor in that room. Each node is characterized by the probability coming out of the filter that the subject is in the corresponding room. The different forecasts are depicted on a white to red color scale where white represents the least probable forecast and red the most probable one. All this information is summarized in text form at the bottom of the interface.
 
