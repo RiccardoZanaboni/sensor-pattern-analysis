@@ -47,6 +47,7 @@ In the first, the real existing adjacencies are shown in green, introducing a co
 In the second, instead, the goodness of reconstruction of the topology of the apartment is displayed through a red scale, in which the darker color (burgundy) represents two possibilities:
 * the filter has correctly recognized an existing adjacency with a high probability;
 * the filter has correctly recognized a non-existent adjacency with a low probability.
+   
 The lighter color (white) represents the two complementary possibilities, that is:
 * the filter has mistakenly recognized a non-existent adjacency with a high probability;
 * the filter has mistakenly recognized an existing adjacency with a low probability.
